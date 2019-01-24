@@ -17,9 +17,9 @@ const
   express = require('express'),
   https = require('https'),
   request = require('request');
-  imagur = require('last-fm')
-  const imagur_key = new imagur('////YOUR LAST_FM API KEY/////', {
-  userAgent: 'DemoApp/1.0.0 (////DOMAIN NAME OF THE SERVER////)'
+  const imagur = require('last-fm')
+const image_url = new imagur('330f7a669b528f8', {
+  userAgent: 'DemoApp/1.0.0 (https://my-virtual-buddy1.herokuapp.com/)'
 })
 
 var app = express();
