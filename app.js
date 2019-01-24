@@ -17,6 +17,10 @@ const
   express = require('express'),
   https = require('https'),
   request = require('request');
+  imagur = require('last-fm')
+  imagur_key = new imagur('////YOUR LAST_FM API KEY/////', {
+  userAgent: 'DemoApp/1.0.0 (////DOMAIN NAME OF THE SERVER////)'
+})
 
 var app = express();
 app.set('port', process.env.PORT || 5000);
