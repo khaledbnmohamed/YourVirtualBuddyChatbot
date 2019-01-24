@@ -1,6 +1,6 @@
 {
-    "appSecret": "94ca85901acd83393aba2ec83143b10f",
-    "pageAccessToken": "EAAgqhlxZAxAwBAGkWA6Ggi9CJ65cl7iqxiEW5SQmr8ZClCHducE5kkuX9c3oUaxwZBcon2OHPUzg502gPtThDX1ZAZBxwOZAZCev5VcGZAeG6GyHN4pPUcfZC6WZC4UneYLIdG78YD8hEQANgXmOjgfZAmClKZCMHFrPkE1eRP9yGLHBWQZDZD",
+    "appSecret": "0dad53a020025ec4f9db58e63dee19b7",
+    "pageAccessToken": "EAAERMTBy90ABAPWmir1EVAoYgA2BNMgAtYcIa9oGPpgdoK3Br3L5eSZCFRS5sm2GAU0idGGmms5UUOCi7ueo2331zZBx5BWvr3IgkVRukutEuIUAigtPymIjLuI6t5wilwcYvJqzEvGAL8ZAR5ouvgjZCCeMR8GHZBXv0I5cZCSQZDZD",
     "validationToken": "TOKEN",
-    "serverURL": "https://evening-castle-14057.herokuapp.com/"
+    "serverURL": "to_be_set_manually"
 }
