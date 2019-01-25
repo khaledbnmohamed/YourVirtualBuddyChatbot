@@ -17,6 +17,7 @@ const
   express = require('express'),
   https = require('https'),
   request = require('request');
+  ImageLink ="https://i.imgur.com/KZC2CW9.jpg"
 //   const imagur = require('last-fm')
 // const image_url = new imagur('330f7a669b528f8', {
 //   userAgent: 'DemoApp/1.0.0 (https://my-virtual-buddy1.herokuapp.com/)'
@@ -316,6 +317,10 @@ function receivedMessage(event) {
         requiresServerURL(sendAccountLinking, [senderID]);
         break;
 
+      case 'send meme':
+        requiresServerURL(sendMemeMessage, [senderID]);
+        break;
+
       default:
         sendTextMessage(senderID, messageText);
     }
@@ -481,6 +486,28 @@ function sendImageMessage(recipientId) {
   callSendAPI(messageData);
 }
 
+
+/*
+ * Send a meme using the Send API.
+ *
+ */
+function sendMemeMessage(recipientId) {
+  var messageData = {
+    recipient: {
+      id: recipientId
+    },
+    message: {
+      attachment: {
+        type: "image",
+        payload: {
+          url: ImageLink
+        }
+      }
+    }
+  };
+
+  callSendAPI(messageData);
+}
 /*
  * Send a Gif using the Send API.
  *
@@ -544,7 +571,8 @@ function sendVideoMessage(recipientId) {
     }
   };
 
-  callSendAPI(messageData);
+  callSen
+  dAPI(messageData);
 }
 
 /*
