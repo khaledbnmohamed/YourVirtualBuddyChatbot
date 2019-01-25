@@ -494,8 +494,7 @@ function sendImageMessage(recipientId) {
  *
  */
 function sendMemeMessage(recipientId) {
-  if (messageText) {
-       var Search_query = messageText;
+       // var Search_query = messageText;
        ImageLink= fetchingData(senderId);
 
   var messageData = {
@@ -513,7 +512,7 @@ function sendMemeMessage(recipientId) {
   };
 
   callSendAPI(messageData);
-}
+
 }
 /*
  * Send a Gif using the Send API.
