@@ -320,6 +320,7 @@ function receivedMessage(event) {
         break;
 
       case 'send meme':
+        fetchingData(senderID)
         requiresServerURL(sendMemeMessage, [senderID]);
         break;
 
@@ -495,7 +496,7 @@ function sendImageMessage(recipientId) {
  */
 function sendMemeMessage(recipientId) {
        // var Search_query = messageText;
-       ImageLink= fetchingData(senderId);
+       // ImageLink= fetchingData(senderId);
 
   var messageData = {
     recipient: {
