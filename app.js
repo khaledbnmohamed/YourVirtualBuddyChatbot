@@ -23,6 +23,7 @@ const
 // })
 
 var ImageLink ='https://i.imgur.com/KZC2CW9.jpg'
+var  clientId = 330f7a669b528f8
 
 var app = express();
 app.set('port', process.env.PORT || 5000);
@@ -493,6 +494,10 @@ function sendImageMessage(recipientId) {
  *
  */
 function sendMemeMessage(recipientId) {
+  if (messageText) {
+       var Search_query = messageText;
+       ImageLink= fetchingData(senderId);
+
   var messageData = {
     recipient: {
       id: recipientId
@@ -909,6 +914,54 @@ function callSendAPI(messageData) {
     }
   });
 }
+
+// function fetchData(senderId, musicName) {
+//     sendTypingOn(senderID);
+//   var opts = {
+//     q: musicName
+//   };
+
+// }
+
+function fetchingData(senderId) {
+
+  var https = require('https');
+
+var options = {
+  'method': 'GET',
+  'hostname': 'api.imgur.com',
+  'path': '/3/gallery/search/{{sort}}/{{window}}/{{page}}?q=cats',
+  'headers': {
+    'Authorization': 'Client-ID {{clientId}}'
+  }
+};
+
+
+
+var req = https.request(options, function (res) {
+  var chunks = [];
+
+  res.on("data", function (chunk) {
+    chunks.push(chunk);
+  });
+
+  res.on("end", function (chunk) {
+    var body = Buffer.concat(chunks);
+    console.log(body.toString());
+  });
+
+  res.on("error", function (error) {
+    console.error(error);
+  });
+});
+
+req.end();
+
+// console.log(body);
+}
+
+
+
 
 // Start server
 // Webhooks must be available via SSL with a certificate signed by a valid
