@@ -23,7 +23,7 @@ const
 // })
 
 var ImageLink ='https://i.imgur.com/KZC2CW9.jpg'
-var  clientId = '330f7a669b528f8'
+var  clientId = "330f7a669b528f8"
 
 var app = express();
 app.set('port', process.env.PORT || 5000);
@@ -927,13 +927,14 @@ function callSendAPI(messageData) {
 function fetchingData(senderId) {
 
 var https = require('https');
+      console.log(clientId);
 
 var options = {
   'method': 'GET',
   'hostname': 'api.imgur.com',
   'path': '/3/gallery/search/{{sort}}/{{window}}/{{page}}?q=cats',
   'headers': {
-    'Authorization': 'Client-ID {{330f7a669b528f8}}'
+    'Authorization': 'Client-ID {{clientId}}'
   }
 };
 
