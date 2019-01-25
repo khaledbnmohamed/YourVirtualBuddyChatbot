@@ -514,6 +514,7 @@ function sendMemeMessage(recipientId) {
 
   callSendAPI(messageData);
 }
+}
 /*
  * Send a Gif using the Send API.
  *
@@ -925,7 +926,7 @@ function callSendAPI(messageData) {
 
 function fetchingData(senderId) {
 
-  var https = require('https');
+var https = require('https');
 
 var options = {
   'method': 'GET',
@@ -939,20 +940,22 @@ var options = {
 
 
 var req = https.request(options, function (res) {
-  var chunks = [];
 
-  res.on("data", function (chunk) {
-    chunks.push(chunk);
-  });
+      var chunks = [];
 
-  res.on("end", function (chunk) {
-    var body = Buffer.concat(chunks);
-    console.log(body.toString());
-  });
+    res.on("data", function (chunk) {
+      chunks.push(chunk);
+    });
 
-  res.on("error", function (error) {
-    console.error(error);
-  });
+    res.on("end", function (chunk) {
+      var body = Buffer.concat(chunks);
+      console.log(body.toString());
+    });
+
+    res.on("error", function (error) {
+      console.error(error);
+    });
+
 });
 
 req.end();
