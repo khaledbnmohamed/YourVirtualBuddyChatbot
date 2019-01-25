@@ -571,8 +571,7 @@ function sendVideoMessage(recipientId) {
     }
   };
 
-  callSen
-  dAPI(messageData);
+  callSendAPI(messageData);
 }
 
 /*
