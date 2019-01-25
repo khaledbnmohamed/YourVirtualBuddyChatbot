@@ -17,11 +17,12 @@ const
   express = require('express'),
   https = require('https'),
   request = require('request');
-  ImageLink ="https://i.imgur.com/KZC2CW9.jpg"
 //   const imagur = require('last-fm')
 // const image_url = new imagur('330f7a669b528f8', {
 //   userAgent: 'DemoApp/1.0.0 (https://my-virtual-buddy1.herokuapp.com/)'
 // })
+
+var ImageLink ='https://i.imgur.com/KZC2CW9.jpg'
 
 var app = express();
 app.set('port', process.env.PORT || 5000);
