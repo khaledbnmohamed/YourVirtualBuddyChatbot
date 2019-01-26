@@ -23,7 +23,7 @@ const
 // })
 
 var ImageLink ='https://i.imgur.com/KZC2CW9.jpg'
-var  clientId = '101375665'
+var  accessToken = 'ca36d44954068c4cf1bd042cf849f4a724150921'
 
 var app = express();
 app.set('port', process.env.PORT || 5000);
@@ -927,40 +927,34 @@ function callSendAPI(messageData) {
 function fetchingData(senderId) {
 
 var https = require('https');
-      console.log(clientId);
 
 var options = {
   'method': 'GET',
   'hostname': 'api.imgur.com',
-  'path': '/3/gallery/search/{{sort}}/{{window}}/{{page}}?q=cats',
+  'path': '/3/account/me/images',
   'headers': {
-    'Authorization': 'Client-ID {{clientId}}'
+    'Authorization': 'Bearer {{accessToken}}'
   }
 };
 
-
-
 var req = https.request(options, function (res) {
+  var chunks = [];
 
-      var chunks = [];
+  res.on("data", function (chunk) {
+    chunks.push(chunk);
+  });
 
-    res.on("data", function (chunk) {
-      chunks.push(chunk);
-    });
+  res.on("end", function (chunk) {
+    var body = Buffer.concat(chunks);
+    console.log(body.toString());
+  });
 
-    res.on("end", function (chunk) {
-      var body = Buffer.concat(chunks);
-      console.log(body.toString());
-    });
-
-    res.on("error", function (error) {
-      console.error(error);
-    });
-
+  res.on("error", function (error) {
+    console.error(error);
+  });
 });
 
 req.end();
-
 // console.log(body);
 }
 
