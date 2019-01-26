@@ -23,7 +23,7 @@ const
 // })
 
 var ImageLink ='https://i.imgur.com/KZC2CW9.jpg'
-var  clientId = "330f7a669b528f8"
+var  clientId = '330f7a669b528f8'
 
 var app = express();
 app.set('port', process.env.PORT || 5000);
@@ -934,7 +934,7 @@ var options = {
   'hostname': 'api.imgur.com',
   'path': '/3/gallery/search/{{sort}}/{{window}}/{{page}}?q=cats',
   'headers': {
-    'Authorization': 'Client-ID{{clientId}}'
+    'Authorization': 'Client-ID {{clientId}}'
   }
 };
 
