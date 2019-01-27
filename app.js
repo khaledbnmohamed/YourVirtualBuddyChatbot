@@ -932,9 +932,12 @@ function callSendAPI(messageData) {
 function fetchingData(senderId,Search_query) {
 
 if(!Search_query){
-Search_query = "memes"
+  Search_query = "memes"
 }
+else{
 
+  Search_query=encodeURI(Search_query);
+}
 
 var https = require('https');
       console.log(Search_query);
