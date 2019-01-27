@@ -936,7 +936,7 @@ var https = require('https');
 var options = {
   'method': 'GET',
   'hostname': 'api.imgur.com',
-  'path': '/3/gallery/search/{{sort}}/{{window}}/{{page}}?q=${Search_query}',
+  'path': '/3/gallery/search/{{sort}}/{{window}}/{{page}}?q= ${Search_query}',
   'headers': {
     'Authorization': 'Client-ID 8056e5db3f369d1'
   }
@@ -954,7 +954,8 @@ var req = https.request(options, function (res) {
 
     res.on("end", function (chunk) {
       var body = Buffer.concat(chunks);
-      console.log(options)
+      console.log(JSON.parse(body).data[0])
+      console.log(options.path)
       let image_link = formingElements(body,senderId)
       if(image_link){
 
