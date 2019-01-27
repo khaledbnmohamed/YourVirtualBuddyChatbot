@@ -954,6 +954,7 @@ var req = https.request(options, function (res) {
 
     res.on("end", function (chunk) {
       var body = Buffer.concat(chunks);
+      console.log(options)
       let image_link = formingElements(body,senderId)
       if(image_link){
 
