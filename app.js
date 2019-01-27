@@ -795,7 +795,7 @@ function sendQuickReply(recipientId) {
         {
           "content_type":"text",
           "title":"Sad Memes",
-          "payload":"sad semes"
+          "payload":"sad memes"
         },
         {
           "content_type":"text",
