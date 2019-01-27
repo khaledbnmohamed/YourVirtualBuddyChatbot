@@ -17,6 +17,8 @@ const
   express = require('express'),
   https = require('https'),
   request = require('request');
+  querystring = require('querystring');
+
 //   const imagur = require('last-fm')
 // const image_url = new imagur('330f7a669b528f8', {
 //   userAgent: 'DemoApp/1.0.0 (https://my-virtual-buddy1.herokuapp.com/)'
@@ -936,7 +938,7 @@ if(!Search_query){
 }
 else{
 
-  Search_query=encodeURI(Search_query);
+  Search_query=querystring.stringify(Search_query);
 }
 
 var https = require('https');
@@ -945,7 +947,7 @@ var https = require('https');
 var options = {
   'method': 'GET',
   'hostname': 'api.imgur.com',
-  'path': '/3/gallery/search/{{sort}}/{{window}}/{{page}}?q='+Search_query ,
+  'path': '/3/gallery/search/{{sort}}/{{window}}/{{page}}?q='+Search_query,
   'headers': {
     'Authorization': 'Client-ID 8056e5db3f369d1'
   }
