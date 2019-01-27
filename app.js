@@ -969,11 +969,7 @@ req.end();
 function formingElements(result) {
 
 
-  if (result.images.length == 0 || result.images == undefined) {
-    posterPath = 'https://images.pexels.com/photos/3104/black-and-white-music-headphones-life.jpg?h=350&auto=compress&cs=tinysrgb';
-  } else {
-
-  }
+  
 
 return result.images.link
 
