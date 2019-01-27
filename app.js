@@ -972,7 +972,7 @@ let data=JSON.parse(result)
 let i =0
 while(data[i+1]){
 
-    if(data[i].is_album==false){
+    if(data[i].is_album==true){
 
     return data[i].images[0].link
     }
