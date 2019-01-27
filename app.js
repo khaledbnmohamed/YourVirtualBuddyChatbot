@@ -17,7 +17,6 @@ const
   express = require('express'),
   https = require('https'),
   request = require('request');
-  querystring = require('querystring');
 
 //   const imagur = require('last-fm')
 // const image_url = new imagur('330f7a669b528f8', {
