@@ -950,7 +950,7 @@ var req = https.request(options, function (res) {
 
     res.on("end", function (chunk) {
       var body = Buffer.concat(chunks);
-      console.log("Your print is Ready ",formingElements(body));
+      console.log("Your print is Ready ",JSON.parse(body).data[0].images(getlink));
         sendTextMessage(senderId, formingElements(body));
 
     });
@@ -966,31 +966,40 @@ req.end();
 // console.log(body);
 }
 
-function formingElements(response) {
+function formingElements(result) {
 
-   //Retrieving data from Ajax
-      $.ajax(settings).done(function(response) {
-        var photoHTML = '<ul>';
-        //Loop through JSON data
-        $.each(response.data, function(i, images) {
-          if (!images.is_album) {
-            photoHTML += '<li>';
-            photoHTML += '<img src="' + images.link + '"></li>';
-          }
-          if (images.is_album) {
-            $.each(images.images, function(i, albumImages){
-            photoHTML += '<li>';
-            photoHTML += '<img src="' + albumImages.link + '"></li>';
-            });
-          }
-        }); // end each
+let LinkIs=JSON.parse(result).data[0].images(getlink)
+// let response;
+//       try {
+//         response = JSON.parse(result);
+//       } catch(e){
+//         response = {};
+//       }
+//       if (response.success){
+//         const parsed = response.data[0].images
+//         // .filter(result => !result.is_album)
+//         .map(data => {
+//           return {
+//             link: data.link,
+//           
+//           };
+//         });
+//         done(parsed);
+//       } 
+  
 
-        photoHTML += '</ul>';
-        return photoHTML
-        
-      });
- 
+return LinkIs
 
+  // return {
+  //   title: musicName,
+  //   subtitle: artistName,
+  //   image_url: posterPath,
+  //   buttons: [{
+  //     "type": "web_url",
+  //     "url": LAST_FM_URL + artistNameUrl + '/_/' + musicNameUrl,
+  //     "title": "More Details"
+  //   }]
+  // }
 }
 
 
