@@ -969,10 +969,11 @@ req.end();
 
 function formingElements(result) {
 
+  console.log("Helllooo")
 
 let data=JSON.parse(result)
 let i =0
-while(data[i+1]){
+while(data[i]){
 
   console.log("entered ",i)
     if(data[i].is_album==true){
@@ -983,6 +984,8 @@ while(data[i+1]){
       i++
     }
 }
+sendTextMessage(sendId,"No memes for you today go get a life")
+return 
 }
 
 
