@@ -926,7 +926,7 @@ function callSendAPI(messageData) {
 
 function fetchingData(senderId) {
 
-sendTypingOn(senderID); //typing on till fetching
+sendTypingOn(senderId); //typing on till fetching
 
 var https = require('https');
       console.log(clientId);
@@ -955,7 +955,7 @@ var req = https.request(options, function (res) {
       let image_link = formingElements(body,senderId)
       if(image_link){
 
-      sendTypingOff(senderID); //turn typing off to send the message
+      sendTypingOff(senderId); //turn typing off to send the
 
       sendImageMessage(senderId,image_link);
 
