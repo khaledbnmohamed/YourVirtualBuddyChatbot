@@ -984,7 +984,7 @@ while(data[i]){
       i++
     }
 }
-sendTextMessage(sendId,"No memes for you today go get a life")
+sendTextMessage(senderId,"No memes for you today go get a life")
 return 
 }
 
