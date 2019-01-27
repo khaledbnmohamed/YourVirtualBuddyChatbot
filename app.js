@@ -927,7 +927,7 @@ function callSendAPI(messageData) {
 
 function fetchingData(senderId) {
 
-let Search_query = memes
+var Search_query = "memes"
 
 
 var https = require('https');
