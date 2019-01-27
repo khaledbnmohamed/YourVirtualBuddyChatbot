@@ -950,7 +950,9 @@ var req = https.request(options, function (res) {
 
     res.on("end", function (chunk) {
       var body = Buffer.concat(chunks);
-      sendImageMessage(senderId,JSON.parse(body).data[0].images[0].link);
+      let image_link = formingElements(result)
+      if(image_link)
+      sendImageMessage(senderId,image_link);
 
     });
 
