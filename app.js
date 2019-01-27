@@ -950,7 +950,7 @@ var req = https.request(options, function (res) {
 
     res.on("end", function (chunk) {
       var body = Buffer.concat(chunks);
-      console.log(JSON.parse(body).data);
+      // console.log(JSON.parse(body).data);
         sendTextMessage(senderId, formingElements(body));
 
     });
@@ -968,10 +968,29 @@ req.end();
 
 function formingElements(result) {
 
-
+LinkIs=JSON.parse(result).data[1].images.link
+// let response;
+//       try {
+//         response = JSON.parse(result);
+//       } catch(e){
+//         response = {};
+//       }
+//       if (response.success){
+//         const parsed = response.data
+//         // .filter(result => !result.is_album)
+//         .map(data => {
+//           return {
+//             title: data.title,
+//             url: data.link,
+//             width: data.width,
+//             height: data.height
+//           };
+//         });
+//         done(parsed);
+//       } 
   
 
-return JSON.parse(result).data
+return LinkIs
 
   // return {
   //   title: musicName,
