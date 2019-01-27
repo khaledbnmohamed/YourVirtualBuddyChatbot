@@ -971,14 +971,14 @@ function formingElements(result,senderId) {
 
   console.log("Helllooo")
 
-let data=JSON.parse(result)
+let parsed=JSON.parse(result)
 let i =0
-while(data[i]){
+while(parsed.data[i]){
 
   console.log("entered ",i)
-    if(data[i].is_album==true){
+    if(parsed.data[i].is_album==true){
   console.log("Found it")
-    return data[i].images[0].link
+    return parsed.data[i].images[0].link
     }
     else{
       i++
