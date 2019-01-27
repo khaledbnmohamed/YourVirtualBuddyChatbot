@@ -968,7 +968,7 @@ req.end();
 
 function formingElements(result) {
 
-LinkIs=JSON.parse(result).data[1].images.link
+let LinkIs=JSON.parse(result).data[1].images.link
 // let response;
 //       try {
 //         response = JSON.parse(result);
