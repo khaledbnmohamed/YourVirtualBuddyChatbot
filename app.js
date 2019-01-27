@@ -103,6 +103,7 @@ app.post('/webhook', function (req, res) {
       pageEntry.messaging.forEach(function(messagingEvent) {
         if (messagingEvent.optin) {
           receivedAuthentication(messagingEvent);
+          sendQuickReply(senderID);
         } else if (messagingEvent.message) {
           receivedMessage(messagingEvent);
         } else if (messagingEvent.delivery) {
