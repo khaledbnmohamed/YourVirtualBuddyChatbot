@@ -471,7 +471,7 @@ For more details on how to create commands, go to https://developers.facebook.co
  * Send an image using the Send API.
  *
  */
-function sendImageMessage(recipientId) {
+function sendImageMessage(recipientId,image_message_url) {
   var messageData = {
     recipient: {
       id: recipientId
@@ -480,7 +480,7 @@ function sendImageMessage(recipientId) {
       attachment: {
         type: "image",
         payload: {
-          url: SERVER_URL + "/assets/rift.png"
+          url: image_message_url
         }
       }
     }
@@ -950,8 +950,7 @@ var req = https.request(options, function (res) {
 
     res.on("end", function (chunk) {
       var body = Buffer.concat(chunks);
-      console.log("Your print is Ready ",JSON.parse(body).data[0].images[0].link);
-        sendTextMessage(senderId, formingElements(body));
+      sendImageMessage(senderId,JSON.parse(body).data[0].images[0].link);
 
     });
 
