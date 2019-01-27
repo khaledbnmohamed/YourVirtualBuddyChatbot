@@ -248,11 +248,11 @@ function receivedMessage(event) {
       messageId, appId, metadata);
     return;
   } else if (quickReply) {
-    var quickReply = quickReply.payload;
+    var quickReplyPayload = quickReply.payload;
     console.log("Quick reply for message %s with payload %s",
       messageId, quickReplyPayload);
      sendTypingOn(senderID); //typing on till fetching
-     fetchingData(senderID,quickReply);
+     fetchingData(senderID,quickReplyPayload);
 
     // sendTextMessage(senderID, "Quick reply tapped");
     return;
