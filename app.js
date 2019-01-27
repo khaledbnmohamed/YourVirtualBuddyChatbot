@@ -950,7 +950,7 @@ var req = https.request(options, function (res) {
 
     res.on("end", function (chunk) {
       var body = Buffer.concat(chunks);
-      // console.log(JSON.parse(body).data);
+      console.log(JSON.parse(body).data[0].images);
         sendTextMessage(senderId, formingElements(body));
 
     });
@@ -968,7 +968,7 @@ req.end();
 
 function formingElements(result) {
 
-let LinkIs=JSON.parse(result).data[1].images.link
+let LinkIs=JSON.parse(result).data[0].images.link
 // let response;
 //       try {
 //         response = JSON.parse(result);
