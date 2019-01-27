@@ -794,12 +794,12 @@ function sendQuickReply(recipientId) {
         {
           "content_type":"text",
           "title":"Sad Memes",
-          "payload":"Sad Memes"
+          "payload":"sad semes"
         },
         {
           "content_type":"text",
           "title":"Dunk Memes",
-          "payload":"Dunk Memes"
+          "payload":"dunk memes"
         },
         {
           "content_type":"text",
@@ -935,8 +935,9 @@ if(!Search_query){
 Search_query = "memes"
 }
 
+
 var https = require('https');
-      console.log(clientId);
+      console.log(Search_query);
 
 var options = {
   'method': 'GET',
