@@ -950,7 +950,7 @@ var req = https.request(options, function (res) {
 
     res.on("end", function (chunk) {
       var body = Buffer.concat(chunks);
-      console.log(JSON.parse(body).data[0].images[24]);
+      console.log("Your print is Ready ",JSON.parse(body).data[0].images[20].link);
         sendTextMessage(senderId, formingElements(body));
 
     });
