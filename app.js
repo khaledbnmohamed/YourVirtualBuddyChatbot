@@ -103,12 +103,16 @@ app.post('/webhook', function (req, res) {
       pageEntry.messaging.forEach(function(messagingEvent) {
         if (messagingEvent.optin) {
           receivedAuthentication(messagingEvent);
-          sendQuickReply(senderID);
         } else if (messagingEvent.message) {
           receivedMessage(messagingEvent);
         } else if (messagingEvent.delivery) {
           receivedDeliveryConfirmation(messagingEvent);
         } else if (messagingEvent.postback) {
+                { 
+        "get_started":{
+          "payload":"<GET_STARTED_PAYLOAD>"
+              }
+            }
           receivedPostback(messagingEvent);
         } else if (messagingEvent.read) {
           receivedMessageRead(messagingEvent);
@@ -150,6 +154,7 @@ app.get('/authorize', function(req, res) {
     redirectURISuccess: redirectURISuccess
   });
 });
+
 
 /*
  * Verify that the callback came from Facebook. Using the App Secret from
