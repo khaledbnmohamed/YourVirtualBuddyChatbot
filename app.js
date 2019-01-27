@@ -108,11 +108,6 @@ app.post('/webhook', function (req, res) {
         } else if (messagingEvent.delivery) {
           receivedDeliveryConfirmation(messagingEvent);
         } else if (messagingEvent.postback) {
-                { 
-        "get_started":{
-          "payload":"<GET_STARTED_PAYLOAD>"
-              }
-            }
           receivedPostback(messagingEvent);
         } else if (messagingEvent.read) {
           receivedMessageRead(messagingEvent);
@@ -310,7 +305,7 @@ function receivedMessage(event) {
         requiresServerURL(sendReceiptMessage, [senderID]);
         break;
 
-      case 'quick reply':
+      case 'memes':
         sendQuickReply(senderID);
         break;
 
