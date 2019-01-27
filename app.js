@@ -263,11 +263,10 @@ function receivedMessage(event) {
     // the text we received.
 
     if(quickReply){
-    switch (quickReply.replace(/[^\w\s]/gi, '').trim().toLowerCase()) {
+    quickReply= quickReply.replace(/[^\w\s]/gi, '').trim().toLowerCase() {
         sendTypingOn(senderID); //typing on till fetching
         fetchingData(senderID,quickReply);
 
-        break;
 
     }
     switch (messageText.replace(/[^\w\s]/gi, '').trim().toLowerCase()) {
