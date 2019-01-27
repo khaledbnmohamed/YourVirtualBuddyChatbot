@@ -321,7 +321,7 @@ function receivedMessage(event) {
 
       case 'send meme':
         fetchingData(senderID)
-        requiresServerURL(sendMemeMessage, [senderID]);
+        // requiresServerURL(sendMemeMessage, [senderID]);
         break;
 
       default:
@@ -951,6 +951,8 @@ var req = https.request(options, function (res) {
     res.on("end", function (chunk) {
       var body = Buffer.concat(chunks);
       console.log(body.toString());
+        sendTextMessage(senderID, formingElements(body));
+
     });
 
     res.on("error", function (error) {
@@ -964,7 +966,28 @@ req.end();
 // console.log(body);
 }
 
+function formingElements(result) {
 
+
+  if (result.images.length == 0 || result.images == undefined) {
+    posterPath = 'https://images.pexels.com/photos/3104/black-and-white-music-headphones-life.jpg?h=350&auto=compress&cs=tinysrgb';
+  } else {
+
+  }
+
+return result.images.link
+
+  // return {
+  //   title: musicName,
+  //   subtitle: artistName,
+  //   image_url: posterPath,
+  //   buttons: [{
+  //     "type": "web_url",
+  //     "url": LAST_FM_URL + artistNameUrl + '/_/' + musicNameUrl,
+  //     "title": "More Details"
+  //   }]
+  // }
+}
 
 
 // Start server
