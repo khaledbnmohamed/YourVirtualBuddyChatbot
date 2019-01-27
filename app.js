@@ -256,11 +256,20 @@ function receivedMessage(event) {
     return;
   }
 
-  if (messageText) {
+  if (messageText || quickReply) {
 
     // If we receive a text message, check to see if it matches any special
     // keywords and send back the corresponding example. Otherwise, just echo
     // the text we received.
+
+    if( quickReply){
+    switch (quickReply.replace(/[^\w\s]/gi, '').trim().toLowerCase()) {
+        sendTypingOn(senderID); //typing on till fetching
+        fetchingData(senderID,quickReply)
+
+        break;
+
+    }
     switch (messageText.replace(/[^\w\s]/gi, '').trim().toLowerCase()) {
       case 'hello':
       case 'hi':
@@ -789,13 +798,13 @@ function sendQuickReply(recipientId) {
       quick_replies: [
         {
           "content_type":"text",
-          "title":"Action",
-          "payload":"DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_ACTION"
+          "title":"Sad Memes",
+          "payload":"Sad Memes"
         },
         {
           "content_type":"text",
-          "title":"Comedy",
-          "payload":"DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_COMEDY"
+          "title":"Dunk Memes",
+          "payload":"Dunk Memes"
         },
         {
           "content_type":"text",
@@ -925,10 +934,11 @@ function callSendAPI(messageData) {
 
 // }
 
-function fetchingData(senderId) {
+function fetchingData(senderId,Search_query) {
 
-var Search_query = "memes"
-
+if(!Search_query){
+Search_query = "memes"
+}
 
 var https = require('https');
       console.log(clientId);
