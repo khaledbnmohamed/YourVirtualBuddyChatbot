@@ -950,7 +950,7 @@ var req = https.request(options, function (res) {
 
     res.on("end", function (chunk) {
       var body = Buffer.concat(chunks);
-      let image_link = formingElements(body)
+      let image_link = formingElements(body,senderId)
       if(image_link)
       sendImageMessage(senderId,image_link);
 
@@ -967,7 +967,7 @@ req.end();
 // console.log(body);
 }
 
-function formingElements(result) {
+function formingElements(result,senderId) {
 
   console.log("Helllooo")
 
