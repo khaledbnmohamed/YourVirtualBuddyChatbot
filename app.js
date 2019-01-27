@@ -950,7 +950,7 @@ var req = https.request(options, function (res) {
 
     res.on("end", function (chunk) {
       var body = Buffer.concat(chunks);
-      sendImageMessage(senderId,formingElements(result));
+      console.log(formingElements(result));
 
     });
 
@@ -972,8 +972,9 @@ let body=JSON.parse(result)
 let i =0
 while(data[i+1]){
 
+  console.log("entered ",i)
     if(data[i].is_album==true){
-
+  console.log("Found it")
     return data[i].images[0].link
     }
     else{
