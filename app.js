@@ -262,10 +262,10 @@ function receivedMessage(event) {
     // keywords and send back the corresponding example. Otherwise, just echo
     // the text we received.
 
-    if( quickReply){
+    if(quickReply){
     switch (quickReply.replace(/[^\w\s]/gi, '').trim().toLowerCase()) {
         sendTypingOn(senderID); //typing on till fetching
-        fetchingData(senderID,quickReply)
+        fetchingData(senderID,quickReply);
 
         break;
 
