@@ -251,24 +251,20 @@ function receivedMessage(event) {
     var quickReplyPayload = quickReply.payload;
     console.log("Quick reply for message %s with payload %s",
       messageId, quickReplyPayload);
+     sendTypingOn(senderID); //typing on till fetching
+     fetchingData(senderID,quickReply);
 
-    sendTextMessage(senderID, "Quick reply tapped");
+    // sendTextMessage(senderID, "Quick reply tapped");
     return;
   }
 
-  if (messageText || quickReply) {
+  if (messageText ) {
 
     // If we receive a text message, check to see if it matches any special
     // keywords and send back the corresponding example. Otherwise, just echo
     // the text we received.
 
-    if(quickReply){
-    quickReply= quickReply.replace(/[^\w\s]/gi, '').trim().toLowerCase();
-        sendTypingOn(senderID); //typing on till fetching
-        fetchingData(senderID,quickReply);
-
-
-    }
+  
     switch (messageText.replace(/[^\w\s]/gi, '').trim().toLowerCase()) {
       case 'hello':
       case 'hi':
