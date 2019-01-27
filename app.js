@@ -320,8 +320,9 @@ function receivedMessage(event) {
         break;
 
       case 'send meme':
+        sendTypingOn(senderID); //typing on till fetching
         fetchingData(senderID)
-        // requiresServerURL(sendMemeMessage, [senderID]);
+
         break;
 
       default:
@@ -926,7 +927,8 @@ function callSendAPI(messageData) {
 
 function fetchingData(senderId) {
 
-sendTypingOn(senderId); //typing on till fetching
+let Search_query = 'memes'
+
 
 var https = require('https');
       console.log(clientId);
@@ -934,7 +936,7 @@ var https = require('https');
 var options = {
   'method': 'GET',
   'hostname': 'api.imgur.com',
-  'path': '/3/gallery/search/{{sort}}/{{window}}/{{page}}?q=cats',
+  'path': '/3/gallery/search/{{sort}}/{{window}}/{{page}}?q={{Search_query}}',
   'headers': {
     'Authorization': 'Client-ID 8056e5db3f369d1'
   }
@@ -955,8 +957,7 @@ var req = https.request(options, function (res) {
       let image_link = formingElements(body,senderId)
       if(image_link){
 
-      sendTypingOff(senderId); //turn typing off to send the
-
+      sendTypingOff(senderID);
       sendImageMessage(senderId,image_link);
 
     }
