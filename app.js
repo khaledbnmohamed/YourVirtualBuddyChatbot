@@ -968,7 +968,7 @@ req.end();
 function formingElements(result) {
 
 
-let body=JSON.parse(result)
+let data=JSON.parse(result)
 let i =0
 while(data[i+1]){
 
