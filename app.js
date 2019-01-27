@@ -981,37 +981,9 @@ while(data[i+1]){
     }
 }
 }
-// let response;
-//       try {
-//         response = JSON.parse(result);
-//       } catch(e){
-//         response = {};
-//       }
-//       if (response.success){
-//         const parsed = response.data[0].images
-//         // .filter(result => !result.is_album)
-//         .map(data => {
-//           return {
-//             link: data.link,
-//           
-//           };
-//         });
-//         done(parsed);
-//       } 
-  
 
-return LinkIs
 
-  // return {
-  //   title: musicName,
-  //   subtitle: artistName,
-  //   image_url: posterPath,
-  //   buttons: [{
-  //     "type": "web_url",
-  //     "url": LAST_FM_URL + artistNameUrl + '/_/' + musicNameUrl,
-  //     "title": "More Details"
-  //   }]
-  // }
+
 }
 
 
