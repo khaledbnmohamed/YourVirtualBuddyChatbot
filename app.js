@@ -959,7 +959,7 @@ var req = https.request(options, function (res) {
       let image_link = formingElements(body,senderId)
       if(image_link){
 
-      sendTypingOff(senderID);
+      sendTypingOff(senderId);
       sendImageMessage(senderId,image_link);
 
     }
