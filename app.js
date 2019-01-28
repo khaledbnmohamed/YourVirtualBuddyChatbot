@@ -381,7 +381,7 @@ function receivedMessage(event) {
         break;
 
       default:
-        sendTextMessage(senderID, messageText);
+        sendTextMessage(senderID, "You know that no matter how cool I am to you, at the end I'm a preprogrammed meme sender so please don't ask me for neither commitment or Anything I don't and just type SEND MEME");
     }
   } else if (messageAttachments) {
     sendTextMessage(senderID, "Message with attachment received");
