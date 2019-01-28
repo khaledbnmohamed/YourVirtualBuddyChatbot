@@ -150,6 +150,52 @@ app.get('/authorize', function(req, res) {
   });
 });
 
+// enable_get_started(); //ONLY RUN ONCE IN A BOT for get started button
+
+// function enable_get_started()
+// {
+
+
+// var https = require('https');
+// const access_token = PAGE_ACCESS_TOKEN ;
+
+// const data = JSON.stringify({
+
+//   "get_started":{"payload":"Get Started"}
+
+// })
+
+
+// const options = {
+//   method: 'POST',
+//   hostname: 'graph.facebook.com',
+//   port:443,
+//   path: '/v2.6/me/messenger_profile?access_token='+ access_token,
+//   headers: {
+//     'Content-Type': 'application/json',
+//     'Content-Length': data.length
+//   }
+// }
+
+
+
+
+
+
+// var req = https.request(options, (res)=> {
+//   res.on('data',(d) => {process.stdout.write(d)})
+
+   
+//     })
+
+//     req.on("error", (error) => { console.error(error)})
+      
+//    req.write(data)
+//    req.end()
+
+
+
+// }
 
 /*
  * Verify that the callback came from Facebook. Using the App Secret from
