@@ -27,8 +27,7 @@ var ImageLink ='https://i.imgur.com/KZC2CW9.jpg'
 var  clientId = '8056e5db3f369d1'
 var FirstQuery=true;
 let counter =0;
-
-
+var default_text ="You know that no matter how cool I am to you, /n at the end I'm a preprogrammed meme sender so please don't ask me for neither commitment or Anything I don't understand. /n Just type SEND MEME"
 var app = express();
 app.set('port', process.env.PORT || 5000);
 app.set('view engine', 'ejs');
@@ -381,7 +380,7 @@ function receivedMessage(event) {
         break;
 
       default:
-        sendTextMessage(senderID, "You know that no matter how cool I am to you, at the end I'm a preprogrammed meme sender so please don't ask me for neither commitment or Anything I don't and just type SEND MEME");
+        sendTextMessage(senderID, default_text);
     }
   } else if (messageAttachments) {
     sendTextMessage(senderID, "Message with attachment received");
@@ -511,11 +510,11 @@ function sendHiMessage(recipientId) {
     },
     message: {
       text: `
-Congrats on setting up your Messenger Bot!
+Hi,
 
-Right now, your bot can only respond to a few words. Try out "quick reply", "typing on", "button", or "image" to see how they work. You'll find a complete list of these commands in the "app.js" file. Anything else you type will just be mirrored until you create additional commands.
+I'm here to help you on your bad days. Try out "memes", "send meme" to see magic (SPOILER:it'll be a meme). More functionalities are to come
 
-For more details on how to create commands, go to https://developers.facebook.com/docs/messenger-platform/reference/send-api.
+I really hope one day, You'll find the right person to forward these memes to <3 
       `
     }
   }
@@ -840,7 +839,7 @@ function sendQuickReply(recipientId) {
       id: recipientId
     },
     message: {
-      text: "What's your favorite movie genre?",
+      text: "What's your favorite category?",
       quick_replies: [
         {
           "content_type":"text",
@@ -854,8 +853,8 @@ function sendQuickReply(recipientId) {
         },
         {
           "content_type":"text",
-          "title":"Drama",
-          "payload":"DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_DRAMA"
+          "title":"Love memes",
+          "payload":"love memes"
         }
       ]
     }
