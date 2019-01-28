@@ -990,7 +990,7 @@ else{
 
   Search_query=encodeURIComponent(Search_query);
 }
-
+//Imgur API Gallery Search Request
 var https = require('https');
       console.log(Search_query);
 
@@ -1053,11 +1053,7 @@ if(FirstQuery){
 else{
 i = Math.floor((Math.random() * 30) + 1);
 }
-if(counter == 10){
 
-  sendTextMessage(senderId,"No memes for you today go get a life")
-
-}
 while(parsed.data[i]){
 
   console.log("entered ",i)
