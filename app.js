@@ -1039,12 +1039,12 @@ function formingElements(result,senderId) {
 
 var FirstQuery=true;
 let parsed=JSON.parse(result)
+let i =-1 ;
 
 if(FirstQuery){
 
-    let i =0
     FirstQuery=false;
-
+    i=0;
 
 }
 
