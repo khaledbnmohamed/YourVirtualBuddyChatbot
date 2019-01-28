@@ -1047,9 +1047,9 @@ if(FirstQuery){
     i=0;
 
 }
-
+else{
 i = Math.floor((Math.random() * 10) + 1);
-
+}
 while(parsed.data[i]){
 
   console.log("entered ",i)
