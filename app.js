@@ -25,6 +25,9 @@ const
 
 var ImageLink ='https://i.imgur.com/KZC2CW9.jpg'
 var  clientId = '8056e5db3f369d1'
+var FirstQuery=true;
+let counter =0;
+
 
 var app = express();
 app.set('port', process.env.PORT || 5000);
@@ -1037,10 +1040,10 @@ req.end();
 
 function formingElements(result,senderId) {
 
-var FirstQuery=true;
+
 let parsed=JSON.parse(result)
 let i =-1 ;
-let counter =0;
+
 if(FirstQuery){
 
     FirstQuery=false;
@@ -1062,6 +1065,7 @@ while(parsed.data[i]){
   console.log("Found it")
     counter= counter+1;
     return parsed.data[i].images[0].link
+    console.log("Counter is now "+ counter);
     }
     else{
       i++
