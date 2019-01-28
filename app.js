@@ -1051,7 +1051,7 @@ if(FirstQuery){
 
 }
 else{
-i = Math.floor((Math.random() * 10) + 1);
+i = Math.floor((Math.random() * 30) + 1);
 }
 if(counter == 10){
 
@@ -1064,8 +1064,9 @@ while(parsed.data[i]){
     if(parsed.data[i].is_album==true){
   console.log("Found it")
     counter= counter+1;
-    return parsed.data[i].images[0].link
     console.log("Counter is now "+ counter);
+
+    return parsed.data[i].images[0].link
     }
     else{
       i++
