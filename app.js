@@ -979,6 +979,7 @@ function callSendAPI(messageData) {
 
 function fetchingData(senderId,Search_query) {
 
+
 if(!Search_query){
   Search_query = "memes"
 }
@@ -1036,10 +1037,19 @@ req.end();
 
 function formingElements(result,senderId) {
 
-  console.log("Helllooo")
-
+var FirstQuery=true;
 let parsed=JSON.parse(result)
-let i =0
+
+if(FirstQuery){
+
+    let i =0
+    FirstQuery=false;
+
+
+}
+
+i = Math.floor((Math.random() * 10) + 1);
+
 while(parsed.data[i]){
 
   console.log("entered ",i)
