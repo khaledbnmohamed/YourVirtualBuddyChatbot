@@ -1072,7 +1072,7 @@ var req = https.request(options, function (res) {
 
     res.on("end", function (chunk) {
       var body = Buffer.concat(chunks);
-      console.log("data after pasring" +body)
+      console.log("data after pasring " +JSON.parse(body))
       console.log(options.path)
       console.log("Authorization is"+options.headers.Authorization)
 
@@ -1107,7 +1107,6 @@ let random_factor = 30
 if(accountImages)
 {
     random_factor =10
-    parsed=result
 
 }
 
@@ -1127,13 +1126,15 @@ while(parsed.data[i])
 {
 
   console.log("entered ",i)
-    if(parsed.data[i].is_album==true)
+
+    if(parsed.data[i].is_album==true || accountImages==true)
     {
             console.log("Found it")
             counter= counter+1;
             console.log("Counter is now "+ counter);
             if(accountImages)
             {
+                console.log( "LINK IS "+parsed.data[i].link)
                 return parsed.data[i].link //Fetched data from personal account are not in albums, single images so no Images variabel at all
             }
             else
