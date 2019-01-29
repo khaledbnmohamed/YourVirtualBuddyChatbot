@@ -23,21 +23,6 @@ var imgur_username = 'khaledbnmohamed'
 var FirstQuery=true;
 let counter =0;
 var default_text ="You know that no matter how cool I am to you, /n at the end I'm a preprogrammed meme sender so please don't ask me for neither commitment or Anything I don't understand. /n Just type SEND MEME"
-var last_input = {
-    function_name: 'fetchingData_from_Account_ImagesAPi',
-    search_word: 'memes',
-    get function_name() {
-        return this.function_name;
-    },
-    get search_word() {
-        return this.search_word ;
-    },
-    set variables (name) {
-        var words = name.toString().split(' ');
-        this.function_name = words[0] || '';
-        this.search_word =  words[1] || '';
-    }
-}
 var app = express();
 app.set('port', process.env.PORT || 5000);
 app.set('view engine', 'ejs');
@@ -307,33 +292,22 @@ function receivedMessage(event) {
     console.log("Received echo for message %s and app %d with metadata %s",
       messageId, appId, metadata);
     return;
-  } 
-  else if (quickReply)
-   {
-      var quickReplyPayload = quickReply.payload;
-      console.log("Quick reply for message %s with payload %s",
+  } else if (quickReply) {
+    var quickReplyPayload = quickReply.payload;
+    console.log("Quick reply for message %s with payload %s",
       messageId, quickReplyPayload);
-      sendTypingOn(senderID); //typing on till fetching
+     sendTypingOn(senderID); //typing on till fetching
+     if(quickReplyPayload=="personal_account_memes")
+     {
 
-      switch (quickReplyPayload) 
-      {
-        case 'personal_account_memes':
-          fetchingData_from_Account_ImagesAPi(senderID,quickReplyPayload)
-          last_input.variables('fetchingData_from_Account_ImagesAPi quickReplyPayload')
-          break;
-        case 'send_alike':
-          var call=last_input.function_name
-          call(senderID,last_input.search_word)
-          break;
-
- 
-
-       default:
-        fetchingData_from_gallery_searchAPi(senderID,quickReplyPayload);
-        last_input.variables('fetchingData_from_gallery_searchAP iquickReplyPayload')
-
+        fetchingData_from_Account_ImagesAPi(senderID)
      }
- 
+     else
+     {
+        fetchingData_from_gallery_searchAPi(senderID,quickReplyPayload);
+     }
+    // sendTextMessage(senderID, "Quick reply tapped");
+    return;
   }
 
   if (messageText ) {
@@ -896,30 +870,6 @@ function sendQuickReply(recipientId) {
   callSendAPI(messageData);
 }
 
-function SendMore(recipientId) {
-  var messageData = {
-    recipient: {
-      id: recipientId
-    },
-    message: {
-      text: "More from the same category?",
-      quick_replies: [
-        {
-          "content_type":"text",
-          "title":"Yes",
-          "payload":"send_alike"
-        },
-        {
-          "content_type":"text",
-          "title":"No",
-          "payload":"do nothing"
-        }
-      ]
-    }
-  };
-
-  callSendAPI(messageData);
-}
 /*
  * Send a read receipt to indicate the message has been read
  *
@@ -1096,7 +1046,7 @@ req.end();
 
 fetchingData_from_Account_ImagesAPi(121212)
 
-function fetchingData_from_Account_ImagesAPi(senderId,Search_query) {
+function fetchingData_from_Account_ImagesAPi(senderId) {
 
 
 //Imgur API Gallery Search Request
@@ -1131,7 +1081,6 @@ var req = https.request(options, function (res) {
 
       sendTypingOff(senderId);
       sendImageMessage(senderId,image_link);
-      SendMore(senderId)
 
     }
 
@@ -1178,9 +1127,7 @@ while(parsed.data[i])
 
   console.log("entered ",i)
 
-/* to check for images if it belongs to album or not and a special case for
- account API images that doesn't belong to the albums at all  */
-    if(parsed.data[i].is_album==true || accountImages==true) 
+    if(parsed.data[i].is_album==true || accountImages==true)
     {
             console.log("Found it")
             counter= counter+1;
