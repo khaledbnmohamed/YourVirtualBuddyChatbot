@@ -18,6 +18,8 @@ const
 
 var ImageLink ='https://i.imgur.com/KZC2CW9.jpg'
 var  clientId = '8056e5db3f369d1'
+var imgur_access_token = '2a8f6dacd57b657d8f9542b166724964c1ed8f8f'
+var imgur_username = 'khaledbnmohamed'
 var FirstQuery=true;
 let counter =0;
 var default_text ="You know that no matter how cool I am to you, /n at the end I'm a preprogrammed meme sender so please don't ask me for neither commitment or Anything I don't understand. /n Just type SEND MEME"
@@ -295,7 +297,11 @@ function receivedMessage(event) {
     console.log("Quick reply for message %s with payload %s",
       messageId, quickReplyPayload);
      sendTypingOn(senderID); //typing on till fetching
-     fetchingData(senderID,quickReplyPayload);
+     if(quickReplyPayload=="personal_account_memes"){
+
+
+     }
+     fetchingData_from_gallery_searchAPi(senderID,quickReplyPayload);
 
     // sendTextMessage(senderID, "Quick reply tapped");
     return;
@@ -368,7 +374,7 @@ function receivedMessage(event) {
 
       case 'send meme':
         sendTypingOn(senderID); //typing on till fetching
-        fetchingData(senderID)
+        fetchingData_from_gallery_searchAPi(senderID)
 
         break;
 
@@ -544,7 +550,7 @@ function sendImageMessage(recipientId,image_message_url) {
  */
 function sendMemeMessage(recipientId) {
        // var Search_query = messageText;
-       // ImageLink= fetchingData(senderId);
+       // ImageLink= fetchingData_from_gallery_searchAPi(senderId);
 
   var messageData = {
     recipient: {
@@ -848,6 +854,11 @@ function sendQuickReply(recipientId) {
           "content_type":"text",
           "title":"Love memes",
           "payload":"love memes"
+        },
+        {
+          "content_type":"text",
+          "title":"Surprise Me !",
+          "payload":"personal_account_memes"
         }
       ]
     }
@@ -972,7 +983,7 @@ function callSendAPI(messageData) {
 
 // }
 
-function fetchingData(senderId,Search_query) {
+function fetchingData_from_gallery_searchAPi(senderId,Search_query) {
 
 
 if(!Search_query){
@@ -1009,7 +1020,7 @@ var req = https.request(options, function (res) {
       var body = Buffer.concat(chunks);
       console.log(JSON.parse(body).data[0])
       console.log(options.path)
-      let image_link = formingElements(body,senderId)
+      let image_link = formingElements(body,senderId,accountImages=false)
       if(image_link){
 
       sendTypingOff(senderId);
@@ -1030,36 +1041,104 @@ req.end();
 // console.log(body);
 }
 
-function formingElements(result,senderId) {
+function fetchingData_from_Account_ImagesAPi(senderId,Search_query) {
+
+
+if(!Search_query){
+  Search_query = "memes"
+}
+else{
+
+  Search_query=encodeURIComponent(Search_query);
+}
+//Imgur API Gallery Search Request
+var https = require('https');
+      console.log(Search_query);
+
+var options = {
+  'method': 'GET',
+  'hostname': 'api.imgur.com',
+  'path': '/3/account/'+imgur_username+'/images/{{page}}',
+  'headers': {
+    'Authorization': 'Bearer'+imgur_access_token
+  }
+};
+
+
+var req = https.request(options, function (res) {
+
+      var chunks = [];
+
+    res.on("data", function (chunk) {
+      chunks.push(chunk);
+    });
+
+    res.on("end", function (chunk) {
+      var body = Buffer.concat(chunks);
+      console.log(JSON.parse(body).data[0])
+      console.log(options.path)
+      let image_link = formingElements(body,senderId,accountImages=true)
+      if(image_link){
+
+      sendTypingOff(senderId);
+      sendImageMessage(senderId,image_link);
+
+    }
+
+    });
+
+    res.on("error", function (error) {
+      console.error(error);
+    });
+
+});
+
+req.end();
+
+// console.log(body);
+}
+
+function formingElements(result,senderId,accountImages) {
 
 
 let parsed=JSON.parse(result)
 let i =-1 ;
 
-if(FirstQuery){
+if(FirstQuery)
+{
 
     FirstQuery=false;
     i=0;
 
 }
-else{
-i = Math.floor((Math.random() * 30) + 1);
+else
+{
+    i = Math.floor((Math.random() * 30) + 1);
 }
 
-while(parsed.data[i]){
+while(parsed.data[i])
+{
 
   console.log("entered ",i)
-    if(parsed.data[i].is_album==true){
-  console.log("Found it")
-    counter= counter+1;
-    console.log("Counter is now "+ counter);
-
-    return parsed.data[i].images[0].link
+    if(parsed.data[i].is_album==true)
+    {
+            console.log("Found it")
+            counter= counter+1;
+            console.log("Counter is now "+ counter);
+            if(accountImages)
+            {
+                return parsed.data[i].link //Fetched data from personal account are not in albums, single images so no Images variabel at all
+            }
+            else
+            {
+                return parsed.data[i].images[0].link
+            }
     }
     else{
       i++
     }
 }
+
 sendTextMessage(senderId,"No memes for you today go get a life")
 return 
 }
