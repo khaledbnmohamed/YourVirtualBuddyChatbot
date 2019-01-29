@@ -34,10 +34,11 @@ var last_input = {
     get search_word() {
         return this.search_word ;
     },
-    set variables (name) {
-        var words = name.toString().split(' ');
-        this.function_name = words[0] || '';
-        this.search_word =  words[1] || '';
+    set function_name (name) {
+        this.function_name = name;
+    }
+     set search_word (name) {
+        this.search_word = name;
     }
 }
 app.set('port', process.env.PORT || 5000);
@@ -163,7 +164,8 @@ app.get('/authorize', function(req, res) {
   });
 });
 
-// enable_get_started(); //ONLY RUN ONCE IN A BOT for get started button
+/* ONLY RUN ONCE IN A BOT for get started button */
+// enable_get_started(); 
 
 // function enable_get_started()
 // {
@@ -315,12 +317,18 @@ function receivedMessage(event) {
      sendTypingOn(senderID); //typing on till fetching
      if(quickReplyPayload=="personal_account_memes")
      {
+          fetchingData_from_Account_ImagesAPi(senderID,quickReplyPayload)
+          last_input.function_name('fetchingData_from_Account_ImagesAPi')
+          last_input.search_word(quickReplyPayload)
 
-        fetchingData_from_Account_ImagesAPi(senderID)
+
      }
      else
      {
         fetchingData_from_gallery_searchAPi(senderID,quickReplyPayload);
+        //   last_input.function_name('fetchingData_from_Account_ImagesAPi')
+        //   last_input.search_word(quickReplyPayload)
+        // var
      }
     // sendTextMessage(senderID, "Quick reply tapped");
     return;
@@ -1060,9 +1068,8 @@ req.end();
 // console.log(body);
 }
 
-fetchingData_from_Account_ImagesAPi(121212)
 
-function fetchingData_from_Account_ImagesAPi(senderId) {
+function fetchingData_from_Account_ImagesAPi(senderId,Search_query) {
 
 
 //Imgur API Gallery Search Request
