@@ -36,7 +36,7 @@ var last_input = {
     },
     set function_name (name) {
         this.function_name = name;
-    }
+    },
      set search_word (name) {
         this.search_word = name;
     }
