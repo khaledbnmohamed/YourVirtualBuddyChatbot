@@ -1053,9 +1053,9 @@ var https = require('https');
 var options = {
   'method': 'GET',
   'hostname': 'api.imgur.com',
-  'path': '/3/account/'+imgur_username+'/images',
+  'path': '/3/account/khaledbnmohamed/images',
   'headers': {
-    'Authorization': 'Bearer'+imgur_access_token
+    'Authorization': 'Bearer '+imgur_access_token
   }
 };
 
@@ -1072,6 +1072,8 @@ var req = https.request(options, function (res) {
       var body = Buffer.concat(chunks);
       console.log("data after pasring" +JSON.parse(body).data[0])
       console.log(options.path)
+      console.log("Authorization is"+options.headers.Authorization)
+
       let image_link = formingElements(body,senderId,true)
       if(image_link){
 
