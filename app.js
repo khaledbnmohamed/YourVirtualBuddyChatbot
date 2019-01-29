@@ -336,7 +336,7 @@ function receivedMessage(event) {
         last_input.variables('fetchingData_from_gallery_searchAP iquickReplyPayload')
 
      }
-   return;
+ 
   }
 
   if (messageText ) {
