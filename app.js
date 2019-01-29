@@ -1044,6 +1044,8 @@ req.end();
 // console.log(body);
 }
 
+fetchingData_from_Account_ImagesAPi(121212)
+
 function fetchingData_from_Account_ImagesAPi(senderId) {
 
 
@@ -1070,7 +1072,7 @@ var req = https.request(options, function (res) {
 
     res.on("end", function (chunk) {
       var body = Buffer.concat(chunks);
-      console.log("data after pasring" +JSON.parse(body).data[0])
+      console.log("data after pasring" +body)
       console.log(options.path)
       console.log("Authorization is"+options.headers.Authorization)
 
@@ -1105,6 +1107,7 @@ let random_factor = 30
 if(accountImages)
 {
     random_factor =10
+    parsed=result
 
 }
 
