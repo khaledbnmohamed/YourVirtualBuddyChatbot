@@ -24,6 +24,22 @@ var FirstQuery=true;
 let counter =0;
 var default_text ="You know that no matter how cool I am to you, /n at the end I'm a preprogrammed meme sender so please don't ask me for neither commitment or Anything I don't understand. /n Just type SEND MEME"
 var app = express();
+
+var last_input = {
+    function_name: 'fetchingData_from_Account_ImagesAPi',
+    search_word: 'memes',
+    get function_name() {
+        return this.function_name;
+    },
+    get search_word() {
+        return this.search_word ;
+    },
+    set variables (name) {
+        var words = name.toString().split(' ');
+        this.function_name = words[0] || '';
+        this.search_word =  words[1] || '';
+    }
+}
 app.set('port', process.env.PORT || 5000);
 app.set('view engine', 'ejs');
 app.use(bodyParser.json({ verify: verifyRequestSignature }));
