@@ -297,12 +297,15 @@ function receivedMessage(event) {
     console.log("Quick reply for message %s with payload %s",
       messageId, quickReplyPayload);
      sendTypingOn(senderID); //typing on till fetching
-     if(quickReplyPayload=="personal_account_memes"){
+     if(quickReplyPayload=="personal_account_memes")
+     {
 
-
+        fetchingData_from_Account_ImagesAPi(senderID,quickReplyPayload)
      }
-     fetchingData_from_gallery_searchAPi(senderID,quickReplyPayload);
-
+     else
+     {
+        fetchingData_from_gallery_searchAPi(senderID,quickReplyPayload);
+     }
     // sendTextMessage(senderID, "Quick reply tapped");
     return;
   }
