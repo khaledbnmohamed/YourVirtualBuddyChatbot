@@ -300,7 +300,7 @@ function receivedMessage(event) {
      if(quickReplyPayload=="personal_account_memes")
      {
 
-        fetchingData_from_Account_ImagesAPi(senderID,quickReplyPayload)
+        fetchingData_from_Account_ImagesAPi(senderID)
      }
      else
      {
@@ -1044,24 +1044,16 @@ req.end();
 // console.log(body);
 }
 
-function fetchingData_from_Account_ImagesAPi(senderId,Search_query) {
+function fetchingData_from_Account_ImagesAPi(senderId) {
 
 
-if(!Search_query){
-  Search_query = "memes"
-}
-else{
-
-  Search_query=encodeURIComponent(Search_query);
-}
 //Imgur API Gallery Search Request
 var https = require('https');
-      console.log(Search_query);
 
 var options = {
   'method': 'GET',
   'hostname': 'api.imgur.com',
-  'path': '/3/account/'+imgur_username+'/images/{{page}}',
+  'path': '/3/account/'+imgur_username+'/images',
   'headers': {
     'Authorization': 'Bearer'+imgur_access_token
   }
@@ -1078,7 +1070,7 @@ var req = https.request(options, function (res) {
 
     res.on("end", function (chunk) {
       var body = Buffer.concat(chunks);
-      console.log(JSON.parse(body).data[0])
+      console.log("data after pasring" +JSON.parse(body).data[0])
       console.log(options.path)
       let image_link = formingElements(body,senderId,true)
       if(image_link){
@@ -1106,6 +1098,13 @@ function formingElements(result,senderId,accountImages) {
 
 let parsed=JSON.parse(result)
 let i =-1 ;
+let random_factor = 30
+
+if(accountImages)
+{
+    random_factor =10
+
+}
 
 if(FirstQuery)
 {
