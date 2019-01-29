@@ -318,8 +318,8 @@ function receivedMessage(event) {
      if(quickReplyPayload=="personal_account_memes")
      {
           fetchingData_from_Account_ImagesAPi(senderID,quickReplyPayload)
-          last_input.function_name('fetchingData_from_Account_ImagesAPi')
-          last_input.search_word(quickReplyPayload)
+          // last_input.function_name('fetchingData_from_Account_ImagesAPi')
+          // last_input.search_word(quickReplyPayload)
 
 
      }
