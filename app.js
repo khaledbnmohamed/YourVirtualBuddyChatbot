@@ -26,8 +26,8 @@ var default_text ="You know that no matter how cool I am to you, /n at the end I
 var app = express();
 
 var last_input = {
-    function_name: 'fetchingData_from_Account_ImagesAPi',
-    search_word: 'memes',
+    function_name: '',
+    search_word: '',
     get function_name() {
         return this.function_name;
     },
