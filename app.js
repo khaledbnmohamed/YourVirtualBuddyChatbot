@@ -1117,7 +1117,7 @@ if(FirstQuery)
 }
 else
 {
-    i = Math.floor((Math.random() * 30) + 1);
+    i = Math.floor((Math.random() * random_factor) + 1);
 }
 
 while(parsed.data[i])
