@@ -321,10 +321,15 @@ function receivedMessage(event) {
           fetchingData_from_Account_ImagesAPi(senderID,quickReplyPayload)
           console.log("I chose personal_account_memes")
           last_input.variables('fetchingData_from_Account_ImagesAPi quickReplyPayload')
+
+           return;
+
           break;
         case 'send_alike':
           var call=last_input.function_name
           call(senderID,last_input.search_word)
+             return;
+
           break;
 
  
@@ -336,7 +341,6 @@ function receivedMessage(event) {
         last_input.variables('fetchingData_from_gallery_searchAP iquickReplyPayload')
 
      }
-   return;
   }
 
   if (messageText ) {
@@ -1099,7 +1103,6 @@ req.end();
 // console.log(body);
 }
 
-fetchingData_from_Account_ImagesAPi(121212)
 
 function fetchingData_from_Account_ImagesAPi(senderId,Search_query) {
 
