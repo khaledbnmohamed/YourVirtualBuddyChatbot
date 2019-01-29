@@ -319,6 +319,7 @@ function receivedMessage(event) {
       {
         case 'personal_account_memes':
           fetchingData_from_Account_ImagesAPi(senderID,quickReplyPayload)
+          console.log("I chose personal_account_memes")
           last_input.variables('fetchingData_from_Account_ImagesAPi quickReplyPayload')
           break;
         case 'send_alike':
@@ -330,6 +331,8 @@ function receivedMessage(event) {
 
        default:
         fetchingData_from_gallery_searchAPi(senderID,quickReplyPayload);
+        console.log("I chose fetchingData_from_gallery_searchAPi")
+
         last_input.variables('fetchingData_from_gallery_searchAP iquickReplyPayload')
 
      }
@@ -383,6 +386,8 @@ function receivedMessage(event) {
 
       case 'memes':
         sendQuickReply(senderID);
+        SendMore(senderId)
+
         break;
 
       case 'read receipt':
@@ -404,7 +409,7 @@ function receivedMessage(event) {
       case 'send meme':
         sendTypingOn(senderID); //typing on till fetching
         fetchingData_from_gallery_searchAPi(senderID)
-
+        SendMore(senderId)
         break;
 
       default:
@@ -1131,7 +1136,6 @@ var req = https.request(options, function (res) {
 
       sendTypingOff(senderId);
       sendImageMessage(senderId,image_link);
-      SendMore(senderId)
 
     }
 
