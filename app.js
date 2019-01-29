@@ -1020,7 +1020,7 @@ var req = https.request(options, function (res) {
       var body = Buffer.concat(chunks);
       console.log(JSON.parse(body).data[0])
       console.log(options.path)
-      let image_link = formingElements(body,senderId,accountImages=false)
+      let image_link = formingElements(body,senderId,false)
       if(image_link){
 
       sendTypingOff(senderId);
@@ -1077,7 +1077,7 @@ var req = https.request(options, function (res) {
       var body = Buffer.concat(chunks);
       console.log(JSON.parse(body).data[0])
       console.log(options.path)
-      let image_link = formingElements(body,senderId,accountImages=true)
+      let image_link = formingElements(body,senderId,true)
       if(image_link){
 
       sendTypingOff(senderId);
