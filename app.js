@@ -25,9 +25,9 @@ let counter =0;
 var default_text ="You know that no matter how cool I am to you, /n at the end I'm a preprogrammed meme sender so please don't ask me for neither commitment or Anything I don't understand. /n Just type SEND MEME"
 var app = express();
 
-var last_input = {
-     function_name= '',
-     search_word= '',
+var last_input_function_name= '';
+var last_input_search_word= '';
+    
     // get getFunction() {
     //     return this.function_name;
     // },
@@ -319,8 +319,8 @@ function receivedMessage(event) {
      sendTypingOn(senderID); //typing on till fetching
      if(quickReplyPayload=="personal_account_memes")
      {
-          last_input.function_name('fetchingData_from_Account_ImagesAPi')
-          last_input.search_word(quickReplyPayload)
+          last_input_function_name='fetchingData_from_Account_ImagesAPi'
+          last_input_search_word =quickReplyPayload
           fetchingData_from_Account_ImagesAPi(senderID,quickReplyPayload)
 
 
