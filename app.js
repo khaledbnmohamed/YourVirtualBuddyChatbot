@@ -36,9 +36,11 @@ var last_input = {
     },
     set setFunction (name) {
         this.function_name = name;
+        return;
     },
      set setWord (name) {
         this.search_word = name;
+        return;
     }
 }
 app.set('port', process.env.PORT || 5000);
