@@ -27,22 +27,7 @@ var app = express();
 
 var last_input_function_name= '';
 var last_input_search_word= '';
-    
-    // get getFunction() {
-    //     return this.function_name;
-    // },
-    // get getWord() {
-    //     return this.search_word ;
-    // },
-    // set setFunction (name) {
-    //     this.function_name = name;
-    //     return;
-    // },
-    //  set setWord (name) {
-    //     this.search_word = name;
-    //     return;
-    // }
-// };
+
 app.set('port', process.env.PORT || 5000);
 app.set('view engine', 'ejs');
 app.use(bodyParser.json({ verify: verifyRequestSignature }));
@@ -316,22 +301,22 @@ function receivedMessage(event) {
     var quickReplyPayload = quickReply.payload;
     console.log("Quick reply for message %s with payload %s",
       messageId, quickReplyPayload);
-     sendTypingOn(senderID); //typing on till fetching
-     if(quickReplyPayload=="personal_account_memes")
-     {
-          last_input_function_name='fetchingData_from_Account_ImagesAPi';
-          last_input_search_word =quickReplyPayload;
+      sendTypingOn(senderID); //typing on till fetching
+
+      switch (quickReplyPayload) 
+      {
+        case 'personal_account_memes':
           fetchingData_from_Account_ImagesAPi(senderID,quickReplyPayload)
+          last_input_function_name='fetchingData_from_Account_ImagesAPi';
+          last_input_search_word =quickReplyPayload;          break;
+        case 'send_alike':
+          var call=last_input.function_name
+          call(senderID,last_input.search_word)
+          break;
 
+ 
 
-     }
-     else
-     {
-        fetchingData_from_gallery_searchAPi(senderID,quickReplyPayload);
-        //   last_input.function_name('fetchingData_from_Account_ImagesAPi')
-        //   last_input.search_word(quickReplyPayload)
-        // var
-     }
+       default:
     // sendTextMessage(senderID, "Quick reply tapped");
     return;
   }
@@ -383,6 +368,8 @@ function receivedMessage(event) {
 
       case 'memes':
         sendQuickReply(senderID);
+        SendMore(senderId);
+
         break;
 
       case 'read receipt':
@@ -1004,6 +991,30 @@ function callSendAPI(messageData) {
   });
 }
 
+
+function SendMore(recipientId) {
+  var messageData = {
+    recipient: {
+      id: recipientId
+    },
+    message: {
+      text: "More from the same category?",
+      quick_replies: [
+        {
+          "content_type":"text",
+          "title":"Yes",
+          "payload":"send_alike"
+        },
+        {
+          "content_type":"text",
+          "title":"No",
+          "payload":"do nothing"
+        }
+      ]
+    }
+  };
+  callSendAPI(messageData);
+}
 // function fetchData(senderId, musicName) {
 //     sendTypingOn(senderID);
 //   var opts = {
@@ -1151,7 +1162,8 @@ while(parsed.data[i])
 {
 
   console.log("entered ",i)
-
+/* to check for images if it belongs to album or not and a special case for
+ account API images that doesn't belong to the albums at all  */
     if(parsed.data[i].is_album==true || accountImages==true)
     {
             console.log("Found it")
@@ -1173,7 +1185,7 @@ while(parsed.data[i])
 }
 
 sendTextMessage(senderId,"No memes for you today go get a life")
-return 
+return ;
 }
 
 
@@ -1188,4 +1200,4 @@ app.listen(app.get('port'), function() {
   console.log('Node app is running on port', app.get('port'));
 });
 
-module.exports = app;
+module.exports = app;}
