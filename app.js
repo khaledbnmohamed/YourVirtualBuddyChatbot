@@ -370,6 +370,8 @@ function receivedMessage(event) {
 
         case 'memes':
           sendQuickReply(senderID);
+          setTimeout(SendMore(senderID), 6000);
+
 
           break;
 
@@ -392,6 +394,8 @@ function receivedMessage(event) {
         case 'send meme':
           sendTypingOn(senderID); //typing on till fetching
           fetchingData_from_gallery_searchAPi(senderID)
+          setTimeout(SendMore(senderID), 5000);
+
 
           break;
 
@@ -1062,7 +1066,6 @@ I really hope one day, You'll find the right person to forward these memes to <3
 
           sendTypingOff(senderID);
           sendImageMessage(senderID, image_link);
-          setTimeout(SendMore(senderID), 3000);
 
           
 
@@ -1117,7 +1120,6 @@ I really hope one day, You'll find the right person to forward these memes to <3
 
           sendTypingOff(senderID);
           sendImageMessage(senderID, image_link);
-          setTimeout(SendMore(senderID), 3000);
 
 
         }
