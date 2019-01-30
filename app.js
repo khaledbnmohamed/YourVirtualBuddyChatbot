@@ -321,6 +321,8 @@ function receivedMessage(event) {
 
         
     }
+  setTimeout(SendMore(senderID), 3000);
+
   }
 
     if (messageText) {
@@ -370,7 +372,6 @@ function receivedMessage(event) {
 
         case 'memes':
           sendQuickReply(senderID);
-          setTimeout(SendMore(senderID), 6000);
 
 
           break;
@@ -394,7 +395,6 @@ function receivedMessage(event) {
         case 'send meme':
           sendTypingOn(senderID); //typing on till fetching
           fetchingData_from_gallery_searchAPi(senderID)
-          setTimeout(SendMore(senderID), 5000);
 
 
           break;
