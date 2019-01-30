@@ -315,6 +315,7 @@ function receivedMessage(event) {
         // sendTextMessage(senderID, "Quick reply tapped");
         return;
     }
+  }
 
     if (messageText) {
 
@@ -395,7 +396,7 @@ function receivedMessage(event) {
       sendTextMessage(senderID, "Message with attachment received");
     }
   }
-}
+
 
 
   /*
@@ -1010,13 +1011,7 @@ I really hope one day, You'll find the right person to forward these memes to <3
     };
     callSendAPI(messageData);
   }
-  // function fetchData(senderId, musicName) {
-  //     sendTypingOn(senderID);
-  //   var opts = {
-  //     q: musicName
-  //   };
 
-  // }
 
   function fetchingData_from_gallery_searchAPi(senderId, Search_query) {
 
