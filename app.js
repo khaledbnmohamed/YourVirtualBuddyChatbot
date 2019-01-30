@@ -370,7 +370,6 @@ function receivedMessage(event) {
 
         case 'memes':
           sendQuickReply(senderID);
-          SendMore(senderID);
 
           break;
 
@@ -1063,6 +1062,7 @@ I really hope one day, You'll find the right person to forward these memes to <3
 
           sendTypingOff(senderId);
           sendImageMessage(senderId, image_link);
+          SendMore(senderID);
 
         }
 
@@ -1115,6 +1115,8 @@ I really hope one day, You'll find the right person to forward these memes to <3
 
           sendTypingOff(senderId);
           sendImageMessage(senderId, image_link);
+          SendMore(senderID);
+
 
         }
 
