@@ -568,7 +568,7 @@ I really hope one day, You'll find the right person to forward these memes to <3
    */
   function sendMemeMessage(recipientId) {
     // var Search_query = messageText;
-    // ImageLink= fetchingData_from_gallery_searchAPi(senderId);
+    // ImageLink= fetchingData_from_gallery_searchAPi(senderID);
 
     var messageData = {
       recipient: {
@@ -1020,7 +1020,7 @@ I really hope one day, You'll find the right person to forward these memes to <3
 
 
 
-  function fetchingData_from_gallery_searchAPi(senderId, Search_query) {
+  function fetchingData_from_gallery_searchAPi(senderID, Search_query) {
 
 
     if (!Search_query) {
@@ -1057,11 +1057,11 @@ I really hope one day, You'll find the right person to forward these memes to <3
         var body = Buffer.concat(chunks);
         console.log(JSON.parse(body).data[0])
         console.log(options.path)
-        let image_link = formingElements(body, senderId, false)
+        let image_link = formingElements(body, senderID, false)
         if (image_link) {
 
-          sendTypingOff(senderId);
-          sendImageMessage(senderId, image_link);
+          sendTypingOff(senderID);
+          sendImageMessage(senderID, image_link);
           SendMore(senderID);
 
         }
@@ -1080,7 +1080,7 @@ I really hope one day, You'll find the right person to forward these memes to <3
   }
 
 
-  function fetchingData_from_Account_ImagesAPi(senderId, Search_query) {
+  function fetchingData_from_Account_ImagesAPi(senderID, Search_query) {
 
 
     //Imgur API Gallery Search Request
@@ -1110,11 +1110,11 @@ I really hope one day, You'll find the right person to forward these memes to <3
         console.log(options.path)
         console.log("Authorization is" + options.headers.Authorization)
 
-        let image_link = formingElements(body, senderId, true)
+        let image_link = formingElements(body, senderID, true)
         if (image_link) {
 
-          sendTypingOff(senderId);
-          sendImageMessage(senderId, image_link);
+          sendTypingOff(senderID);
+          sendImageMessage(senderID, image_link);
           SendMore(senderID);
 
 
@@ -1133,7 +1133,7 @@ I really hope one day, You'll find the right person to forward these memes to <3
     // console.log(body);
   }
 
-  function formingElements(result, senderId, accountImages) {
+  function formingElements(result, senderID, accountImages) {
 
 
     let parsed = JSON.parse(result)
@@ -1177,7 +1177,7 @@ I really hope one day, You'll find the right person to forward these memes to <3
       }
     }
 
-    sendTextMessage(senderId, "No memes for you today go get a life")
+    sendTextMessage(senderID, "No memes for you today go get a life")
     return;
   }
 
