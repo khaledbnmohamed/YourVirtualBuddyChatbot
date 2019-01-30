@@ -305,6 +305,8 @@ function receivedMessage(event) {
         fetchingData_from_Account_ImagesAPi(senderID, quickReplyPayload)
         last_input_function_name = 'fetchingData_from_Account_ImagesAPi';
         last_input_search_word = quickReplyPayload;
+
+        console.log("last_input_function_name"+last_input_function_name+"last_input_search_word "+ last_input_search_word)
          break;
       case 'send_alike':
         break;
