@@ -363,7 +363,6 @@ function receivedMessage(event) {
 
         case 'memes':
           sendQuickReply(senderID);
-          SendMore(senderId);
 
           break;
 
