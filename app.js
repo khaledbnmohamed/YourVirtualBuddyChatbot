@@ -317,8 +317,8 @@ function receivedMessage(event) {
      sendTypingOn(senderID); //typing on till fetching
      if(quickReplyPayload=="personal_account_memes")
      {
+          last_input.setFunction('')
           fetchingData_from_Account_ImagesAPi(senderID,quickReplyPayload)
-          // last_input.setFunction('')
           // last_input.search_word(quickReplyPayload)
 
 
