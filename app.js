@@ -321,7 +321,7 @@ function receivedMessage(event) {
 
         
     }
-  setTimeout(SendMore(senderID), 3000);
+  // setTimeout(SendMore(senderID), 3000);
 
   }
 
