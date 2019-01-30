@@ -26,23 +26,23 @@ var default_text ="You know that no matter how cool I am to you, /n at the end I
 var app = express();
 
 var last_input = {
-    function_name: '',
-    search_word: '',
-    get getFunction() {
-        return this.function_name;
-    },
-    get getWord() {
-        return this.search_word ;
-    },
-    set setFunction (name) {
-        this.function_name = name;
-        return;
-    },
-     set setWord (name) {
-        this.search_word = name;
-        return;
-    }
-}
+     function_name= '',
+     search_word= '',
+    // get getFunction() {
+    //     return this.function_name;
+    // },
+    // get getWord() {
+    //     return this.search_word ;
+    // },
+    // set setFunction (name) {
+    //     this.function_name = name;
+    //     return;
+    // },
+    //  set setWord (name) {
+    //     this.search_word = name;
+    //     return;
+    // }
+};
 app.set('port', process.env.PORT || 5000);
 app.set('view engine', 'ejs');
 app.use(bodyParser.json({ verify: verifyRequestSignature }));
@@ -319,9 +319,9 @@ function receivedMessage(event) {
      sendTypingOn(senderID); //typing on till fetching
      if(quickReplyPayload=="personal_account_memes")
      {
-          last_input.setFunction('')
+          last_input.function_name('fetchingData_from_Account_ImagesAPi')
+          last_input.search_word(quickReplyPayload)
           fetchingData_from_Account_ImagesAPi(senderID,quickReplyPayload)
-          // last_input.search_word(quickReplyPayload)
 
 
      }
