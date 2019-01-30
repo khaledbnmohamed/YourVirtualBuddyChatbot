@@ -42,7 +42,7 @@ var last_input_search_word= '';
     //     this.search_word = name;
     //     return;
     // }
-};
+// };
 app.set('port', process.env.PORT || 5000);
 app.set('view engine', 'ejs');
 app.use(bodyParser.json({ verify: verifyRequestSignature }));
@@ -319,8 +319,8 @@ function receivedMessage(event) {
      sendTypingOn(senderID); //typing on till fetching
      if(quickReplyPayload=="personal_account_memes")
      {
-          last_input_function_name='fetchingData_from_Account_ImagesAPi'
-          last_input_search_word =quickReplyPayload
+          last_input_function_name='fetchingData_from_Account_ImagesAPi';
+          last_input_search_word =quickReplyPayload;
           fetchingData_from_Account_ImagesAPi(senderID,quickReplyPayload)
 
 
