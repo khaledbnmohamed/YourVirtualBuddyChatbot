@@ -370,6 +370,7 @@ function receivedMessage(event) {
 
         case 'memes':
           sendQuickReply(senderID);
+          SendMore(senderID);
 
           break;
 
@@ -885,6 +886,31 @@ I really hope one day, You'll find the right person to forward these memes to <3
     callSendAPI(messageData);
   }
 
+
+  function SendMore(recipientId) {
+    var messageData = {
+      recipient: {
+        id: recipientId
+      },
+      message: {
+        text: "More from the same category?",
+        quick_replies: [
+          {
+            "content_type": "text",
+            "title": "Yes",
+            "payload": "send_alike"
+          },
+          {
+            "content_type": "text",
+            "title": "No",
+            "payload": "do nothing"
+          }
+        ]
+      }
+    };
+    callSendAPI(messageData);
+  }
+
   /*
    * Send a read receipt to indicate the message has been read
    *
@@ -993,30 +1019,6 @@ I really hope one day, You'll find the right person to forward these memes to <3
     });
   }
 
-
-  function SendMore(recipientId) {
-    var messageData = {
-      recipient: {
-        id: recipientId
-      },
-      message: {
-        text: "More from the same category?",
-        quick_replies: [
-          {
-            "content_type": "text",
-            "title": "Yes",
-            "payload": "send_alike"
-          },
-          {
-            "content_type": "text",
-            "title": "No",
-            "payload": "do nothing"
-          }
-        ]
-      }
-    };
-    callSendAPI(messageData);
-  }
 
 
   function fetchingData_from_gallery_searchAPi(senderId, Search_query) {
