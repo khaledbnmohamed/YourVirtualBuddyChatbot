@@ -322,7 +322,7 @@ function receivedMessage(event) {
         
     }
   // setTimeout(SendMore(senderID), 3000);
-
+  return;
   }
 
     if (messageText) {
