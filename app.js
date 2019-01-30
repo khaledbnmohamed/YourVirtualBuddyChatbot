@@ -28,16 +28,16 @@ var app = express();
 var last_input = {
     function_name: '',
     search_word: '',
-    get getFunction() {
+    get function_name() {
         return this.function_name;
     },
-    get getWord() {
+    get search_word() {
         return this.search_word ;
     },
-    set setFunction (name) {
+    set function_name (name) {
         this.function_name = name;
     },
-     set setWord (name) {
+     set search_word (name) {
         this.search_word = name;
     }
 }
@@ -318,7 +318,7 @@ function receivedMessage(event) {
      if(quickReplyPayload=="personal_account_memes")
      {
           fetchingData_from_Account_ImagesAPi(senderID,quickReplyPayload)
-          last_input.setFunction('fetchingData_from_Account_ImagesAPi')
+          // last_input.function_name('fetchingData_from_Account_ImagesAPi')
           // last_input.search_word(quickReplyPayload)
 
 
