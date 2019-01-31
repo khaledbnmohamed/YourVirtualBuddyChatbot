@@ -309,7 +309,7 @@ function receivedMessage(event) {
         fileObject.function_name="fetchingData_from_Account_ImagesAPi"
         fileObject.seach_word= quickReplyPayload
         console.log("FILE SYSYEM VALUES ARE " + fileObject.function_name + fileObject.seach_word)
-        fs.writeFileSync('./inputMemory.json', JSON.stringify(gameMemory, null, 2) , 'utf-8');
+        fs.writeFileSync('./inputMemory.json', JSON.stringify(fileObject, null, 2) , 'utf-8');
 
         // last_input_function_name = 'fetchingData_from_Account_ImagesAPi';
         // last_input_search_word = quickReplyPayload;
@@ -318,6 +318,8 @@ function receivedMessage(event) {
          break;
       case 'send_alike':
      	 console.log(" I CHOSE SEND_ALIKE");
+         console.log("FILE SYSYEM VALUES FOR ALIKE" + fileObject.function_name + fileObject.seach_word)
+
 
      	 // console.log(last_input_function_name + last_input_search_word)
         break;
