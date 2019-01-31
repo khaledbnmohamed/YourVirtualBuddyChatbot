@@ -396,7 +396,7 @@ function receivedMessage(event) {
         case 'send meme':
           sendTypingOn(senderID); //typing on till fetching
           fetchingData_from_gallery_searchAPi(senderID)
-          setTimeout(SendMore(senderID), 8000);
+          // setTimeout(SendMore(senderID), 8000);
 
           break;
 
