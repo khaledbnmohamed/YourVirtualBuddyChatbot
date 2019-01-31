@@ -419,8 +419,8 @@ function receivedMessage(event) {
         case 'send meme':
           // sendTypingOn(senderID); //typing on till fetching
           saveToFile(2,"memes",true);
-          chooseCaller(2,null,senderID);
-		  // checkToSendMore(senderID);
+          chooseCaller(2,null,senderID); 
+		  checkToSendMore(senderID);
 
           break;
 
@@ -1109,7 +1109,6 @@ I really hope one day, You'll find the right person to forward these memes to <3
     });
 
     req.end();
-    checkToSendMore(senderID);
     // console.log(body);
   }
 
