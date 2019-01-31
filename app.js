@@ -1097,7 +1097,6 @@ I really hope one day, You'll find the right person to forward these memes to <3
           sendTypingOff(senderID);
           sendImageMessage(senderID, image_link);
 
-          checkToSendMore(senderID);
 
         }
 
