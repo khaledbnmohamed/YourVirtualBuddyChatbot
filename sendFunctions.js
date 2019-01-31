@@ -3,12 +3,17 @@
 //Holding ALL send functions in the bots for easier use
 
 const
-https = require('https'),
-request = require('request'),
-bodyParser = require('body-parser'),
-config = require('config'),
-crypto = require('crypto'),
-express = require('express');
+  bodyParser = require('body-parser'),
+  config = require('config'),
+  crypto = require('crypto'),
+  express = require('express'),
+  https = require('https'),
+  request = require('request'),
+  fs = require('fs'),
+  tools = require('./sendFunctions.js');
+
+
+
 
 var ImageLink = 'https://i.imgur.com/KZC2CW9.jpg'
 var clientId = '8056e5db3f369d1'
