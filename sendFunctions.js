@@ -448,7 +448,7 @@ I really hope one day, You'll find the right person to forward these memes to <3
    * Send a message with the account linking call-to-action
    *
    */
-   sendAccountLinking: function (recipientId) {
+   sendAccountLinking : function (recipientId) {
     var messageData = {
       recipient: {
         id: recipientId
@@ -475,7 +475,7 @@ I really hope one day, You'll find the right person to forward these memes to <3
    * get the message id in a response
    *
    */
-   callSendAPI: function (messageData) {
+   callSendAPI : function (messageData) {
     request({
       uri: 'https://graph.facebook.com/v2.6/me/messages',
       qs: { access_token: PAGE_ACCESS_TOKEN },
