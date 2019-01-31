@@ -545,7 +545,7 @@ Once you've finished these steps, try typing “video” or “image”.
         }
       }
 
-      callSendAPI(messageData);
+      tools.callSendAPI(messageData);
     } else {
       next.apply(this, [recipientId, ...args]);
     }
