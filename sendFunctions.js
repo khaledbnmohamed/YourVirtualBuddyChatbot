@@ -32,10 +32,7 @@ var app = express();
 
 var fileObject =JSON.parse(fs.readFileSync('./inputMemory.json', 'utf8'));
 
-app.set('port', process.env.PORT || 5000);
-app.set('view engine', 'ejs');
-app.use(bodyParser.json({ verify: verifyRequestSignature }));
-app.use(express.static('public'));
+
 
 
 module.exports = 
