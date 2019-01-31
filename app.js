@@ -309,11 +309,8 @@ function receivedMessage(event) {
 	switch (quickReplyPayload) {
 	case 'personal_account_memes':
         fetchingData_from_Account_ImagesAPi(senderID, quickReplyPayload);
-	     fileObject.want_more=true;
-        fileObject.function_number="1";
-        fileObject.seach_word= quickReplyPayload;
+	   	saveToFile(1,quickReplyPayload,true);
         console.log("FILE SYSYEM VALUES ARE " + fileObject.function_number + fileObject.seach_word);
-        fs.writeFileSync('./inputMemory.json', JSON.stringify(fileObject, null, 2) , 'utf-8');
      	checkToSendMore(senderID)
 
         // last_input_function_name = 'fetchingData_from_Account_ImagesAPi';
@@ -332,12 +329,8 @@ function receivedMessage(event) {
 
      case 'do nothing':
          sendTypingOff(senderID);
-
 	 	 console.log(" I CHOSE do nothing");
-
-	     fileObject.want_more=false;
-	     fs.writeFileSync('./inputMemory.json', JSON.stringify(fileObject, null, 2) , 'utf-8');
-
+	   	 saveToFile(null,null,false);
 	     sendTextMessage(senderID,"Whatever you want <3 ")
 
 
@@ -347,11 +340,8 @@ function receivedMessage(event) {
 
       default:
         fetchingData_from_gallery_searchAPi(senderID,quickReplyPayload);
-        fileObject.function_number="2";
-	    fileObject.want_more=true;
-        fileObject.seach_word= quickReplyPayload;
+	   	saveToFile(2,quickReplyPayload,true);
         console.log("FILE SYSYEM VALUES ARE " + fileObject.function_number + fileObject.seach_word);
-        fs.writeFileSync('./inputMemory.json', JSON.stringify(fileObject, null, 2) , 'utf-8');
      	checkToSendMore(senderID)
 
         
@@ -428,6 +418,7 @@ function receivedMessage(event) {
 
         case 'send meme':
           // sendTypingOn(senderID); //typing on till fetching
+          saveToFile(2,"memes",true);
           chooseCaller(2,null,senderID);
 		  // checkToSendMore(senderID);
 
@@ -1255,6 +1246,18 @@ if (fileObject.want_more ){
 
 
 }
+}
+
+function saveToFile(number,word,want_more){
+
+
+	fileObject.function_number=number;
+	fileObject.seach_word= word;
+ 	fileObject.want_more=want_more;
+    fs.writeFileSync('./inputMemory.json', JSON.stringify(fileObject, null, 2) , 'utf-8');
+
+
+
 }
 
   // Start server
