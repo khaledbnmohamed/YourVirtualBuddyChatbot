@@ -10,6 +10,7 @@ const
   express = require('express'),
   https = require('https'),
   request = require('request');
+  fs = require('fs');
 
 
 
@@ -24,6 +25,7 @@ var app = express();
 
 var last_input_function_name = '';
 var last_input_search_word = '';
+var fileObject =JSON.parse(fs.readFileSync('./inputMemory.json', 'utf8'));
 
 app.set('port', process.env.PORT || 5000);
 app.set('view engine', 'ejs');
@@ -303,14 +305,21 @@ function receivedMessage(event) {
     switch (quickReplyPayload) {
       case 'personal_account_memes':
         fetchingData_from_Account_ImagesAPi(senderID, quickReplyPayload)
-        last_input_function_name = 'fetchingData_from_Account_ImagesAPi';
-        last_input_search_word = quickReplyPayload;
+
+        fileObject.function_name="fetchingData_from_Account_ImagesAPi"
+        fileObject.seach_word= quickReplyPayload
+        console.log("FILE SYSYEM VALUES ARE " + fileObject.function_name + fileObject.seach_word)
+        fs.writeFileSync('./inputMemory.json', JSON.stringify(gameMemory, null, 2) , 'utf-8');
+
+        // last_input_function_name = 'fetchingData_from_Account_ImagesAPi';
+        // last_input_search_word = quickReplyPayload;
 
         // console.log(" last_input_function_name "+last_input_function_name+" last_input_search_word "+ last_input_search_word)
          break;
       case 'send_alike':
      	 console.log(" I CHOSE SEND_ALIKE");
-     	 console.log(last_input_function_name + last_input_search_word)
+
+     	 // console.log(last_input_function_name + last_input_search_word)
         break;
 
 
