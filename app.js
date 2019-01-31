@@ -23,8 +23,7 @@ let counter = 0;
 var default_text = "You know that no matter how cool I am to you, /n at the end I'm a preprogrammed meme sender so please don't ask me for neither commitment or Anything I don't understand. /n Just type SEND MEME"
 var app = express();
 
-var last_input_function_name = '';
-var last_input_search_word = '';
+
 var fileObject =JSON.parse(fs.readFileSync('./inputMemory.json', 'utf8'));
 
 app.set('port', process.env.PORT || 5000);
@@ -302,8 +301,8 @@ function receivedMessage(event) {
       messageId, quickReplyPayload);
     sendTypingOn(senderID); //typing on till fetching
 
-    switch (quickReplyPayload) {
-      case 'personal_account_memes':
+	switch (quickReplyPayload) {
+	case 'personal_account_memes':
         fetchingData_from_Account_ImagesAPi(senderID, quickReplyPayload);
 
         fileObject.function_number="1";
@@ -316,7 +315,8 @@ function receivedMessage(event) {
 
         // console.log(" last_input_function_name "+last_input_function_name+" last_input_search_word "+ last_input_search_word)
          break;
-      case 'send_alike':
+	case 'send_alike':
+	     fileObject.want_more=true;
      	 console.log(" I CHOSE SEND_ALIKE");
          console.log("FILE SYSYEM VALUES FOR ALIKE" + fileObject.function_number + fileObject.seach_word)
          chooseCaller(fileObject.function_number,fileObject.seach_word,senderID);
@@ -324,13 +324,23 @@ function receivedMessage(event) {
      	 // console.log(last_input_function_name + last_input_search_word)
         break;
 
+     case 'do nothing':
+	 	 console.log(" I CHOSE do nothing");
+
+	     fileObject.want_more=false;
+	     fs.writeFileSync('./inputMemory.json', JSON.stringify(fileObject, null, 2) , 'utf-8');
+
+
+        break;
+
 
 
       default:
         fetchingData_from_gallery_searchAPi(senderID,quickReplyPayload);
-        last_input_function_name = 'fetchingData_from_gallery_searchAPi';
-        last_input_search_word = quickReplyPayload;
-        // console.log(" last_input_function_name "+last_input_function_name+" last_input_search_word "+ last_input_search_word)
+        fileObject.function_number="1";
+        fileObject.seach_word= quickReplyPayload;
+        console.log("FILE SYSYEM VALUES ARE " + fileObject.function_number + fileObject.seach_word);
+        fs.writeFileSync('./inputMemory.json', JSON.stringify(fileObject, null, 2) , 'utf-8');
 
         
     }
@@ -385,10 +395,7 @@ function receivedMessage(event) {
 
         case 'memes':
           sendQuickReply(senderID);
-          setTimeout(function(){SendMore(senderID)},10000); //must be called like that   why ? https://stackoverflow.com/a/5520159/5627553
-
-
-
+		  checkToSendMore();
           break;
 
         case 'read receipt':
@@ -410,7 +417,7 @@ function receivedMessage(event) {
         case 'send meme':
           sendTypingOn(senderID); //typing on till fetching
           fetchingData_from_gallery_searchAPi(senderID)
-           setTimeout(function(){SendMore(senderID)},10000); //must be called like that   why ? https://stackoverflow.com/a/5520159/5627553
+		  checkToSendMore();
 
           break;
 
@@ -1219,8 +1226,15 @@ function chooseCaller(function_number,last_input_search_word,senderID){
 	}
 }
 
+function checkToSendMore(){
+
+while(fileObject.want_more ){
+    
+      setTimeout(function(){SendMore(senderID)},10000); //must be called like that   why ? https://stackoverflow.com/a/5520159/5627553
 
 
+}
+}
 
   // Start server
   // Webhooks must be available via SSL with a certificate signed by a valid
