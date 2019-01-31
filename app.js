@@ -427,8 +427,8 @@ function receivedMessage(event) {
           break;
 
         case 'send meme':
-          sendTypingOn(senderID); //typing on till fetching
-          chooseCaller(2,"memes",senderID);
+          // sendTypingOn(senderID); //typing on till fetching
+          chooseCaller(2,null,senderID);
 		  // checkToSendMore(senderID);
 
           break;
@@ -1065,6 +1065,9 @@ I really hope one day, You'll find the right person to forward these memes to <3
 
     if (!Search_query) {
       Search_query = "memes"
+      fileObject.search_word=Search_query
+      fs.writeFileSync('./inputMemory.json', JSON.stringify(fileObject, null, 2) , 'utf-8');
+
     }
     else {
 
