@@ -304,11 +304,11 @@ function receivedMessage(event) {
 
     switch (quickReplyPayload) {
       case 'personal_account_memes':
-        fetchingData_from_Account_ImagesAPi(senderID, quickReplyPayload)
+        fetchingData_from_Account_ImagesAPi(senderID, quickReplyPayload);
 
-        fileObject.function_name="fetchingData_from_Account_ImagesAPi"
-        fileObject.seach_word= quickReplyPayload
-        console.log("FILE SYSYEM VALUES ARE " + fileObject.function_name + fileObject.seach_word)
+        fileObject.function_number="1";
+        fileObject.seach_word= quickReplyPayload;
+        console.log("FILE SYSYEM VALUES ARE " + fileObject.function_number + fileObject.seach_word);
         fs.writeFileSync('./inputMemory.json', JSON.stringify(fileObject, null, 2) , 'utf-8');
 
         // last_input_function_name = 'fetchingData_from_Account_ImagesAPi';
@@ -318,8 +318,8 @@ function receivedMessage(event) {
          break;
       case 'send_alike':
      	 console.log(" I CHOSE SEND_ALIKE");
-         console.log("FILE SYSYEM VALUES FOR ALIKE" + fileObject.function_name + fileObject.seach_word)
-
+         console.log("FILE SYSYEM VALUES FOR ALIKE" + fileObject.function_number + fileObject.seach_word)
+         chooseCaller(fileObject.function_number,fileObject.seach_word,senderID);
 
      	 // console.log(last_input_function_name + last_input_search_word)
         break;
@@ -1200,7 +1200,24 @@ I really hope one day, You'll find the right person to forward these memes to <3
     return;
   }
 
+function chooseCaller(function_number,last_input_search_word,senderID){
+/* 
+1== for personal account api
+2== gallery
+ */
+	if(function_number==1){
 
+        fetchingData_from_Account_ImagesAPi(senderID, last_input_search_word);
+        return;
+
+	}
+	else if(function_number==2){
+
+        fetchingData_from_gallery_searchAPi(senderID, last_input_search_word);
+        return;
+
+	}
+}
 
 
 
