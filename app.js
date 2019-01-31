@@ -306,10 +306,11 @@ function receivedMessage(event) {
         last_input_function_name = 'fetchingData_from_Account_ImagesAPi';
         last_input_search_word = quickReplyPayload;
 
-        console.log(" last_input_function_name "+last_input_function_name+" last_input_search_word "+ last_input_search_word)
+        // console.log(" last_input_function_name "+last_input_function_name+" last_input_search_word "+ last_input_search_word)
          break;
       case 'send_alike':
-      console.log(" I CHOSE SEND_ALIKE");
+     	 console.log(" I CHOSE SEND_ALIKE");
+     	 console.log(last_input_function_name + last_input_search_word)
         break;
 
 
@@ -318,7 +319,7 @@ function receivedMessage(event) {
         fetchingData_from_gallery_searchAPi(senderID,quickReplyPayload);
         last_input_function_name = 'fetchingData_from_gallery_searchAPi';
         last_input_search_word = quickReplyPayload;
-        console.log(" last_input_function_name "+last_input_function_name+" last_input_search_word "+ last_input_search_word)
+        // console.log(" last_input_function_name "+last_input_function_name+" last_input_search_word "+ last_input_search_word)
 
         
     }
@@ -373,6 +374,8 @@ function receivedMessage(event) {
 
         case 'memes':
           sendQuickReply(senderID);
+          setTimeout(function(){SendMore(senderID)},10000); //must be called like that   why ? https://stackoverflow.com/a/5520159/5627553
+
 
 
           break;
@@ -396,9 +399,7 @@ function receivedMessage(event) {
         case 'send meme':
           sendTypingOn(senderID); //typing on till fetching
           fetchingData_from_gallery_searchAPi(senderID)
-           setTimeout(function(){
- 								SendMore(senderID)
-								},10000);
+           setTimeout(function(){SendMore(senderID)},10000); //must be called like that   why ? https://stackoverflow.com/a/5520159/5627553
 
           break;
 
