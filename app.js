@@ -20,9 +20,12 @@ var imgur_access_token = '2a8f6dacd57b657d8f9542b166724964c1ed8f8f'
 var imgur_username = 'khaledbnmohamed'
 var FirstQuery = true;
 let counter = 0;
-var default_text = 'You know that no matter how cool I am to you,
- at the end I'm a preprogrammed meme sender so please don't ask me for neither commitment or Anything I don't understand. 
- Just type SEND MEME'
+var default_text = [ "You know that no matter how cool I am to you,",
+  " at the end I'm a preprogrammed meme sender so please don't ask me for neither commitment or Anything I don't understand.",
+  " Just type SEND MEME"
+].join('\n');
+ 
+
 var app = express();
 
 
