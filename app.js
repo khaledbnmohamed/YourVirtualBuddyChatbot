@@ -320,7 +320,7 @@ function receivedMessage(event) {
      	 console.log(" I CHOSE SEND_ALIKE");
          console.log("FILE SYSYEM VALUES FOR ALIKE" + fileObject.function_number + fileObject.seach_word)
          chooseCaller(fileObject.function_number,fileObject.seach_word,senderID);
-         checkToSendMore();
+         checkToSendMore(senderID);
 
      	 // console.log(last_input_function_name + last_input_search_word)
         break;
@@ -1227,7 +1227,7 @@ function chooseCaller(function_number,last_input_search_word,senderID){
 	}
 }
 
-function checkToSendMore(){
+function checkToSendMore(senderID){
 
 if (fileObject.want_more ){
     
