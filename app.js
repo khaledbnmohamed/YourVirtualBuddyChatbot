@@ -309,7 +309,7 @@ function receivedMessage(event) {
 	switch (quickReplyPayload) {
 	case 'personal_account_memes':
         fetchingData_from_Account_ImagesAPi(senderID, quickReplyPayload);
-
+	     fileObject.want_more=true;
         fileObject.function_number="1";
         fileObject.seach_word= quickReplyPayload;
         console.log("FILE SYSYEM VALUES ARE " + fileObject.function_number + fileObject.seach_word);
@@ -348,6 +348,8 @@ function receivedMessage(event) {
       default:
         fetchingData_from_gallery_searchAPi(senderID,quickReplyPayload);
         fileObject.function_number="1";
+	    fileObject.want_more=true;
+
         fileObject.seach_word= quickReplyPayload;
         console.log("FILE SYSYEM VALUES ARE " + fileObject.function_number + fileObject.seach_word);
         fs.writeFileSync('./inputMemory.json', JSON.stringify(fileObject, null, 2) , 'utf-8');
@@ -405,7 +407,6 @@ function receivedMessage(event) {
           break;
 
         case 'memes':
-          sendTypingOn(senderID); //typing on till fetching
           sendQuickReply(senderID);
 		  // checkToSendMore(senderID);
           break;
@@ -1059,6 +1060,8 @@ I really hope one day, You'll find the right person to forward these memes to <3
 
 
   function fetchingData_from_gallery_searchAPi(senderID, Search_query) {
+	     
+     fileObject.want_more=true;
 
 
     if (!Search_query) {
@@ -1101,7 +1104,7 @@ I really hope one day, You'll find the right person to forward these memes to <3
           sendTypingOff(senderID);
           sendImageMessage(senderID, image_link);
 
-          
+          checkToSendMore(senderID);
 
         }
 
