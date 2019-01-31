@@ -309,6 +309,7 @@ function receivedMessage(event) {
         console.log(" last_input_function_name "+last_input_function_name+" last_input_search_word "+ last_input_search_word)
          break;
       case 'send_alike':
+      console.log(" I CHOSE SEND_ALIKE");
         break;
 
 
@@ -395,9 +396,7 @@ function receivedMessage(event) {
         case 'send meme':
           sendTypingOn(senderID); //typing on till fetching
           fetchingData_from_gallery_searchAPi(senderID)
-          // setTimeout(SendMore(senderID), 3000);
-
-
+          setTimeout(SendMore(senderID), 8000);
 
           break;
 
@@ -1038,7 +1037,7 @@ I really hope one day, You'll find the right person to forward these memes to <3
     }
     //Imgur API Gallery Search Request
     var https = require('https');
-    console.log(Search_query);
+    // console.log(Search_query);
 
     var options = {
       'method': 'GET',
@@ -1061,7 +1060,7 @@ I really hope one day, You'll find the right person to forward these memes to <3
 
       res.on("end", function (chunk) {
         var body = Buffer.concat(chunks);
-        console.log(JSON.parse(body).data[0])
+        // console.log(JSON.parse(body).data[0])
         console.log(options.path)
         let image_link = formingElements(body, senderID, false)
         if (image_link) {
