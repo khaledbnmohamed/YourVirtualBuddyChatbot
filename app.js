@@ -309,6 +309,7 @@ function receivedMessage(event) {
         fileObject.seach_word= quickReplyPayload;
         console.log("FILE SYSYEM VALUES ARE " + fileObject.function_number + fileObject.seach_word);
         fs.writeFileSync('./inputMemory.json', JSON.stringify(fileObject, null, 2) , 'utf-8');
+     	checkToSendMore(senderID)
 
         // last_input_function_name = 'fetchingData_from_Account_ImagesAPi';
         // last_input_search_word = quickReplyPayload;
@@ -325,10 +326,14 @@ function receivedMessage(event) {
         break;
 
      case 'do nothing':
+         sendTypingOff(senderID);
+
 	 	 console.log(" I CHOSE do nothing");
 
 	     fileObject.want_more=false;
 	     fs.writeFileSync('./inputMemory.json', JSON.stringify(fileObject, null, 2) , 'utf-8');
+
+	     sendTextMessage(senderID,"Whatever you want <3 ")
 
 
         break;
@@ -341,6 +346,7 @@ function receivedMessage(event) {
         fileObject.seach_word= quickReplyPayload;
         console.log("FILE SYSYEM VALUES ARE " + fileObject.function_number + fileObject.seach_word);
         fs.writeFileSync('./inputMemory.json', JSON.stringify(fileObject, null, 2) , 'utf-8');
+     	checkToSendMore(senderID)
 
         
     }
@@ -396,7 +402,7 @@ function receivedMessage(event) {
         case 'memes':
           sendTypingOn(senderID); //typing on till fetching
           sendQuickReply(senderID);
-		  checkToSendMore(senderID);
+		  // checkToSendMore(senderID);
           break;
 
         case 'read receipt':
@@ -418,7 +424,7 @@ function receivedMessage(event) {
         case 'send meme':
           sendTypingOn(senderID); //typing on till fetching
           fetchingData_from_gallery_searchAPi(senderID)
-		  checkToSendMore(senderID);
+		  // checkToSendMore(senderID);
 
           break;
 
