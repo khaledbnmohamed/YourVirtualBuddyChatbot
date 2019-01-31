@@ -1230,7 +1230,7 @@ function chooseCaller(function_number,last_input_search_word,senderID){
 2== gallery
  */
  if(last_input_search_word==null){
-		last_input_search_word=memes;  //special case for send meme
+		last_input_search_word="memes";  //special case for send meme
 		console.log("last_input_search_word "+ last_input_search_word)
  }
 	if(function_number==1){
