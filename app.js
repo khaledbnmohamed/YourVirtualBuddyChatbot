@@ -347,9 +347,8 @@ function receivedMessage(event) {
 
       default:
         fetchingData_from_gallery_searchAPi(senderID,quickReplyPayload);
-        fileObject.function_number="1";
+        fileObject.function_number="2";
 	    fileObject.want_more=true;
-
         fileObject.seach_word= quickReplyPayload;
         console.log("FILE SYSYEM VALUES ARE " + fileObject.function_number + fileObject.seach_word);
         fs.writeFileSync('./inputMemory.json', JSON.stringify(fileObject, null, 2) , 'utf-8');
@@ -429,7 +428,7 @@ function receivedMessage(event) {
 
         case 'send meme':
           sendTypingOn(senderID); //typing on till fetching
-          fetchingData_from_gallery_searchAPi(senderID)
+          chooseCaller(2,"memes",senderID);
 		  // checkToSendMore(senderID);
 
           break;
