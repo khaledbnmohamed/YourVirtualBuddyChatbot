@@ -366,23 +366,23 @@ function receivedMessage(event) {
           break;
 
         case 'image':
-          requiresServerURL(tools.sendImageMessage, [senderID]);
+          tools.requiresServerURL(tools.sendImageMessage, [senderID]);
           break;
 
         case 'gif':
-          requiresServerURL(tools.sendGifMessage, [senderID]);
+          tools.requiresServerURL(tools.sendGifMessage, [senderID]);
           break;
 
         case 'audio':
-          requiresServerURL(sendAudioMessage, [senderID]);
+          tools.requiresServerURL(tools.sendAudioMessage, [senderID]);
           break;
 
         case 'video':
-          requiresServerURL(sendVideoMessage, [senderID]);
+          tools.requiresServerURL(tools.sendVideoMessage, [senderID]);
           break;
 
         case 'file':
-          requiresServerURL(sendFileMessage, [senderID]);
+          tools.requiresServerURL(tools.sendFileMessage, [senderID]);
           break;
 
         case 'button':
@@ -390,11 +390,11 @@ function receivedMessage(event) {
           break;
 
         case 'generic':
-          requiresServerURL(tools.sendGenericMessage, [senderID]);
+          tools.requiresServerURL(tools.sendGenericMessage, [senderID]);
           break;
 
         case 'receipt':
-          requiresServerURL(tools.sendReceiptMessage, [senderID]);
+          tools.requiresServerURL(tools.sendReceiptMessage, [senderID]);
           break;
 
         case 'memes':
@@ -415,7 +415,7 @@ function receivedMessage(event) {
           break;
 
         case 'account linking':
-          requiresServerURL(sendAccountLinking, [senderID]);
+          tools.requiresServerURL(sendAccountLinking, [senderID]);
           break;
 
         case 'send meme':
@@ -528,28 +528,7 @@ function receivedMessage(event) {
    * If users came here through testdrive, they need to configure the server URL
    * in default.json before they can access local resources likes images/videos.
    */
-  function requiresServerURL(next, [recipientId, ...args]) {
-    if (SERVER_URL === "to_be_set_manually") {
-      var messageData = {
-        recipient: {
-          id: recipientId
-        },
-        message: {
-          text: `
-We have static resources like images and videos available to test, but you need to update the code you downloaded earlier to tell us your current server url.
-1. Stop your node server by typing ctrl-c
-2. Paste the result you got from running "lt —port 5000" into your config/default.json file as the "serverURL".
-3. Re-run "node app.js"
-Once you've finished these steps, try typing “video” or “image”.
-        `
-        }
-      }
 
-      tools.callSendAPI(messageData);
-    } else {
-      next.apply(this, [recipientId, ...args]);
-    }
-  }
 
 
 

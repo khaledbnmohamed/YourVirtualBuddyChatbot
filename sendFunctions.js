@@ -8,7 +8,7 @@ module.exports =
    * get the message id in a response
    *
    */
-   callSendAPI : function callSendAPI (messageData) {
+   function callSendAPI (messageData) {
     request({
       uri: 'https://graph.facebook.com/v2.6/me/messages',
       qs: { access_token: PAGE_ACCESS_TOKEN },
@@ -31,6 +31,29 @@ module.exports =
         console.error("Failed calling Send API", response.statusCode, response.statusMessage, body.error);
       }
     });
+  },
+
+    function requiresServerURL(next, [recipientId, ...args]) {
+    if (SERVER_URL === "to_be_set_manually") {
+      var messageData = {
+        recipient: {
+          id: recipientId
+        },
+        message: {
+          text: `
+We have static resources like images and videos available to test, but you need to update the code you downloaded earlier to tell us your current server url.
+1. Stop your node server by typing ctrl-c
+2. Paste the result you got from running "lt —port 5000" into your config/default.json file as the "serverURL".
+3. Re-run "node app.js"
+Once you've finished these steps, try typing “video” or “image”.
+        `
+        }
+      }
+
+      callSendAPI(messageData);
+    } else {
+      next.apply(this, [recipientId, ...args]);
+    }
   },
 
    sendHiMessage: function (recipientId) {
