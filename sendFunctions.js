@@ -1,6 +1,15 @@
 // 'module.exports' is a node.JS specific feature, it does not work with regular JavaScript
 
 //Holding ALL send functions in the bots for easier use
+
+const
+https = require('https'),
+request = require('request'),
+bodyParser = require('body-parser'),
+config = require('config'),
+crypto = require('crypto'),
+express = require('express');
+
 module.exports = 
 {
     /*
