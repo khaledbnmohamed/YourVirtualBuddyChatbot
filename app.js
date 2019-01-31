@@ -320,6 +320,7 @@ function receivedMessage(event) {
      	 console.log(" I CHOSE SEND_ALIKE");
          console.log("FILE SYSYEM VALUES FOR ALIKE" + fileObject.function_number + fileObject.seach_word)
          chooseCaller(fileObject.function_number,fileObject.seach_word,senderID);
+         checkToSendMore();
 
      	 // console.log(last_input_function_name + last_input_search_word)
         break;
@@ -1228,7 +1229,7 @@ function chooseCaller(function_number,last_input_search_word,senderID){
 
 function checkToSendMore(){
 
-while(fileObject.want_more ){
+if (fileObject.want_more ){
     
       setTimeout(function(){SendMore(senderID)},10000); //must be called like that   why ? https://stackoverflow.com/a/5520159/5627553
 
