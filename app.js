@@ -320,7 +320,6 @@ function receivedMessage(event) {
      	 console.log(" I CHOSE SEND_ALIKE");
          console.log("FILE SYSYEM VALUES FOR ALIKE" + fileObject.function_number + fileObject.seach_word)
          chooseCaller(fileObject.function_number,fileObject.seach_word,senderID);
-         checkToSendMore(senderID);
 
      	 // console.log(last_input_function_name + last_input_search_word)
         break;
@@ -395,8 +394,9 @@ function receivedMessage(event) {
           break;
 
         case 'memes':
+          sendTypingOn(senderID); //typing on till fetching
           sendQuickReply(senderID);
-		  checkToSendMore();
+		  checkToSendMore(senderID);
           break;
 
         case 'read receipt':
@@ -418,7 +418,7 @@ function receivedMessage(event) {
         case 'send meme':
           sendTypingOn(senderID); //typing on till fetching
           fetchingData_from_gallery_searchAPi(senderID)
-		  checkToSendMore();
+		  checkToSendMore(senderID);
 
           break;
 
