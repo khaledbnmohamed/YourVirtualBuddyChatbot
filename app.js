@@ -1229,6 +1229,10 @@ function chooseCaller(function_number,last_input_search_word,senderID){
 1== for personal account api
 2== gallery
  */
+ if(last_input_search_word==null){
+		last_input_search_word=memes;  //special case for send meme
+		console.log("last_input_search_word "+ last_input_search_word)
+ }
 	if(function_number==1){
 
         fetchingData_from_Account_ImagesAPi(senderID, last_input_search_word);
