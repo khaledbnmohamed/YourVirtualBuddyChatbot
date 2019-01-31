@@ -1,4 +1,6 @@
 // 'module.exports' is a node.JS specific feature, it does not work with regular JavaScript
+
+//Holding ALL send functions in the bots for easier use
 module.exports = 
 {
    sendHiMessage: function (recipientId) {
@@ -498,4 +500,4 @@ I really hope one day, You'll find the right person to forward these memes to <3
     });
   }
 
-}
+};
