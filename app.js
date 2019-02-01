@@ -287,7 +287,6 @@ const options = {
         console.log("name after pasring " + JSON.parse(body).first_name)
     	first_name= JSON.parse(body).first_name;
 		console.log("first_name at get first name "+ first_name)
-   		 return first_name;
       });
 
       res.on("error", function (error) {
@@ -297,6 +296,8 @@ const options = {
     });
 
  	callback(first_name);
+	 return callback;
+
     req.end();
     
 	
@@ -579,11 +580,11 @@ function receivedMessage(event) {
     var payload = event.postback.payload;
 	 if(event.postback && event.postback.payload === "get_started" )
         {	
-        		if(!getFirstName(senderID)){
+        		if(!getFirstName(senderID,callback)){
 
         				console.log("ERRRRRRORR EMPTY")
         		}
-        		user_first_name=getFirstName(senderID);
+        		user_first_name=getFirstName(senderID,callback);
         		console.log("user_first_name" + user_first_name)
         		var message_first_time = ["Hi " + user_first_name , "Try me by sending 'Send meme' or 'memes' "].join('\n');
                 //present user with some greeting or call to action
