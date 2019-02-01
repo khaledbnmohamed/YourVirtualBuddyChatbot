@@ -818,25 +818,15 @@ function receivedMessage(event) {
           return parsed.data[i].images[0].link
         }
       }
-      else if (parsed.data[i].is_album == false)
-           {
-          if(parsed.data[i].link)
-              {
-               return parsed.data[i].link
-              }
-           }
-      else {
-
-         while (!parsed.data[i].link)
-              {
-
-              i++;
-
-              }
+      else if (parsed.data[i].is_album == false) {
+          if(parsed.data[i].link){
+           return parsed.data[i].link
           }
-       
+        }
 
-        
+        else{
+        i++
+      }
       }
     
 
