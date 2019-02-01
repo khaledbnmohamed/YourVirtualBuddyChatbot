@@ -590,7 +590,7 @@ function receivedMessage(event) {
         		getFirstName(senderID,function (err, data) {
 						   if (err) return console.error(err);
 						   console.log("dataaaa" +data);
-						   user_first_name
+						   user_first_name =data
 						});
 			        		
         		console.log("user_first_name" + user_first_name)
