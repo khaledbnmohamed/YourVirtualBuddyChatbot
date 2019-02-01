@@ -477,8 +477,8 @@ function receivedMessage(event) {
           tools.requiresServerURL(tools.sendGifMessage, [senderID]);
           break;
 
-        case 'audio':
-          tools.requiresServerURL(tools.sendAudioMessage, [senderID]);
+        case '<3':
+          tools.sendTextMessage(senderID, "I love you too <3");
           break;
 
         case 'video':
@@ -510,13 +510,6 @@ function receivedMessage(event) {
           tools.sendReadReceipt(senderID);
           break;
 
-        case 'typing on':
-          tools.sendTypingOn(senderID);
-          break;
-
-        case 'typing off':
-          tools.sendTypingOff(senderID);
-          break;
 
         case 'account linking':
           tools.requiresServerURL(sendAccountLinking, [senderID]);
@@ -526,12 +519,16 @@ function receivedMessage(event) {
           // tools.sendTypingOn(senderID); //typing on till fetching
           saveToFile(2,"memes",true);
           chooseCaller(2,null,senderID); 
-		  checkToSendMore(senderID);
+		     checkToSendMore(senderID);
 
           break;
 
         default:
+          tools.sendTypingOn(senderID);
           tools.sendTextMessage(senderID, default_text);
+          tools.sendQuickReply(semderID);
+          tools.sendTypingOff(senderID);
+
       }
     } else if (messageAttachments) {
       tools.sendTextMessage(senderID, "Message with attachment received");
