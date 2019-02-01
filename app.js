@@ -257,6 +257,57 @@ app.get('/authorize', function (req, res) {
 // }
 
 
+
+function getFirstName (senderID,callback)
+ {
+
+
+var https = require('https');
+const access_token = PAGE_ACCESS_TOKEN ;
+
+var first_name=''
+
+
+const options = {
+  method: 'GET',
+  hostname: 'graph.facebook.com',
+  port:443,
+  path: '/'+senderID+'?fields=first_name&access_token='+ access_token,
+}
+ var req = https.request(options, function (res) {
+
+      var chunks = [];
+
+      res.on("data", function (chunk) {
+        chunks.push(chunk);
+      });
+
+      res.on("end", function (chunk) {
+        var body = Buffer.concat(chunks);
+        console.log("name before pasring " + body)
+
+        console.log("name after pasring " + JSON.parse(body).first_name)
+    	first_name= JSON.parse(body).first_name;
+		console.log("first_name at get first name "+ first_name)
+		callback("",first_name);
+      });
+
+      res.on("error", function (error) {
+        console.error(error);
+        callback(error,"")
+      });
+
+    });
+
+ 	
+
+    req.end();
+    
+	
+
+
+}
+
 /*
  * Verify that the callback came from Facebook. Using the App Secret from
  * the App Dashboard, we can verify the signature that is sent with each
@@ -515,55 +566,6 @@ function receivedMessage(event) {
   }
 
 
-var getFirstName=  function (senderID,callback)
- {
-
-
-var https = require('https');
-const access_token = PAGE_ACCESS_TOKEN ;
-
-var first_name=''
-
-
-const options = {
-  method: 'GET',
-  hostname: 'graph.facebook.com',
-  port:443,
-  path: '/'+senderID+'?fields=first_name&access_token='+ access_token,
-}
- var req = https.request(options, function (res) {
-
-      var chunks = [];
-
-      res.on("data", function (chunk) {
-        chunks.push(chunk);
-      });
-
-      res.on("end", function (chunk) {
-        var body = Buffer.concat(chunks);
-        console.log("name before pasring " + body)
-
-        console.log("name after pasring " + JSON.parse(body).first_name)
-    	first_name= JSON.parse(body).first_name;
-		console.log("first_name at get first name "+ first_name)
-		 return callback(first_name);
-      });
-
-      res.on("error", function (error) {
-        console.error(error);
-      });
-
-    });
-
- 	
-
-    req.end();
-    
-	
-
-
-}
-
   /*
    * Postback Event
    *
@@ -585,10 +587,10 @@ const options = {
 
         		// 		console.log("ERRRRRRORR EMPTY")
         		// }
-        		user_first_name=getFirstName(senderID,function (err, data) {
+        		getFirstName(senderID,function (err, data) {
 						   if (err) return console.error(err);
 						   console.log("dataaaa" +data);
-						   user_first_name=data;
+						   user_first_name
 						});
 			        		
         		console.log("user_first_name" + user_first_name)
