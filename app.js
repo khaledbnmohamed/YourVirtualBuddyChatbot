@@ -256,7 +256,10 @@ app.get('/authorize', function (req, res) {
 
 // }
 
-var getFirstName=  function (senderID,callback)
+var getFirstName=  function (senderID,function (response) {
+
+  		response.getFirstName(senderID)
+      }
  {
 
 
@@ -584,7 +587,7 @@ function receivedMessage(event) {
 
         		// 		console.log("ERRRRRRORR EMPTY")
         		// }
-        		user_first_name=getFirstName.function(senderID,callback);
+        		user_first_name=getFirstName(senderID);
         		console.log("user_first_name" + user_first_name)
         		var message_first_time = ["Hi " + user_first_name , "Try me by sending 'Send meme' or 'memes' "].join('\n');
                 //present user with some greeting or call to action
