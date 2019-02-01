@@ -256,54 +256,6 @@ app.get('/authorize', function (req, res) {
 
 // }
 
-var getFirstName=  function (senderID,callback)
- {
-
-
-var https = require('https');
-const access_token = PAGE_ACCESS_TOKEN ;
-
-var first_name=''
-
-
-const options = {
-  method: 'GET',
-  hostname: 'graph.facebook.com',
-  port:443,
-  path: '/'+senderID+'?fields=first_name&access_token='+ access_token,
-}
- var req = https.request(options, function (res) {
-
-      var chunks = [];
-
-      res.on("data", function (chunk) {
-        chunks.push(chunk);
-      });
-
-      res.on("end", function (chunk) {
-        var body = Buffer.concat(chunks);
-        console.log("name before pasring " + body)
-
-        console.log("name after pasring " + JSON.parse(body).first_name)
-    	first_name= JSON.parse(body).first_name;
-		console.log("first_name at get first name "+ first_name)
-		 return callback(first_name);
-      });
-
-      res.on("error", function (error) {
-        console.error(error);
-      });
-
-    });
-
- 	
-
-    req.end();
-    
-	
-
-
-}
 
 /*
  * Verify that the callback came from Facebook. Using the App Secret from
@@ -562,6 +514,55 @@ function receivedMessage(event) {
     console.log("All message before %d were delivered.", watermark);
   }
 
+
+var getFirstName=  function (senderID,callback)
+ {
+
+
+var https = require('https');
+const access_token = PAGE_ACCESS_TOKEN ;
+
+var first_name=''
+
+
+const options = {
+  method: 'GET',
+  hostname: 'graph.facebook.com',
+  port:443,
+  path: '/'+senderID+'?fields=first_name&access_token='+ access_token,
+}
+ var req = https.request(options, function (res) {
+
+      var chunks = [];
+
+      res.on("data", function (chunk) {
+        chunks.push(chunk);
+      });
+
+      res.on("end", function (chunk) {
+        var body = Buffer.concat(chunks);
+        console.log("name before pasring " + body)
+
+        console.log("name after pasring " + JSON.parse(body).first_name)
+    	first_name= JSON.parse(body).first_name;
+		console.log("first_name at get first name "+ first_name)
+		 return callback(first_name);
+      });
+
+      res.on("error", function (error) {
+        console.error(error);
+      });
+
+    });
+
+ 	
+
+    req.end();
+    
+	
+
+
+}
 
   /*
    * Postback Event
