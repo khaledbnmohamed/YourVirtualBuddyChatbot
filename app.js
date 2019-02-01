@@ -393,9 +393,9 @@ function receivedMessage(event) {
   var quickReply = message.quick_reply;
 
   if (isEcho) {
-    // Just logging message echoes to console
-    console.log("Received echo for message %s and app %d with metadata %s",
-      messageId, appId, metadata);
+    // Just logging message echoes to conole COMMENTED FOR BETTER VISIBILLITY 
+    // console.log("Received echo for message %s and app %d with metadata %s",
+      // messageId, appId, metadata);
     return;
   } else if (quickReply) {
     var quickReplyPayload = quickReply.payload;
@@ -575,6 +575,7 @@ function receivedMessage(event) {
 	 if(event.postback && event.postback.payload === "get_started" )
         {
         		user_first_name=getFirstName(senderID);
+        		console.log("user_first_name" + user_first_name)
         		var message_first_time = ["Hi " + user_first_name , " Try me by sending 'Send meme' or 'memes' "].join('\n');
                 //present user with some greeting or call to action
                 tools.sendTextMessage(senderID,message_first_time );
