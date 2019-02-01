@@ -572,8 +572,8 @@ function receivedMessage(event) {
     var payload = event.postback.payload;
 	 if(event.postback && event.postback.payload === "get_started" )
         {
-        		user_first_name=getFirstName();
-        		message_first_time = "Hi" + user_first_name +" Try me by 'Send meme' or 'memes' "
+        		var user_first_name=getFirstName();
+        		var message_first_time = "Hi" + user_first_name +" Try me by 'Send meme' or 'memes' "
                 //present user with some greeting or call to action
                 tools.sendTextMessage(senderID,message_first_time );
                                 //sendMessage(event.sender.id,msg);      
