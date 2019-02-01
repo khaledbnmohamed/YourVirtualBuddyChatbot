@@ -256,7 +256,7 @@ app.get('/authorize', function (req, res) {
 
 // }
 
- function getFirstName()
+ function getFirstName(senderID)
  {
 
 
@@ -574,7 +574,7 @@ function receivedMessage(event) {
     var payload = event.postback.payload;
 	 if(event.postback && event.postback.payload === "get_started" )
         {
-        		var user_first_name=getFirstName();
+        		var user_first_name=getFirstName(senderID);
         		var message_first_time = "Hi" + user_first_name +" Try me by sending 'Send meme' or 'memes' "
                 //present user with some greeting or call to action
                 tools.sendTextMessage(senderID,message_first_time );
