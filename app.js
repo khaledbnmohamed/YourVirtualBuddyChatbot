@@ -263,7 +263,7 @@ app.get('/authorize', function (req, res) {
 var https = require('https');
 const access_token = PAGE_ACCESS_TOKEN ;
 
-
+var first_name
 
 
 const options = {
@@ -285,7 +285,7 @@ const options = {
         console.log("name before pasring " + body)
 
         console.log("name after pasring " + JSON.parse(body).first_name)
-    	return JSON.parse(body).first_name;
+    	first_name= JSON.parse(body).first_name;
 
       });
 
@@ -296,6 +296,8 @@ const options = {
     });
 
     req.end();
+
+    return first_name
 	
 
 
