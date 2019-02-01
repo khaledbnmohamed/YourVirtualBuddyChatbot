@@ -704,14 +704,10 @@ function receivedMessage(event) {
         let image_link = formingElements(body, senderID, false)
         if (!image_link) {
         
-        image_link = formingElements(body, senderID, false)
+        tools.sendTextMessage(senderID,"Please try agian :) ") //error handler
 
           }
-      else{
-        //Handling empty image responses 
-        tools.sendTextMessage(senderID,"Please try agian :) ")
-
-      }
+   
 
       });
 
@@ -816,13 +812,6 @@ function receivedMessage(event) {
           return parsed.data[i].images[0].link
         }
       }
-      else if (parsed.data[i].is_album == false)
-           {
-          if(parsed.data[i].link)
-              {
-               return parsed.data[i].link
-              }
-           }
       else {
 
          while (!parsed.data[i].link)
@@ -833,6 +822,8 @@ function receivedMessage(event) {
               i++;
 
               }
+              return parsed.data[i].link
+
           }
        
 
