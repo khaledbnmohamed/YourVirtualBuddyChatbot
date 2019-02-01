@@ -506,6 +506,12 @@ function receivedMessage(event) {
 		  // checkToSendMore(senderID);
           break;
 
+        case 'another category':
+          tools.sendQuickReply(senderID);
+      // checkToSendMore(senderID);
+          break;
+
+
         case 'read receipt':
           tools.sendReadReceipt(senderID);
           break;
