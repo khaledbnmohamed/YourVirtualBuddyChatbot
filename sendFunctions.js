@@ -14,7 +14,6 @@ const
 
 
 
-const PAGE_ACCESS_TOKEN =''
 var ImageLink = 'https://i.imgur.com/KZC2CW9.jpg'
 var clientId = '8056e5db3f369d1'
 var imgur_access_token = '2a8f6dacd57b657d8f9542b166724964c1ed8f8f'
@@ -28,12 +27,16 @@ var default_text = [ "You know that no matter how cool I am to you,",
  
 
 var app = express();
+app.set('port', process.env.PORT || 5000);
 
 
 var fileObject =JSON.parse(fs.readFileSync('./inputMemory.json', 'utf8'));
 
 
-
+// Generate a page access token for your page from the App Dashboard
+const PAGE_ACCESS_TOKEN = (process.env.MESSENGER_PAGE_ACCESS_TOKEN) ?
+  (process.env.MESSENGER_PAGE_ACCESS_TOKEN) :
+  config.get('pageAccessToken');
 
 module.exports = 
 {
