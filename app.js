@@ -263,7 +263,7 @@ app.get('/authorize', function (req, res) {
 var https = require('https');
 const access_token = PAGE_ACCESS_TOKEN ;
 
-var first_name
+var first_name=''
 
 
 const options = {
