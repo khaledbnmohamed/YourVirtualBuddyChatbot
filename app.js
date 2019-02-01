@@ -580,11 +580,11 @@ function receivedMessage(event) {
     var payload = event.postback.payload;
 	 if(event.postback && event.postback.payload === "get_started" )
         {	
-        		if(!getFirstName(senderID,callback)){
+        		// if(!getFirstName(senderID,callback)){
 
-        				console.log("ERRRRRRORR EMPTY")
-        		}
-        		user_first_name=getFirstName(senderID,callback);
+        		// 		console.log("ERRRRRRORR EMPTY")
+        		// }
+        		user_first_name=getFirstName.function(senderID,callback);
         		console.log("user_first_name" + user_first_name)
         		var message_first_time = ["Hi " + user_first_name , "Try me by sending 'Send meme' or 'memes' "].join('\n');
                 //present user with some greeting or call to action
