@@ -591,13 +591,14 @@ function receivedMessage(event) {
 						   if (err) return console.error(err);
 						   console.log("dataaaa" +data);
 						   user_first_name =data
-						});
+						
 			        		
         		console.log("user_first_name" + user_first_name)
-        		var message_first_time = ["Hi " + user_first_name , "Try me by sending 'Send meme' or 'memes' "].join('\n');
+        		var message_first_time = ["Hi " + user_first_name +","+, "Try me by sending 'Send meme' or 'memes' "].join('\n');
                 //present user with some greeting or call to action
                 tools.sendTextMessage(senderID,message_first_time );
-                                //sendMessage(event.sender.id,msg);      
+                                //sendMessage(event.sender.id,msg);   
+                                });   
         } 
     console.log("Received postback for user %d and page %d with payload '%s' " +
       "at %d", senderID, recipientID, payload, timeOfPostback);
