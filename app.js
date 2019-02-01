@@ -271,10 +271,6 @@ const options = {
   hostname: 'graph.facebook.com',
   port:443,
   path: '/<PSID>?fields=first_name&'+ access_token,
-  headers: {
-    'Content-Type': 'application/json',
-    'Content-Length': data.length
-  }
 }
  var req = https.request(options, function (res) {
 
