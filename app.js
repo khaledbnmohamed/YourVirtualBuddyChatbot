@@ -158,52 +158,103 @@ app.get('/authorize', function (req, res) {
 });
 
 /* ONLY RUN ONCE IN A BOT for get started button */
-// enable_get_started(); 
+enable_get_started(); 
 
-// function enable_get_started()
-// {
-
-
-// var https = require('https');
-// const access_token = PAGE_ACCESS_TOKEN ;
-
-// const data = JSON.stringify({
-
-//   "get_started":{"payload":"Get Started"}
-
-// })
+function enable_get_started()
+{
 
 
-// const options = {
-//   method: 'POST',
-//   hostname: 'graph.facebook.com',
-//   port:443,
-//   path: '/v2.6/me/messenger_profile?access_token='+ access_token,
-//   headers: {
-//     'Content-Type': 'application/json',
-//     'Content-Length': data.length
-//   }
-// }
+var https = require('https');
+const access_token = PAGE_ACCESS_TOKEN ;
+
+const data = JSON.stringify({
+
+  "get_started":{"payload":"USER_DEFINED_PAYLOAD"}
+
+})
 
 
+const options = {
+  method: 'POST',
+  hostname: 'graph.facebook.com',
+  port:443,
+  path: '/v2.6/me/messenger_profile?access_token='+ access_token,
+  headers: {
+    'Content-Type': 'application/json',
+    'Content-Length': data.length
+  }
+}
 
 
 
 
-// var req = https.request(options, (res)=> {
-//   res.on('data',(d) => {process.stdout.write(d)})
 
 
-//     })
-
-//     req.on("error", (error) => { console.error(error)})
-
-//    req.write(data)
-//    req.end()
+var req = https.request(options, (res)=> {
+  res.on('data',(d) => {process.stdout.write(d)})
 
 
+    })
 
-// }
+    req.on("error", (error) => { console.error(error)})
+
+   req.write(data)
+   req.end()
+
+
+
+}
+
+/* ONLY RUN ONCE IN A BOT for get started button */
+greeting(); 
+
+function greeting()
+{
+
+
+var https = require('https');
+const access_token = PAGE_ACCESS_TOKEN ;
+
+const data = JSON.stringify({
+
+
+  "greeting": [
+    {
+      "locale":"default",
+      "text":"Hello {{user_first_name}} !" 
+    }, {
+      "locale":"en_US",
+      "text":"Hi. This is Automated Meme sender so you don't have to communicate with any humans"
+    }
+  ]
+
+})
+
+
+const options = {
+  method: 'POST',
+  hostname: 'graph.facebook.com',
+  port:443,
+  path: '/v2.6/me/messenger_profile?access_token='+ access_token,
+  headers: {
+    'Content-Type': 'application/json',
+    'Content-Length': data.length
+  }
+}
+var req = https.request(options, (res)=> {
+  res.on('data',(d) => {process.stdout.write(d)})
+
+
+    })
+
+    req.on("error", (error) => { console.error(error)})
+
+   req.write(data)
+   req.end()
+
+
+
+}
 
 /*
  * Verify that the callback came from Facebook. Using the App Secret from
@@ -478,7 +529,12 @@ function receivedMessage(event) {
     // The 'payload' param is a developer-defined field which is set in a postback
     // button for Structured Messages.
     var payload = event.postback.payload;
-
+	 if(event.postback && event.postback.payload === USER_DEFINED_PAYLOAD )
+        {
+                //present user with some greeting or call to action
+                var msg = "Hi ,I'm a Bot ,and I was created to help you easily .... "
+                //sendMessage(event.sender.id,msg);      
+        } 
     console.log("Received postback for user %d and page %d with payload '%s' " +
       "at %d", senderID, recipientID, payload, timeOfPostback);
 
