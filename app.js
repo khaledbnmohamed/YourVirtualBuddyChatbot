@@ -256,7 +256,7 @@ app.get('/authorize', function (req, res) {
 
 // }
 
- function getFirstName(senderID,callback)
+var getFirstName=  function (senderID,callback)
  {
 
 
