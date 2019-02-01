@@ -287,6 +287,7 @@ const options = {
         console.log("name after pasring " + JSON.parse(body).first_name)
     	first_name= JSON.parse(body).first_name;
 		console.log("first_name at get first name "+ first_name)
+		 return callback(first_name);
       });
 
       res.on("error", function (error) {
@@ -295,8 +296,7 @@ const options = {
 
     });
 
- 	callback(first_name);
-	 return callback;
+ 	
 
     req.end();
     
@@ -586,7 +586,7 @@ function receivedMessage(event) {
         		// }
         		user_first_name=getFirstName(senderID,function (err, data) {
 						   if (err) return console.error(err);
-						   console.log(data.toString());
+						   console.log(data);
 						});
 			        		
         		console.log("user_first_name" + user_first_name)
