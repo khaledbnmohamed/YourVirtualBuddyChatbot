@@ -532,7 +532,7 @@ function receivedMessage(event) {
         default:
           tools.sendTypingOn(senderID);
           tools.sendTextMessage(senderID, default_text);
-          tools.sendQuickReply(senderID);
+          setTimeout(function(){tools.sendQuickReply(senderID)},3000); //added timeout to make sure it comes later
           tools.sendTypingOff(senderID);
 
       }
