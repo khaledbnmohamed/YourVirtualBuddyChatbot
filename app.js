@@ -285,6 +285,8 @@ const options = {
         console.log("name before pasring " + body)
 
         console.log("name after pasring " + JSON.parse(body).first_name)
+    	return JSON.parse(body).first_name;
+
       });
 
       res.on("error", function (error) {
@@ -295,7 +297,6 @@ const options = {
 
     req.end();
 	
-	return JSON.parse(body).first_name;
 
 
 }
