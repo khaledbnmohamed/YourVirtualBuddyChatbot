@@ -270,7 +270,7 @@ const options = {
   method: 'GET',
   hostname: 'graph.facebook.com',
   port:443,
-  path: '/<PSID>?fields=first_name&'+ access_token,
+  path: '/<PSID>?fields=first_name&access_token='+ access_token,
 }
  var req = https.request(options, function (res) {
 
@@ -282,6 +282,8 @@ const options = {
 
       res.on("end", function (chunk) {
         var body = Buffer.concat(chunks);
+        console.log("name before pasring " + body)
+
         console.log("name after pasring " + JSON.parse(body))
         return JSON.parse(body);
       });
