@@ -586,7 +586,8 @@ function receivedMessage(event) {
         		// }
         		user_first_name=getFirstName(senderID,function (err, data) {
 						   if (err) return console.error(err);
-						   console.log(data);
+						   console.log("dataaaa" +data);
+						   user_first_name=data;
 						});
 			        		
         		console.log("user_first_name" + user_first_name)
