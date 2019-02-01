@@ -526,7 +526,7 @@ function receivedMessage(event) {
         default:
           tools.sendTypingOn(senderID);
           tools.sendTextMessage(senderID, default_text);
-          tools.sendQuickReply(semderID);
+          tools.sendQuickReply(senderID);
           tools.sendTypingOff(senderID);
 
       }
@@ -696,13 +696,18 @@ function receivedMessage(event) {
         // console.log(JSON.parse(body).data[0])
         console.log(options.path)
         let image_link = formingElements(body, senderID, false)
-        if (image_link) {
+        if (!image_link) {
+        
+        image_link = formingElements(body, senderID, false)
+
+        }
+      else{
+        //Handling empty image responses 
 
           tools.sendTypingOff(senderID);
           tools.sendImageMessage(senderID, image_link);
 
-
-        }
+      }
 
       });
 
