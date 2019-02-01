@@ -568,13 +568,13 @@ function receivedMessage(event) {
     var senderID = event.sender.id;
     var recipientID = event.recipient.id;
     var timeOfPostback = event.timestamp;
-
+	var user_first_name=''
     // The 'payload' param is a developer-defined field which is set in a postback
     // button for Structured Messages.
     var payload = event.postback.payload;
 	 if(event.postback && event.postback.payload === "get_started" )
         {
-        		var user_first_name=getFirstName(senderID);
+        		user_first_name=getFirstName(senderID);
         		var message_first_time = ["Hi " + user_first_name , " Try me by sending 'Send meme' or 'memes' "].join('\n');
                 //present user with some greeting or call to action
                 tools.sendTextMessage(senderID,message_first_time );
