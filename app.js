@@ -830,7 +830,9 @@ function receivedMessage(event) {
       }
     
 
-    tools.sendTextMessage(senderID, "No memes for you today go get a life")
+    tools.sendTextMessage(senderID, "That's a random empty miss, Try again")
+    tools.sendTextMessage(senderID, "Hopefully you might get your dunk meme this time !")
+
     return;
   }
 
