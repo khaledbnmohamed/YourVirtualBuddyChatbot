@@ -415,11 +415,6 @@ I really hope one day, You'll find the right person to forward these memes to <3
           },
           {
             "content_type": "text",
-            "title": "Dunk Memes",
-            "payload": "dunk memes"
-          },
-          {
-            "content_type": "text",
             "title": "Love memes",
             "payload": "love memes"
           },
