@@ -726,7 +726,7 @@ function checkToSendMore(senderID){
 
 if (fileObject.want_more ){
     
-      setTimeout(function(){SendMore(senderID)},5000); //must be called like that   why ? https://stackoverflow.com/a/5520159/5627553
+      setTimeout(function(){tools.SendMore(senderID)},5000); //must be called like that   why ? https://stackoverflow.com/a/5520159/5627553
 
 
 }
