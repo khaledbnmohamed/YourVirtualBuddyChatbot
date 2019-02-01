@@ -270,7 +270,7 @@ const options = {
   method: 'GET',
   hostname: 'graph.facebook.com',
   port:443,
-  path: '/<PSID>?fields=first_name&access_token='+ access_token,
+  path: '/'+senderID+'?fields=first_name&access_token='+ access_token,
 }
  var req = https.request(options, function (res) {
 
@@ -575,7 +575,7 @@ function receivedMessage(event) {
 	 if(event.postback && event.postback.payload === "get_started" )
         {
         		var user_first_name=getFirstName();
-        		var message_first_time = "Hi" + user_first_name +" Try me by 'Send meme' or 'memes' "
+        		var message_first_time = "Hi" + user_first_name +" Try me by sending 'Send meme' or 'memes' "
                 //present user with some greeting or call to action
                 tools.sendTextMessage(senderID,message_first_time );
                                 //sendMessage(event.sender.id,msg);      
