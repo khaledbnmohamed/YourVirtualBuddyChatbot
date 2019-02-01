@@ -801,8 +801,7 @@ function receivedMessage(event) {
     else {
       i = Math.floor((Math.random() * random_factor) + 1);
     }
-
-    while (parsed.data[i]) {
+   while (parsed.data[i]) {
 
       console.log("entered ", i)
       /* to check for images if it belongs to album or not and a special case for
@@ -819,10 +818,17 @@ function receivedMessage(event) {
           return parsed.data[i].images[0].link
         }
       }
-      else {
+      else if (parsed.data[i].is_album == false) {
+          if(parsed.data[i].link){
+           return parsed.data[i].link
+          }
+        }
+
+        else{
         i++
       }
-    }
+      }
+    
 
     tools.sendTextMessage(senderID, "No memes for you today go get a life")
     return;
