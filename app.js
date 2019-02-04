@@ -11,7 +11,9 @@ const
   https = require('https'),
   request = require('request'),
   fs = require('fs'),
-  tools = require('./sendFunctions.js');
+  tools = require('./sendFunctions.js'),
+  functions = require('firebase-functions');
+
 
 
 
@@ -204,6 +206,99 @@ app.get('/authorize', function (req, res) {
 
 
 // }
+
+exports.dialogflowFirebaseFulfillment = functions.https.onRequest((req, res) => {
+  // Get the city and date from the request
+  let city = req.body.queryResult.parameters['city']; // city is a required param
+
+    if (city) {
+
+      // If we receive a text message, check to see if it matches any special
+      // keywords and send back the corresponding example. Otherwise, just echo
+      // the text we received.
+
+
+      switch (messageText.replace(/[^\w\s]/gi, '').trim().toLowerCase()) {
+        case 'hello':
+        case 'hi':
+          tools.sendHiMessage(senderID);
+          break;
+
+        case 'image':
+          tools.requiresServerURL(tools.sendImageMessage, [senderID]);
+          break;
+
+        case 'gif':
+          tools.requiresServerURL(tools.sendGifMessage, [senderID]);
+          break;
+
+        case '<3':
+          tools.sendTextMessage(senderID, "I love you too <3");
+          break;
+
+        case 'video':
+          tools.requiresServerURL(tools.sendVideoMessage, [senderID]);
+          break;
+
+        case 'file':
+          tools.requiresServerURL(tools.sendFileMessage, [senderID]);
+          break;
+
+        case 'button':
+          tools.sendButtonMessage(senderID);
+          break;
+
+        case 'generic':
+          tools.requiresServerURL(tools.sendGenericMessage, [senderID]);
+          break;
+
+        case 'receipt':
+          tools.requiresServerURL(tools.sendReceiptMessage, [senderID]);
+          break;
+
+        case 'memes':
+          tools.sendQuickReply(senderID);
+		  // checkToSendMore(senderID);
+          break;
+
+        case 'another category':
+          tools.sendQuickReply(senderID);
+      // checkToSendMore(senderID);
+          break;
+
+
+        case 'read receipt':
+          tools.sendReadReceipt(senderID);
+          break;
+
+
+        case 'account linking':
+          tools.requiresServerURL(sendAccountLinking, [senderID]);
+          break;
+
+        case 'send meme':
+          // tools.sendTypingOn(senderID); //typing on till fetching
+          saveToFile(2,"memes",true);
+          chooseCaller(2,null,senderID); 
+		     checkToSendMore(senderID);
+
+          break;
+
+        default:
+          tools.sendTypingOn(senderID);
+          tools.sendTextMessage(senderID, default_text);
+          setTimeout(function(){tools.sendQuickReply(senderID)},3000); //added timeout to make sure it comes later
+          tools.sendTypingOff(senderID);
+
+      }
+    } else if (messageAttachments) {
+      tools.sendTextMessage(senderID, "Message with attachment received");
+    }
+  
+  });
+
+
+
 
 /* ONLY RUN ONCE IN A BOT for greeting message */
 // greeting(); 
