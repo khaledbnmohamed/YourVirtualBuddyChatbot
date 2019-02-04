@@ -11,10 +11,7 @@ const
   https = require('https'),
   request = require('request'),
   fs = require('fs'),
-  tools = require('./sendFunctions.js'),
-  functions = require('firebase-functions');
-
-
+  tools = require('./sendFunctions.js');
 
 
 
@@ -207,95 +204,155 @@ app.get('/authorize', function (req, res) {
 
 // }
 
-exports.dialogflowFirebaseFulfillment = functions.https.onRequest((req, res) => {
-  // Get the city and date from the request
-  let city = req.body.queryResult.parameters['city']; // city is a required param
+/* DialogFlow API
+ * All callbacks for Messenger are POST-ed. They will be sent to the same
+ * webhook. Be sure to subscribe your app to your page to receive callbacks
+ * for your page.
+ * https://developers.facebook.com/docs/messenger-platform/product-overview/setup#subscribe_app
+ *
+ */
+app.post('/dialogflow', function (req, res) {
+  var data = req.body;
 
-    if (city) {
+  console.log("Entered "+ data);
 
-      // If we receive a text message, check to see if it matches any special
-      // keywords and send back the corresponding example. Otherwise, just echo
-      // the text we received.
+  // Make sure this is a page subscription
+  if (data.object == 'page') {
+    // Iterate over each entry
+    // There may be multiple if batched
+    data.entry.forEach(function (pageEntry) {
+      var pageID = pageEntry.id;
+      var timeOfEvent = pageEntry.time;
 
+      // Iterate over each messaging event
+      pageEntry.messaging.forEach(function (messagingEvent) {
+        if (messagingEvent.optin) {
+          receivedAuthentication(messagingEvent);
+        } else if (messagingEvent.message) {
+          receivedMessage(messagingEvent);
+        } else if (messagingEvent.delivery) {
+          receivedDeliveryConfirmation(messagingEvent);
+        } else if (messagingEvent.postback) {
+          receivedPostback(messagingEvent);
+        } else if (messagingEvent.read) {
+          receivedMessageRead(messagingEvent);
+        } else if (messagingEvent.account_linking) {
+          receivedAccountLink(messagingEvent);
+        } else {
+          console.log("Webhook received unknown messagingEvent: ", messagingEvent);
+        }
+      });
+    });
 
-      switch (messageText.replace(/[^\w\s]/gi, '').trim().toLowerCase()) {
-        case 'hello':
-        case 'hi':
-          tools.sendHiMessage(senderID);
-          break;
-
-        case 'image':
-          tools.requiresServerURL(tools.sendImageMessage, [senderID]);
-          break;
-
-        case 'gif':
-          tools.requiresServerURL(tools.sendGifMessage, [senderID]);
-          break;
-
-        case '<3':
-          tools.sendTextMessage(senderID, "I love you too <3");
-          break;
-
-        case 'video':
-          tools.requiresServerURL(tools.sendVideoMessage, [senderID]);
-          break;
-
-        case 'file':
-          tools.requiresServerURL(tools.sendFileMessage, [senderID]);
-          break;
-
-        case 'button':
-          tools.sendButtonMessage(senderID);
-          break;
-
-        case 'generic':
-          tools.requiresServerURL(tools.sendGenericMessage, [senderID]);
-          break;
-
-        case 'receipt':
-          tools.requiresServerURL(tools.sendReceiptMessage, [senderID]);
-          break;
-
-        case 'memes':
-          tools.sendQuickReply(senderID);
-		  // checkToSendMore(senderID);
-          break;
-
-        case 'another category':
-          tools.sendQuickReply(senderID);
-      // checkToSendMore(senderID);
-          break;
+    // Assume all went well.
+    //
+    // You must send back a 200, within 20 seconds, to let us know you've
+    // successfully received the callback. Otherwise, the request will time out.
+    res.sendStatus(200);
+  }
+});
 
 
-        case 'read receipt':
-          tools.sendReadReceipt(senderID);
-          break;
 
 
-        case 'account linking':
-          tools.requiresServerURL(sendAccountLinking, [senderID]);
-          break;
+// restService.post("/echo", function(req, res) {
+//   var speech =
+//     req.body.result &&
+//     req.body.result.parameters &&
+//     req.body.result.parameters.echoText
+//       ? req.body.result.parameters.echoText
+//       : "Seems like some problem. Speak again.";
+//   return res.json({
+//     speech: speech,
+//     displayText: speech,
+//     source: "webhook-echo-sample"
+//   });
+// });
 
-        case 'send meme':
-          // tools.sendTypingOn(senderID); //typing on till fetching
-          saveToFile(2,"memes",true);
-          chooseCaller(2,null,senderID); 
-		     checkToSendMore(senderID);
+    // if (city) {
 
-          break;
+    //   // If we receive a text message, check to see if it matches any special
+    //   // keywords and send back the corresponding example. Otherwise, just echo
+    //   // the text we received.
 
-        default:
-          tools.sendTypingOn(senderID);
-          tools.sendTextMessage(senderID, default_text);
-          setTimeout(function(){tools.sendQuickReply(senderID)},3000); //added timeout to make sure it comes later
-          tools.sendTypingOff(senderID);
 
-      }
-    } else if (messageAttachments) {
-      tools.sendTextMessage(senderID, "Message with attachment received");
-    }
+    //   switch (messageText.replace(/[^\w\s]/gi, '').trim().toLowerCase()) {
+    //     case 'hello':
+    //     case 'hi':
+    //       tools.sendHiMessage(senderID);
+    //       break;
+
+    //     case 'image':
+    //       tools.requiresServerURL(tools.sendImageMessage, [senderID]);
+    //       break;
+
+    //     case 'gif':
+    //       tools.requiresServerURL(tools.sendGifMessage, [senderID]);
+    //       break;
+
+    //     case '<3':
+    //       tools.sendTextMessage(senderID, "I love you too <3");
+    //       break;
+
+    //     case 'video':
+    //       tools.requiresServerURL(tools.sendVideoMessage, [senderID]);
+    //       break;
+
+    //     case 'file':
+    //       tools.requiresServerURL(tools.sendFileMessage, [senderID]);
+    //       break;
+
+    //     case 'button':
+    //       tools.sendButtonMessage(senderID);
+    //       break;
+
+    //     case 'generic':
+    //       tools.requiresServerURL(tools.sendGenericMessage, [senderID]);
+    //       break;
+
+    //     case 'receipt':
+    //       tools.requiresServerURL(tools.sendReceiptMessage, [senderID]);
+    //       break;
+
+    //     case 'memes':
+    //       tools.sendQuickReply(senderID);
+		  // // checkToSendMore(senderID);
+    //       break;
+
+    //     case 'another category':
+    //       tools.sendQuickReply(senderID);
+    //   // checkToSendMore(senderID);
+    //       break;
+
+
+    //     case 'read receipt':
+    //       tools.sendReadReceipt(senderID);
+    //       break;
+
+
+    //     case 'account linking':
+    //       tools.requiresServerURL(sendAccountLinking, [senderID]);
+    //       break;
+
+    //     case 'send meme':
+    //       // tools.sendTypingOn(senderID); //typing on till fetching
+    //       saveToFile(2,"memes",true);
+    //       chooseCaller(2,null,senderID); 
+		  //    checkToSendMore(senderID);
+
+    //       break;
+
+    //     default:
+    //       tools.sendTypingOn(senderID);
+    //       tools.sendTextMessage(senderID, default_text);
+    //       setTimeout(function(){tools.sendQuickReply(senderID)},3000); //added timeout to make sure it comes later
+    //       tools.sendTypingOff(senderID);
+
+    //   }
+    // } else if (messageAttachments) {
+    //   tools.sendTextMessage(senderID, "Message with attachment received");
+    // }
   
-  });
 
 
 
