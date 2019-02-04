@@ -211,10 +211,10 @@ app.get('/authorize', function (req, res) {
  * https://developers.facebook.com/docs/messenger-platform/product-overview/setup#subscribe_app
  *
  */
-app.post('/dialogflow', function (req, res) {
+app.get('/dialogflow', function (req, res) {
   var data = req.body;
-
-  console.log("Entered "+ res.bod);
+  req="city"
+  console.log("Entered "+ req);
     res.sendStatus(200);
 
   // Make sure this is a page subscription
