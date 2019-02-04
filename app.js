@@ -214,36 +214,20 @@ app.get('/authorize', function (req, res) {
 app.post('/dialogflow', function (req, res) {
   var data = req.body;
 
-  console.log("Entered "+ JSON.parse(req.body));
+  
+  var data=
+   req.body.result &&
+    req.body.result.parameters &&
+    req.body.result.parameters.message
+      ? req.body.result.parameters.message
+      : "Seems like some problem. try again.";
+  return res.json({
+    speech: data,
+    displayText: data,
+    source: "My ivrutal app"
+  });
 
-  // Make sure this is a page subscription
-  if (data.object == 'page') {
-    // Iterate over each entry
-    // There may be multiple if batched
-    data.entry.forEach(function (pageEntry) {
-      var pageID = pageEntry.id;
-      var timeOfEvent = pageEntry.time;
-
-      // Iterate over each messaging event
-      pageEntry.messaging.forEach(function (messagingEvent) {
-        if (messagingEvent.optin) {
-          receivedAuthentication(messagingEvent);
-        } else if (messagingEvent.message) {
-          receivedMessage(messagingEvent);
-        } else if (messagingEvent.delivery) {
-          receivedDeliveryConfirmation(messagingEvent);
-        } else if (messagingEvent.postback) {
-          receivedPostback(messagingEvent);
-        } else if (messagingEvent.read) {
-          receivedMessageRead(messagingEvent);
-        } else if (messagingEvent.account_linking) {
-          receivedAccountLink(messagingEvent);
-        } else {
-          console.log("Webhook received unknown messagingEvent: ", messagingEvent);
-        }
-      });
-    });
-
+console.log("Entered "+ req.body.result);
     // Assume all went well.
     //
     // You must send back a 200, within 20 seconds, to let us know you've
