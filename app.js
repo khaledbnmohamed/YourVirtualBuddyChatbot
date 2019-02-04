@@ -214,7 +214,7 @@ app.get('/authorize', function (req, res) {
 app.post('/dialogflow', function (req, res) {
   var data = req.body;
 
-  console.log("Entered "+ JSON.parse(req));
+  console.log("Entered "+ JSON.parse(req.body));
 
   // Make sure this is a page subscription
   if (data.object == 'page') {
