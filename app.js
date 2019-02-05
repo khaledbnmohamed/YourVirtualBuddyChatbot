@@ -12,7 +12,9 @@ const
   request = require('request'),
   fs = require('fs'),
   tools = require('./sendFunctions.js'),
-  dialogflow = require('dialogflow');
+  dialogflow = require('dialogflow'),
+  {WebhookClient} = require('dialogflow-fulfillment'),
+  {Card, Suggestion} = require('dialogflow-fulfillment');
 
 
 
@@ -213,20 +215,12 @@ app.get('/authorize', function (req, res) {
  *
  */
 app.post('/dialogflow', function (req, res) {
-  var data = req.body;
+process.env.DEBUG = 'dialogflow:debug'; // enables lib debugging statements
 
-  
-  var data=
-   req.body.result &&
-    req.body.result.parameters &&
-    req.body.result.parameters.message
-      ? req.body.result.parameters.message
-      : "Seems like some problem. try again.";
-  return res.json({
-    speech: data,
-    displayText: data,
-    source: "My ivrutal app"
-  });
+  exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, response) => {
+  const agent = new WebhookClient({ request, response });
+  console.log('Dialogflow Request headers: ' + JSON.stringify(request.headers));
+  console.log('Dialogflow Request body: ' + JSON.stringify(request.body));
 
 console.log("Entered "+ req.body.result);
     // Assume all went well.
@@ -237,7 +231,7 @@ console.log("Entered "+ req.body.result);
   
 });
 
-
+});
 
 
 // restService.post("/echo", function(req, res) {
