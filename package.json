@@ -17,6 +17,8 @@
   "dependencies": {
     "body-parser": "^1.15.0",
     "config": "^1.20.4",
+    "dialogflow": "^0.8.0",
+    "dialogflow-fulfillment": "^0.6.1",
     "ejs": "^2.4.2",
     "express": "^4.13.4",
     "firebase": "^5.8.2",
