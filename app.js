@@ -22,7 +22,7 @@ var imgur_access_token = '2a8f6dacd57b657d8f9542b166724964c1ed8f8f'
 var imgur_username = 'khaledbnmohamed'
 
 
-var google_access_token = 'ya29.GluoBklW-I59nvq-Whfzf0n8lOiBJokwcNY-fjt2IFxje9T8MgYBpr4GEKv9nxDfuKhVp4MU0EFilZrICFzj0uXgYYvHyr_CTusL1f_SuouYaCSij9YUlcZ2QnDI'
+var google_access_token = 'ya29.GluoBiL-gc9bLLqFzMfbDqZ-xZXPkAkBbQ_-JyMeaBVX9TPauHh7OPZlXY6qx-6EEYDTRAJ1puBAx8agE0y87YrvT1zcnwIUxxaQc2_2avpdbvIj5JTnjMbsuX0w'
 var google_project_id = 'myvirtualbuddy-fab9e' // from google console
 
 
@@ -243,8 +243,8 @@ console.log("Entered "+ req.body.result);
   
 });
 /* ONLY RUN ONCE IN A BOT for greeting message */
-console.log()("sendtoDialogFlow(); " + sendtoDialogFlow())
-
+console.log("sendtoDialogFlow(); " )
+sendtoDialogFlow();
 function sendtoDialogFlow()
 {
 
