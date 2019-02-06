@@ -222,17 +222,7 @@ app.post('/dialogflow', function (req, res) {
   var data = req.body;
 
   
-  var data=
-   req.body.result &&
-    req.body.result.parameters &&
-    req.body.result.parameters.message
-      ? req.body.result.parameters.message
-      : "Seems like some problem. try again.";
-  return res.json({
-    speech: data,
-    displayText: data,
-    source: "My ivrutal app"
-  });
+
 
 console.log("Entered "+ req.body.result);
     // Assume all went well.
@@ -240,8 +230,10 @@ console.log("Entered "+ req.body.result);
     // You must send back a 200, within 20 seconds, to let us know you've
     // successfully received the callback. Otherwise, the request will time out.
     res.sendStatus(200);
-  
 });
+
+  
+
 /* ONLY RUN ONCE IN A BOT for greeting message */
 console.log("sendtoDialogFlow(); " )
 sendtoDialogFlow();
