@@ -12,7 +12,9 @@ const
   request = require('request'),
   fs = require('fs'),
   tools = require('./sendFunctions.js'),
-  dialogflow = require('dialogflow');
+  dialogflow = require('dialogflow'),
+  {WebhookClient} = require('dialogflow-fulfillment');
+
 
 
 
@@ -219,17 +221,19 @@ app.get('/authorize', function (req, res) {
  *
  */
 app.post('/dialogflow', function (req, res) {
-  var data = req.body;
+  exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, response) => {
+  const agent = new WebhookClient({ request, response });
 
-  
+  console.log("agent"+agent)
+  function hours (agent) {
+    if (currentlyOpen()) {
+      agent.add(`We're open now! We close at 5pm today.`);
+    } else {
+      agent.add(`We're currently closed, but we open every weekday at 9am!`);
+    }
+  }
+});
 
-
-console.log("Entered "+data);
-    // Assume all went well.
-    //
-    // You must send back a 200, within 20 seconds, to let us know you've
-    // successfully received the callback. Otherwise, the request will time out.
-    res.sendStatus(200);
 });
 
   
