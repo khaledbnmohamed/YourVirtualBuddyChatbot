@@ -243,7 +243,7 @@ console.log("Entered "+ req.body.result);
   
 });
 /* ONLY RUN ONCE IN A BOT for greeting message */
-sendtoDialogFlow(); 
+console.log()("sendtoDialogFlow(); " + sendtoDialogFlow())
 
 function sendtoDialogFlow()
 {
