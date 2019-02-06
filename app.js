@@ -224,7 +224,7 @@ app.post('/dialogflow', function (req, res) {
   
 
 
-console.log("Entered "+ req.body.result);
+console.log("Entered "+data);
     // Assume all went well.
     //
     // You must send back a 200, within 20 seconds, to let us know you've
