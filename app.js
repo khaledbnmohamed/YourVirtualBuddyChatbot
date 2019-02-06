@@ -20,6 +20,12 @@ var ImageLink = 'https://i.imgur.com/KZC2CW9.jpg'
 var clientId = '8056e5db3f369d1'
 var imgur_access_token = '2a8f6dacd57b657d8f9542b166724964c1ed8f8f'
 var imgur_username = 'khaledbnmohamed'
+
+
+var google_access_token = 'ya29.GluoBklW-I59nvq-Whfzf0n8lOiBJokwcNY-fjt2IFxje9T8MgYBpr4GEKv9nxDfuKhVp4MU0EFilZrICFzj0uXgYYvHyr_CTusL1f_SuouYaCSij9YUlcZ2QnDI'
+var google_project_id = 'myvirtualbuddy-fab9e' // from google console
+
+
 var FirstQuery = true;
 let counter = 0;
 var default_text = [ "You know that no matter how cool I am to you,",
@@ -236,108 +242,59 @@ console.log("Entered "+ req.body.result);
     res.sendStatus(200);
   
 });
+/* ONLY RUN ONCE IN A BOT for greeting message */
+sendtoDialogFlow(); 
+
+function sendtoDialogFlow()
+{
+
+
+var https = require('https');
+
+const data = JSON.stringify({
 
 
 
-
-// restService.post("/echo", function(req, res) {
-//   var speech =
-//     req.body.result &&
-//     req.body.result.parameters &&
-//     req.body.result.parameters.echoText
-//       ? req.body.result.parameters.echoText
-//       : "Seems like some problem. Speak again.";
-//   return res.json({
-//     speech: speech,
-//     displayText: speech,
-//     source: "webhook-echo-sample"
-//   });
-// });
-
-    // if (city) {
-
-    //   // If we receive a text message, check to see if it matches any special
-    //   // keywords and send back the corresponding example. Otherwise, just echo
-    //   // the text we received.
+  "queryInput": {
+    "text": {
+      "languageCode": "en",
+      "text": "Hi can yo help me"
+    }
+  }
 
 
-    //   switch (messageText.replace(/[^\w\s]/gi, '').trim().toLowerCase()) {
-    //     case 'hello':
-    //     case 'hi':
-    //       tools.sendHiMessage(senderID);
-    //       break;
-
-    //     case 'image':
-    //       tools.requiresServerURL(tools.sendImageMessage, [senderID]);
-    //       break;
-
-    //     case 'gif':
-    //       tools.requiresServerURL(tools.sendGifMessage, [senderID]);
-    //       break;
-
-    //     case '<3':
-    //       tools.sendTextMessage(senderID, "I love you too <3");
-    //       break;
-
-    //     case 'video':
-    //       tools.requiresServerURL(tools.sendVideoMessage, [senderID]);
-    //       break;
-
-    //     case 'file':
-    //       tools.requiresServerURL(tools.sendFileMessage, [senderID]);
-    //       break;
-
-    //     case 'button':
-    //       tools.sendButtonMessage(senderID);
-    //       break;
-
-    //     case 'generic':
-    //       tools.requiresServerURL(tools.sendGenericMessage, [senderID]);
-    //       break;
-
-    //     case 'receipt':
-    //       tools.requiresServerURL(tools.sendReceiptMessage, [senderID]);
-    //       break;
-
-    //     case 'memes':
-    //       tools.sendQuickReply(senderID);
-		  // // checkToSendMore(senderID);
-    //       break;
-
-    //     case 'another category':
-    //       tools.sendQuickReply(senderID);
-    //   // checkToSendMore(senderID);
-    //       break;
+})
 
 
-    //     case 'read receipt':
-    //       tools.sendReadReceipt(senderID);
-    //       break;
+const options = {
+  method: 'POST',
+  host: 'dialogflow.googleapis.com',
+  path: '/v2/projects/'+google_project_id+'/agent/sessions/1234567:detectIntent',
+  headers: {
+
+    'Authorization': 'Bearer '+google_access_token ,
+    'Content-Type': 'application/json',
+    'Accept':'application/json'
+
+  }
+}
+
+var req = https.request(options, (res)=> {
+  res.on('data',(d) => {process.stdout.write(d)})
 
 
-    //     case 'account linking':
-    //       tools.requiresServerURL(sendAccountLinking, [senderID]);
-    //       break;
+    })
 
-    //     case 'send meme':
-    //       // tools.sendTypingOn(senderID); //typing on till fetching
-    //       saveToFile(2,"memes",true);
-    //       chooseCaller(2,null,senderID); 
-		  //    checkToSendMore(senderID);
+    req.on("error", (error) => { console.error(error)})
 
-    //       break;
+   req.write(data)
 
-    //     default:
-    //       tools.sendTypingOn(senderID);
-    //       tools.sendTextMessage(senderID, default_text);
-    //       setTimeout(function(){tools.sendQuickReply(senderID)},3000); //added timeout to make sure it comes later
-    //       tools.sendTypingOff(senderID);
+   req.end()
 
-    //   }
-    // } else if (messageAttachments) {
-    //   tools.sendTextMessage(senderID, "Message with attachment received");
-    // }
-  
+
+
+}
+
 
 
 
