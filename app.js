@@ -246,10 +246,7 @@ app.get('/authorize', function (req, res) {
 
   
 
-/* ONLY RUN ONCE IN A BOT for greeting message */
-console.log("sendtoDialogFlow(); " )
-var Output = sendtoDialogFlow("I need love")
-console.log("OutputOutputOutputOutputOutputOutputOutputOutputOutput" +  Output )
+/*Dialogflow response API */
 
 function sendtoDialogFlow(MessagetoDialogFlow,callback)
 {
@@ -297,11 +294,15 @@ var req = https.request(options, (res)=> {
         var body = Buffer.concat(chunks);
         var parsed =JSON.parse(body)
         console.log("REquest is "+parsed.queryResult.fulfillmentText)
-        return parsed.queryResult.fulfillmentText;
-      });
+        callback("",parsed.queryResult.fulfillmentText);
+         });
+
+      res.on("error", function (error) {
+        console.error(error);
+        callback(error,"")
+      });     });
 
     })
-})
 
     req.on("error", (error) => { console.error(error)})
 
@@ -645,10 +646,10 @@ function receivedMessage(event) {
           tools.sendTypingOn(senderID);
           // tools.sendTextMessage(senderID, default_text);
 
-          tools.sendTextMessage(senderID, 
-                                        sendtoDialogFlow(messageText,function (err, data) {
+          sendtoDialogFlow(messageText,function (err, data) {
                                                      if (err) return console.error(err);
-                                                     return data; }) );
+                                                     tools.sendTextMessage(senderID,data) 
+                                                     return data; }) 
 
           
 
