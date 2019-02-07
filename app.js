@@ -248,7 +248,10 @@ app.get('/authorize', function (req, res) {
 
 /* ONLY RUN ONCE IN A BOT for greeting message */
 console.log("sendtoDialogFlow(); " )
-function sendtoDialogFlow(MessagetoDialogFlow)
+var Output = sendtoDialogFlow("I need love")
+console.log("OutputOutputOutputOutputOutputOutputOutputOutputOutput" +  Output )
+
+function sendtoDialogFlow(MessagetoDialogFlow,callback)
 {
 
 
@@ -641,7 +644,11 @@ function receivedMessage(event) {
         default:
           tools.sendTypingOn(senderID);
           // tools.sendTextMessage(senderID, default_text);
-          tools.sendTextMessage(senderID, sendtoDialogFlow(messageText));
+
+          tools.sendTextMessage(senderID, 
+                                        sendtoDialogFlow(messageText,function (err, data) {
+                                                     if (err) return console.error(err);
+                                                     return data; }) );
 
           
 
@@ -653,6 +660,7 @@ function receivedMessage(event) {
       tools.sendTextMessage(senderID, "Message with attachment received");
     }
   }
+
 
 
 
