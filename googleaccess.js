@@ -1,10 +1,9 @@
-'use strict';
 
-const bodyParser = require('body-parser'),
- config = require('config'),
- axios = require('axios'),
- querystring = require('querystring'),
- keys = require('../config/keys');
+const axios = require('axios');
+const querystring = require('querystring');
+// const keys = require('../config/keys');
+
+
 
 const getAccessToken = async refreshToken => {
   try {
@@ -17,9 +16,13 @@ const getAccessToken = async refreshToken => {
         grant_type: 'refresh_token'
       })
     );
+    console.log("I'm here")
     console.log("accessTokenObj.data.access_token"+accessTokenObj.data.access_token)
     return accessTokenObj.data.access_token;
   } catch (err) {
     console.log(err);
   }
 };
+
+var token = getAccessToken;
+console.log("get access_token" +  token);
