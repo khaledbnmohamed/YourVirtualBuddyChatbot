@@ -13,7 +13,15 @@ const
   fs = require('fs'),
   tools = require('./sendFunctions.js'),
   dialogflow = require('dialogflow'),
-  {WebhookClient} = require('dialogflow-fulfillment');
+  {WebhookClient} = require('dialogflow-fulfillment'),
+  functions = require('firebase-functions'),
+  {google} = require('googleapis'),
+  oauth2Client = new google.auth.OAuth2(
+  YOUR_CLIENT_ID,
+  YOUR_CLIENT_SECRET,
+  YOUR_REDIRECT_URL
+);
+
 
 
 
@@ -24,7 +32,7 @@ var imgur_access_token = '2a8f6dacd57b657d8f9542b166724964c1ed8f8f'
 var imgur_username = 'khaledbnmohamed'
 
 
-var google_access_token = 'ya29.GluoBiL-gc9bLLqFzMfbDqZ-xZXPkAkBbQ_-JyMeaBVX9TPauHh7OPZlXY6qx-6EEYDTRAJ1puBAx8agE0y87YrvT1zcnwIUxxaQc2_2avpdbvIj5JTnjMbsuX0w'
+var google_access_token = 'ya29.GluoBt-Kl5_gydSebbZXKxjzJu7ff5QaRciusg0_0AYm6CjITAysp8iXToOLzg9bwWChQJWEnWsEOBi7PXMCeHL3Sq7y4IRI65Int2sMMJhMlpMZFL_ows39zZTY'
 var google_project_id = 'myvirtualbuddy-fab9e' // from google console
 
 
@@ -220,21 +228,21 @@ app.get('/authorize', function (req, res) {
  * https://developers.facebook.com/docs/messenger-platform/product-overview/setup#subscribe_app
  *
  */
-app.post('/dialogflow', function (req, res) {
-  exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, response) => {
-  const agent = new WebhookClient({ request, response });
+// app.post('/webhook', function (req, res) {
+//   exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, response) => {
+//   const agent = new WebhookClient({ request, response });
 
-  console.log("agent"+agent)
-  function hours (agent) {
-    if (currentlyOpen()) {
-      agent.add(`We're open now! We close at 5pm today.`);
-    } else {
-      agent.add(`We're currently closed, but we open every weekday at 9am!`);
-    }
-  }
-});
+//   console.log("dialogflowFirebaseFulfillment"+dialogflowFirebaseFulfillment)
+//   function hours (agent) {
+//     if (currentlyOpen()) {
+//       agent.add(`We're open now! We close at 5pm today.`);
+//     } else {
+//       agent.add(`We're currently closed, but we open every weekday at 9am!`);
+//     }
+//   }
+// });
 
-});
+// });
 
   
 
@@ -245,7 +253,9 @@ function sendtoDialogFlow()
 {
 
 
+
 var https = require('https');
+var chunks = [];
 
 const data = JSON.stringify({
 
@@ -279,7 +289,15 @@ var req = https.request(options, (res)=> {
   res.on('data',(d) => {process.stdout.write(d)})
 
 
+       res.on("data", function (chunk) {
+        chunks.push(chunk);
+      res.on("end", function (chunk) {
+        var body = Buffer.concat(chunks);
+        console.log("REquest is "+body.fulfillmentMessages.text)
+      });
+
     })
+})
 
     req.on("error", (error) => { console.error(error)})
 
