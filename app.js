@@ -641,7 +641,7 @@ function receivedMessage(event) {
         default:
           tools.sendTypingOn(senderID);
           // tools.sendTextMessage(senderID, default_text);
-          tools.sendTextMessage(senderID, sendtoDialogFlow(MessagetoDialogFlow));
+          tools.sendTextMessage(senderID, sendtoDialogFlow(messageText));
 
           
 
