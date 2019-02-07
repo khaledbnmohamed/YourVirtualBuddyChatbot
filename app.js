@@ -15,16 +15,16 @@ const
   dialogflow = require('dialogflow'),
   {WebhookClient} = require('dialogflow-fulfillment'),
   functions = require('firebase-functions'),
-  {google} = require('googleapis'),
-  oauth2Client = new google.auth.OAuth2(
-  YOUR_CLIENT_ID,
-  YOUR_CLIENT_SECRET,
-  YOUR_REDIRECT_URL
-);
+  {google} = require('googleapis');
+//   oauth2Client = new google.auth.OAuth2(
+//   YOUR_CLIENT_ID,
+//   YOUR_CLIENT_SECRET,
+//   YOUR_REDIRECT_URL
+// );
 
 
 
-
+var MessagetoDialogFlow= ""
 
 var ImageLink = 'https://i.imgur.com/KZC2CW9.jpg'
 var clientId = '8056e5db3f369d1'
@@ -32,7 +32,7 @@ var imgur_access_token = '2a8f6dacd57b657d8f9542b166724964c1ed8f8f'
 var imgur_username = 'khaledbnmohamed'
 
 
-var google_access_token = 'ya29.GluoBt-Kl5_gydSebbZXKxjzJu7ff5QaRciusg0_0AYm6CjITAysp8iXToOLzg9bwWChQJWEnWsEOBi7PXMCeHL3Sq7y4IRI65Int2sMMJhMlpMZFL_ows39zZTY'
+var google_access_token ='ya29.GlypBsU_3vsch-XJXyE_djqR51_x5a_S_qbVjZRTd8Wv0ZfqQoEEc73U9LDNIbZuOqV2nbFArW-X0zaASQN6h8jBsQGUVg2c2xBPHEg3_oCCAy6g4HoLN74j0ilChQ'
 var google_project_id = 'myvirtualbuddy-fab9e' // from google console
 
 
@@ -248,8 +248,7 @@ app.get('/authorize', function (req, res) {
 
 /* ONLY RUN ONCE IN A BOT for greeting message */
 console.log("sendtoDialogFlow(); " )
-sendtoDialogFlow();
-function sendtoDialogFlow()
+function sendtoDialogFlow(MessagetoDialogFlow)
 {
 
 
@@ -264,7 +263,7 @@ const data = JSON.stringify({
   "queryInput": {
     "text": {
       "languageCode": "en",
-      "text": "Hi can yo help me"
+      "text": MessagetoDialogFlow
     }
   }
 
@@ -293,7 +292,9 @@ var req = https.request(options, (res)=> {
         chunks.push(chunk);
       res.on("end", function (chunk) {
         var body = Buffer.concat(chunks);
-        console.log("REquest is "+body.fulfillmentMessages.text)
+        var parsed =JSON.parse(body)
+        console.log("REquest is "+parsed.queryResult.fulfillmentText)
+        return parsed.queryResult.fulfillmentText;
       });
 
     })
@@ -639,7 +640,11 @@ function receivedMessage(event) {
 
         default:
           tools.sendTypingOn(senderID);
-          tools.sendTextMessage(senderID, default_text);
+          // tools.sendTextMessage(senderID, default_text);
+          tools.sendTextMessage(senderID, sendtoDialogFlow(MessagetoDialogFlow));
+
+          
+
           setTimeout(function(){tools.sendQuickReply(senderID)},3000); //added timeout to make sure it comes later
           tools.sendTypingOff(senderID);
 
