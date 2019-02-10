@@ -31,6 +31,7 @@ var ImageLink = 'https://i.imgur.com/KZC2CW9.jpg'
 var clientId = '8056e5db3f369d1'
 var imgur_access_token = '2a8f6dacd57b657d8f9542b166724964c1ed8f8f'
 var imgur_username = 'khaledbnmohamed'
+var returnedFromDialogFlow=false
 
 
 var google_access_token =tokenFile.sign();
@@ -584,7 +585,6 @@ function receivedMessage(event) {
 
 function checkMessageContent(messageText,senderID){
 
-var returnedFromDialogFlow=''
       switch (messageText.replace(/[^\w\s]/gi, '').trim().toLowerCase()) {
         case 'hello':
         case 'hi':
