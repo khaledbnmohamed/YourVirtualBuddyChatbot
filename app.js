@@ -299,7 +299,7 @@ var req = https.request(options, (res)=> {
       res.on("end", function (chunk) {
         var body = Buffer.concat(chunks);
         var parsed =JSON.parse(body)
-        if(parsed.queryResult.intent){
+        if(parsed.queryResult.intent.displayName){
 
               console.log("REquest isparsed.queryResult.intent.displayName "+parsed.queryResult.intent.displayName)
 
