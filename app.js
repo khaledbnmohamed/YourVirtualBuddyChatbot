@@ -250,9 +250,9 @@ app.get('/authorize', function (req, res) {
 
 /*Dialogflow response API */
 
-sendtoDialogFlow("I want memes",function (err, data) {
-if (err) return console.error(err);
-return data; }) 
+// sendtoDialogFlow("I want memes",function (err, data) {
+// if (err) return console.error(err);
+// return data; }) 
 
 function sendtoDialogFlow(MessagetoDialogFlow,callback)
 {
@@ -572,7 +572,7 @@ function receivedMessage(event) {
       // If we receive a text message, check to see if it matches any special
       // keywords and send back the corresponding example. Otherwise, just echo
       // the text we received.
-    checkMessageContent(messageText)
+    checkMessageContent(messageText,senderID)
 
     } else if (messageAttachments) {
       tools.sendTextMessage(senderID, "Message with attachment received");
@@ -582,7 +582,7 @@ function receivedMessage(event) {
 
 /* Check for message content*/
 
-function checkMessageContent(messageText){
+function checkMessageContent(messageText,senderID){
 
 var returnedFromDialogFlow=''
       switch (messageText.replace(/[^\w\s]/gi, '').trim().toLowerCase()) {
@@ -667,7 +667,7 @@ var returnedFromDialogFlow=''
 
                                                     returnedFromDialogFlow=true;
 
-                                                     checkMessageContent(data)
+                                                     checkMessageContent(data,senderID);
 
                                                      return data; }) 
 
