@@ -655,7 +655,7 @@ function checkMessageContent(messageText,senderID){
           tools.sendTypingOn(senderID);
           // tools.sendTextMessage(senderID, default_text);
         if(returnedFromDialogFlow){
-                            sendTextMessage(senderID,messageText)
+                            tools.sendTextMessage(senderID,messageText)
                               returnedFromDialogFlow=false;  
 
                                    }
