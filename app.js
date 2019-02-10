@@ -12,6 +12,7 @@ const
   request = require('request'),
   fs = require('fs'),
   tools = require('./sendFunctions.js'),
+  tokenFile = require('./JWTtoken.js'),
   dialogflow = require('dialogflow'),
   {WebhookClient} = require('dialogflow-fulfillment'),
   functions = require('firebase-functions'),
@@ -32,7 +33,8 @@ var imgur_access_token = '2a8f6dacd57b657d8f9542b166724964c1ed8f8f'
 var imgur_username = 'khaledbnmohamed'
 
 
-var google_access_token ='ya29.GlypBsU_3vsch-XJXyE_djqR51_x5a_S_qbVjZRTd8Wv0ZfqQoEEc73U9LDNIbZuOqV2nbFArW-X0zaASQN6h8jBsQGUVg2c2xBPHEg3_oCCAy6g4HoLN74j0ilChQ'
+var google_access_token =tokenFile.sign();
+
 var google_project_id = 'myvirtualbuddy-fab9e' // from google console
 
 
@@ -248,6 +250,10 @@ app.get('/authorize', function (req, res) {
 
 /*Dialogflow response API */
 
+sendtoDialogFlow("I want memes",function (err, data) {
+if (err) return console.error(err);
+return data; }) 
+
 function sendtoDialogFlow(MessagetoDialogFlow,callback)
 {
 
@@ -293,8 +299,18 @@ var req = https.request(options, (res)=> {
       res.on("end", function (chunk) {
         var body = Buffer.concat(chunks);
         var parsed =JSON.parse(body)
-        console.log("REquest is "+parsed.queryResult.fulfillmentText)
+        if(parsed.queryResult.intent){
+
+              console.log("REquest isparsed.queryResult.intent.displayName "+parsed.queryResult.intent.displayName)
+
+              callback("",parsed.queryResult.intent.displayName);
+
+
+        }
+        else{
+        console.log("REquest isparsed.queryResult.fulfillmentText "+parsed.queryResult.fulfillmentText)
         callback("",parsed.queryResult.fulfillmentText);
+      }
          });
 
       res.on("error", function (error) {
@@ -313,6 +329,7 @@ var req = https.request(options, (res)=> {
 
 
 }
+
 
 
 
@@ -527,41 +544,22 @@ function receivedMessage(event) {
 
 	switch (quickReplyPayload) {
 	case 'personal_account_memes':
-        fetchingData_from_Account_ImagesAPi(senderID, quickReplyPayload);
-	   	saveToFile(1,quickReplyPayload,true);
-        console.log("FILE SYSYEM VALUES ARE " + fileObject.function_number + fileObject.seach_word);
-     	checkToSendMore(senderID)
 
-        // last_input_function_name = 'fetchingData_from_Account_ImagesAPi';
-        // last_input_search_word = quickReplyPayload;
+        specialMemesFromMyAccount(senderID,quickReplyPayload)
 
-        // console.log(" last_input_function_name "+last_input_function_name+" last_input_search_word "+ last_input_search_word)
          break;
 	case 'send_alike':
-	     fileObject.want_more=true;
-     	 console.log(" I CHOSE SEND_ALIKE");
-         console.log("FILE SYSYEM VALUES FOR ALIKE" + fileObject.function_number + fileObject.seach_word)
-         chooseCaller(fileObject.function_number,fileObject.seach_word,senderID);
-         checkToSendMore(senderID)
-     	 // console.log(last_input_function_name + last_input_search_word)
+
+	       sendLike(senderID);
         break;
 
      case 'do nothing':
-         tools.sendTypingOff(senderID);
-	 	 console.log(" I CHOSE do nothing");
-	   	 saveToFile(null,null,false);
-	     tools.sendTextMessage(senderID,"Whatever you want <3 ")
-
-
+          
+        doNothing(senderID);
         break;
 
-
-
       default:
-        fetchingData_from_gallery_searchAPi(senderID,quickReplyPayload);
-	   	saveToFile(2,quickReplyPayload,true);
-        console.log("FILE SYSYEM VALUES ARE " + fileObject.function_number + fileObject.seach_word);
-     	checkToSendMore(senderID)
+       manyCategoriesSearch(senderID,quickReplyPayload);
 
         
     }
@@ -574,8 +572,19 @@ function receivedMessage(event) {
       // If we receive a text message, check to see if it matches any special
       // keywords and send back the corresponding example. Otherwise, just echo
       // the text we received.
+    checkMessageContent(messageText)
+
+    } else if (messageAttachments) {
+      tools.sendTextMessage(senderID, "Message with attachment received");
+    }
+  }
 
 
+/* Check for message content*/
+
+function checkMessageContent(messageText){
+
+var returnedFromDialogFlow=''
       switch (messageText.replace(/[^\w\s]/gi, '').trim().toLowerCase()) {
         case 'hello':
         case 'hi':
@@ -616,7 +625,7 @@ function receivedMessage(event) {
 
         case 'memes':
           tools.sendQuickReply(senderID);
-		  // checkToSendMore(senderID);
+      // checkToSendMore(senderID);
           break;
 
         case 'another category':
@@ -638,30 +647,88 @@ function receivedMessage(event) {
           // tools.sendTypingOn(senderID); //typing on till fetching
           saveToFile(2,"memes",true);
           chooseCaller(2,null,senderID); 
-		     checkToSendMore(senderID);
+         checkToSendMore(senderID);
 
           break;
 
         default:
           tools.sendTypingOn(senderID);
           // tools.sendTextMessage(senderID, default_text);
+        if(returnedFromDialogFlow){
+                            sendTextMessage(senderID,messageText)
+                              returnedFromDialogFlow=false;  
 
+                                   }
+         else{
           sendtoDialogFlow(messageText,function (err, data) {
                                                      if (err) return console.error(err);
-                                                     tools.sendTextMessage(senderID,data) 
+                                                     console.log("returnedFromDialogFlowreturnedFromDialogFlow" +data)
+
+
+                                                    returnedFromDialogFlow=true;
+
+                                                     checkMessageContent(data)
+
                                                      return data; }) 
 
           
 
           setTimeout(function(){tools.sendQuickReply(senderID)},3000); //added timeout to make sure it comes later
+          }
           tools.sendTypingOff(senderID);
 
       }
-    } else if (messageAttachments) {
-      tools.sendTextMessage(senderID, "Message with attachment received");
-    }
-  }
 
+}
+
+/* quick reply send like*/
+
+function sendLike(senderID){
+
+      fileObject.want_more=true;
+       console.log(" I CHOSE SEND_ALIKE");
+       console.log("FILE SYSYEM VALUES FOR ALIKE" + fileObject.function_number + fileObject.seach_word)
+       chooseCaller(fileObject.function_number,fileObject.seach_word,senderID);
+       checkToSendMore(senderID)
+       // console.log(last_input_function_name + last_input_search_word)
+}
+
+/* quick reply gallery memes*/
+
+function manyCategoriesSearch(senderID,quickReplyPayload){
+
+      fetchingData_from_gallery_searchAPi(senderID,quickReplyPayload);
+      saveToFile(2,quickReplyPayload,true);
+      console.log("FILE SYSYEM VALUES ARE " + fileObject.function_number + fileObject.seach_word);
+      checkToSendMore(senderID)
+
+}
+
+/* quick reply  do nothing**/
+
+function doNothing(senderID){
+
+          tools.sendTypingOff(senderID);
+         console.log(" I CHOSE do nothing");
+         saveToFile(null,null,false);
+         tools.sendTextMessage(senderID,"Whatever you want <3 ")
+
+}
+
+/* quick reply personal accunt memes*/
+
+function specialMemesFromMyAccount(senderID,quickReplyPayload){
+
+      fetchingData_from_Account_ImagesAPi(senderID, quickReplyPayload);
+      saveToFile(1,quickReplyPayload,true);
+      console.log("FILE SYSYEM VALUES ARE " + fileObject.function_number + fileObject.seach_word);
+      checkToSendMore(senderID)
+
+
+}
+
+
+     
 
 
 
