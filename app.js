@@ -300,7 +300,7 @@ var req = https.request(options, (res)=> {
       res.on("end", function (chunk) {
         var body = Buffer.concat(chunks);
         var parsed =JSON.parse(body)
-        if(parsed.queryResult.intent.displayName){
+        if(parsed.queryResult.intent.displayName && parsed.queryResult.intent.displayName != input_unknown){
 
               console.log("REquest isparsed.queryResult.intent.displayName "+parsed.queryResult.intent.displayName)
 
@@ -673,9 +673,11 @@ function checkMessageContent(messageText,senderID){
 
           
 
-          setTimeout(function(){tools.sendQuickReply(senderID)},3000); //added timeout to make sure it comes later
           }
           tools.sendTypingOff(senderID);
+
+          setTimeout(function(){tools.sendQuickReply(senderID)},3000); //added timeout to make sure it comes later
+
 
       }
 
