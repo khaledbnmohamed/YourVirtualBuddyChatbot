@@ -682,9 +682,13 @@ function checkMessageContent(messageText,senderID){
         default:
           tools.sendTypingOn(senderID);
           // tools.sendTextMessage(senderID, default_text);
+
+          console.log("Entered here at default")
         if(returnedFromDialogFlow){
+                    console.log("Entered here at return from dialog flow")
+
                             tools.sendTextMessage(senderID,messageText)
-                              returnedFromDialogFlow= !returnedFromDialogFlow;  
+                              returnedFromDialogFlow= false;  
 
                                    }
          else{
