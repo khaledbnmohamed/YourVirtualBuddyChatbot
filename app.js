@@ -608,7 +608,8 @@ function receivedMessage(event) {
 
     } else if (messageAttachments) {
       tools.sendTextMessage(senderID, "Uploaded Your meme for later Happiness");
-      tools.sendTextMessage(senderID, "You can access this meme and other selected memes by typing my memes");
+      setTimeout(function(){tools.sendTextMessage(senderID, "You can access this meme and other selected memes by typing 'my memes'");
+},2000); //added timeout to make sure it comes later
 
       if(messageAttachments[0].type === "image"){
      var imageURL = messageAttachments[0].payload.url;
@@ -720,7 +721,7 @@ function checkMessageContent(messageText,senderID){
                                                         // To access saved memes on my imgur account
 
                                                       specialMemesFromMyAccount(senderID,data);
-
+                                                      return;
                                                       } 
                                                       else{ 
                                                       // To allow generic search for any category using the intents from DialogFlow
