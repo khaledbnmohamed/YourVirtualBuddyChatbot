@@ -300,28 +300,31 @@ var req = https.request(options, (res)=> {
       res.on("end", function (chunk) {
         var body = Buffer.concat(chunks);
         var parsed =JSON.parse(body)
-        if(JSON.stringify(parsed.queryResult.parameters) == "{}" || JSON.parse(parsed.queryResult.parameters)[i]!="sendmeme"){
-              
-             console.log("REquest is parsed.queryResult.fulfillmentText "+parsed.queryResult.fulfillmentText)
+
+        try {
+             console.log("REquest is parsed.queryResult.parameters.sendmeme "+parsed.queryResult.parameters.sendmeme)
+                      DialogflowhasParameters=true
+                  callback("",parsed.queryResult.parameters.sendmeme); 
+
+          }
+          catch(err) {
+            console.log("REquest is parsed.queryResult.fulfillmentText "+parsed.queryResult.fulfillmentText)
             callback("",parsed.queryResult.fulfillmentText);
+          }
+
+
+        // if(JSON.stringify(parsed.queryResult.parameters) == "{}" || parsed.queryResult.parameters[i]!="sendmeme"){
+              
+        //     console.log("REquest is parsed.queryResult.fulfillmentText "+parsed.queryResult.fulfillmentText)
+        //     callback("",parsed.queryResult.fulfillmentText);
          
-            }
-         else{
+        //     }
+        //  else{
           
-          DialogflowhasParameters=true
-          console.log("REquest is parsed.queryResult.parameters.sendmeme "+parsed.queryResult.parameters.sendmeme)
-
-
-                  callback("",parsed.queryResult.parameters.sendmeme);  
-
-              }
           
-        
-           
-       
-            
 
-        
+        //       }
+
      
          });
 
