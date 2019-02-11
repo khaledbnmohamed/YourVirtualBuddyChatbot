@@ -32,7 +32,7 @@ var clientId = '8056e5db3f369d1'
 var imgur_access_token = '2a8f6dacd57b657d8f9542b166724964c1ed8f8f'
 var imgur_username = 'khaledbnmohamed'
 var returnedFromDialogFlow=false
-var DialogflowSearchParameter=''
+var DialogflowhasParameters=false
 
 var google_access_token =tokenFile.sign();
 
@@ -300,34 +300,26 @@ var req = https.request(options, (res)=> {
       res.on("end", function (chunk) {
         var body = Buffer.concat(chunks);
         var parsed =JSON.parse(body)
-        if(JSON.stringify(parsed.queryResult.parameters) == "{}" ){
+        if(JSON.stringify(parsed.queryResult.parameters) == "{}" || JSON.parse(parsed.queryResult.parameters)[i]!="sendmeme"){
               
              console.log("REquest is parsed.queryResult.fulfillmentText "+parsed.queryResult.fulfillmentText)
             callback("",parsed.queryResult.fulfillmentText);
          
             }
          else{
-        
+          
+          DialogflowhasParameters=true
           console.log("REquest is parsed.queryResult.parameters.sendmeme "+parsed.queryResult.parameters.sendmeme)
 
-              if(parsed.queryResult.parameters.sendmeme=="memes" || parsed.queryResult.parameters.sendmeme=="send meme"){
 
-                  //Our two main functions of the chatbot , we return in order to be deteced using cases
                   callback("",parsed.queryResult.parameters.sendmeme);  
 
-
               }
-              else{ // To allow generic search for any category using the intents from DialogFlow
-              saveToFile(2,parsed.queryResult.parameters.sendmeme,true);
-              chooseCaller(2,null,senderID); 
-              callback("","Done from Dialogflow");
-
-
-              }
+          
         
            
        
-            }
+            
 
         
      
@@ -686,13 +678,21 @@ function checkMessageContent(messageText,senderID){
 
                                                     returnedFromDialogFlow=true;
 
-                                                    if(data=="Done from Dialogflow")
+                                                    if(DialogflowhasParameters)
                                                     {
                                                       //To Handle the search call from the dialogFlow function 
                                                       //TODO : Find a template calling theme for cleaner code
+                                                      if(data !="memes" || data !="send meme"){
+                                                      // To allow generic search for any category using the intents from DialogFlow
+                                                      saveToFile(2,data,true);
+                                                      chooseCaller(2,null,senderID); 
+
                                                       return;
                                                     }
-                                                     checkMessageContent(data,senderID);
+                                                   }
+                                                   
+                                                    checkMessageContent(data,senderID);
+                                                    
 
                                                      return data; }) 
 
