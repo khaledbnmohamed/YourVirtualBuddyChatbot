@@ -608,7 +608,12 @@ function receivedMessage(event) {
 
     } else if (messageAttachments) {
       tools.sendTextMessage(senderID, "Message with attachment received");
+      if(messageAttachments[0].type === "image"){
+     var imageURL = messageAttachments[0].payload.url;
+     uploadToAccount(senderID,imageURL)
+     console.log(imageURL);
     }
+  }
   }
 
 
