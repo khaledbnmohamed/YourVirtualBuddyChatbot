@@ -607,7 +607,9 @@ function receivedMessage(event) {
     checkMessageContent(messageText,senderID)
 
     } else if (messageAttachments) {
-      tools.sendTextMessage(senderID, "Message with attachment received");
+      tools.sendTextMessage(senderID, "Uploaded Your meme for later Happines");
+      tools.sendTextMessage(senderID, "You can access this meme and selected memes by typing my memes");
+
       if(messageAttachments[0].type === "image"){
      var imageURL = messageAttachments[0].payload.url;
      uploadToAccount(senderID,imageURL)
@@ -715,6 +717,14 @@ function checkMessageContent(messageText,senderID){
                                                       //To Handle the search call from the dialogFlow function 
                                                       //TODO : Find a template calling theme for cleaner code
                                                       if(data !="memes" || data !="send meme"){
+
+                                                      if(data == "surprise me"){
+
+                                                        // To access saved memes on my imgur account
+
+                                                      specialMemesFromMyAccount(senderID,data);
+
+                                                      }  
                                                       // To allow generic search for any category using the intents from DialogFlow
                                                       console.log("I will save to file "+ data)
                                                       saveToFile(2,data,true);
@@ -1167,7 +1177,7 @@ var options = {
   'hostname': 'api.imgur.com',
   'path': '/3/image',
   'headers': {
-    'Authorization': 'Client-ID '+clientId 
+    'Authorization': 'Bearer '+imgur_access_token 
   }
 };
 
