@@ -607,8 +607,8 @@ function receivedMessage(event) {
     checkMessageContent(messageText,senderID)
 
     } else if (messageAttachments) {
-      tools.sendTextMessage(senderID, "Uploaded Your meme for later Happines");
-      tools.sendTextMessage(senderID, "You can access this meme and selected memes by typing my memes");
+      tools.sendTextMessage(senderID, "Uploaded Your meme for later Happiness");
+      tools.sendTextMessage(senderID, "You can access this meme and other selected memes by typing my memes");
 
       if(messageAttachments[0].type === "image"){
      var imageURL = messageAttachments[0].payload.url;
