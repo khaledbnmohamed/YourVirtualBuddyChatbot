@@ -300,9 +300,8 @@ var req = https.request(options, (res)=> {
       res.on("end", function (chunk) {
         var body = Buffer.concat(chunks);
         var parsed =JSON.parse(body)
-        if(parsed.queryResult.parameters === undefined || parsed.queryResult.parameters.length == 0){
+        if(parsed.queryResult.parameters == undefined || parsed.queryResult.parameters.length == 0){
               
-              console.log("parsed.queryResult.parameters " + parsed.queryResult.parameters)
              console.log("REquest is parsed.queryResult.fulfillmentText "+parsed.queryResult.fulfillmentText)
             callback("",parsed.queryResult.fulfillmentText);
          
@@ -999,8 +998,16 @@ function specialMemesFromMyAccount(senderID,quickReplyPayload){
     }
     else {
       i = Math.floor((Math.random() * random_factor) + 1);
+
+      console.log("Else random value" + Math.random())
     }
-   while (parsed.data[i]) {
+   while (parsed.data[i]==null){
+
+      console.log("while random value" + Math.random())
+      i = Math.floor((Math.random() * random_factor) + 1);
+
+
+   } 
 
       console.log("entered ", i)
       /* to check for images if it belongs to album or not and a special case for
@@ -1026,7 +1033,7 @@ function specialMemesFromMyAccount(senderID,quickReplyPayload){
         else{
         i++
       }
-      }
+      
     
 
     tools.sendTextMessage(senderID, "That's a random empty miss, Try again")
