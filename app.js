@@ -679,7 +679,7 @@ function checkMessageContent(messageText,senderID){
           }
           tools.sendTypingOff(senderID);
 
-          setTimeout(function(){tools.sendQuickReply(senderID)},3000); //added timeout to make sure it comes later
+          //setTimeout(function(){tools.sendQuickReply(senderID)},3000); //added timeout to make sure it comes later
 
 
       }
