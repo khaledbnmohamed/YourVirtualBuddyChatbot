@@ -724,6 +724,11 @@ function checkMessageContent(messageText,senderID){
                                                       specialMemesFromMyAccount(senderID,data);
                                                       return;
                                                       } 
+                                                      else if (data == "help"){
+
+                                                          tools.sendHiMessage(senderID);
+                                                         tools.sendTextMessage(senderID, "You can also send me a meme as an attachment to save it");
+                                                      }
                                                       else{ 
                                                       // To allow generic search for any category using the intents from DialogFlow
                                                       console.log("I will save to file "+ data)
