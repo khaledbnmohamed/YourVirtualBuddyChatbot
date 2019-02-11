@@ -627,6 +627,7 @@ function checkMessageContent(messageText,senderID){
         case 'hello':
         case 'hi':
           tools.sendHiMessage(senderID);
+          tools.sendTextMessage(senderID, "You can also send me a meme as an attachment to save it");
           break;
 
         case 'image':
@@ -635,10 +636,6 @@ function checkMessageContent(messageText,senderID){
 
         case 'gif':
           tools.requiresServerURL(tools.sendGifMessage, [senderID]);
-          break;
-
-        case '<3':
-          tools.sendTextMessage(senderID, "I love you too <3");
           break;
 
         case 'video':
@@ -724,7 +721,8 @@ function checkMessageContent(messageText,senderID){
 
                                                       specialMemesFromMyAccount(senderID,data);
 
-                                                      }  
+                                                      } 
+                                                      else{ 
                                                       // To allow generic search for any category using the intents from DialogFlow
                                                       console.log("I will save to file "+ data)
                                                       saveToFile(2,data,true);
@@ -732,6 +730,7 @@ function checkMessageContent(messageText,senderID){
 
                                                       return;
                                                     }
+                                                  }
                                                    }
                                                     returnedFromDialogFlow=true;
 
