@@ -728,6 +728,8 @@ function checkMessageContent(messageText,senderID){
 
                                                           tools.sendHiMessage(senderID);
                                                          tools.sendTextMessage(senderID, "You can also send me a meme as an attachment to save it");
+                                                          return;
+
                                                       }
                                                       else{ 
                                                       // To allow generic search for any category using the intents from DialogFlow
