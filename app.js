@@ -697,7 +697,6 @@ function checkMessageContent(messageText,senderID){
                                                      console.log("returnedFromDialogFlowreturnedFromDialogFlow" +data)
 
 
-                                                    returnedFromDialogFlow=true;
 
                                                     if(DialogflowhasParameters)
                                                     {
@@ -705,13 +704,15 @@ function checkMessageContent(messageText,senderID){
                                                       //TODO : Find a template calling theme for cleaner code
                                                       if(data !="memes" || data !="send meme"){
                                                       // To allow generic search for any category using the intents from DialogFlow
+                                                      console.log("I will save to file "+ data)
                                                       saveToFile(2,data,true);
                                                       chooseCaller(2,null,senderID); 
 
                                                       return;
                                                     }
                                                    }
-                                                   
+                                                    returnedFromDialogFlow=true;
+
                                                     checkMessageContent(data,senderID);
                                                     
 
