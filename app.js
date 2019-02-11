@@ -1169,7 +1169,6 @@ function findInJSON(JSONResponse,ArrayToFind,StringInArray){
   return ReturnString;
 }
 
-uploadToAccount("khalod", "https://www.cbc.ca/radio/includes/apps/images/coverimage/loveme-header.jpg")
 function uploadToAccount(senderID, image) {
 var https = require('https');
 
