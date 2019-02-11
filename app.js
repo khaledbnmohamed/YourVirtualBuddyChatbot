@@ -323,11 +323,14 @@ var req = https.request(options, (res)=> {
               }
               else{
 
+                DialogflowhasParameters=false
                 console.log("REquest is parsed.queryResult.fulfillmentText "+parsed.queryResult.fulfillmentText)
                   callback("",parsed.queryResult.fulfillmentText);
               }
             }
          else{
+
+                   DialogflowhasParameters=false
                    console.log("REquest is parsed.queryResult.fulfillmentText "+parsed.queryResult.fulfillmentText)
                   callback("",parsed.queryResult.fulfillmentText);
 
