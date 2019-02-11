@@ -626,6 +626,7 @@ function checkMessageContent(messageText,senderID){
 
       switch (messageText.replace(/[^\w\s]/gi, '').trim().toLowerCase()) {
         case 'hello':
+        case 'Help':
         case 'hi':
           tools.sendHiMessage(senderID);
           tools.sendTextMessage(senderID, "You can also send me a meme as an attachment to save it");
