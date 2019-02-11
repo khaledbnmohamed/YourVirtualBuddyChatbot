@@ -300,16 +300,20 @@ var req = https.request(options, (res)=> {
       res.on("end", function (chunk) {
         var body = Buffer.concat(chunks);
         var parsed =JSON.parse(body)
-        if(parsed.queryResult.parameters == undefined ){
-
-           console.log("REquest isparsed.queryResult.fulfillmentText "+parsed.queryResult.fulfillmentText)
+        if(parsed.queryResult.parameters === undefined || parsed.queryResult.parameters.length == 0){
+            
+             console.log("REquest isparsed.queryResult.fulfillmentText "+parsed.queryResult.fulfillmentText)
             callback("",parsed.queryResult.fulfillmentText);
-           
+         
             }
          else{
-             console.log("REquest isparsed.queryResult.intent.displayName "+parsed.queryResult.parameters.sendmeme)
+        
+          console.log("REquest isparsed.queryResult.intent.displayName "+parsed.queryResult.parameters.sendmeme)
 
               callback("",parsed.queryResult.parameters[0]);
+
+        
+           
        
             }
 
