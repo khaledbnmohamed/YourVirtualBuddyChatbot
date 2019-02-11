@@ -300,7 +300,7 @@ var req = https.request(options, (res)=> {
       res.on("end", function (chunk) {
         var body = Buffer.concat(chunks);
         var parsed =JSON.parse(body)
-        if(parsed.queryResult.parameters == undefined || parsed.queryResult.parameters.length == 0){
+        if(JSON.stringify(parsed.queryResult.parameters) == "{}" ){
               
              console.log("REquest is parsed.queryResult.fulfillmentText "+parsed.queryResult.fulfillmentText)
             callback("",parsed.queryResult.fulfillmentText);
