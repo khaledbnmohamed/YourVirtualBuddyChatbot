@@ -684,7 +684,7 @@ function checkMessageContent(messageText,senderID){
           // tools.sendTextMessage(senderID, default_text);
         if(returnedFromDialogFlow){
                             tools.sendTextMessage(senderID,messageText)
-                              returnedFromDialogFlow=false;  
+                              returnedFromDialogFlow= !returnedFromDialogFlow;  
 
                                    }
          else{
