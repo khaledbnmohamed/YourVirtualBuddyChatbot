@@ -251,9 +251,9 @@ app.get('/authorize', function (req, res) {
 
 /*Dialogflow response API */
 
-// sendtoDialogFlow("I want memes",function (err, data) {
-// if (err) return console.error(err);
-// return data; }) 
+sendtoDialogFlow("I want memes",function (err, data) {
+if (err) return console.error(err);
+return data; }) 
 
 function sendtoDialogFlow(MessagetoDialogFlow,callback)
 {
@@ -301,16 +301,17 @@ var req = https.request(options, (res)=> {
         var body = Buffer.concat(chunks);
         var parsed =JSON.parse(body)
         if(parsed.queryResult.parameters === undefined || parsed.queryResult.parameters.length == 0){
-            
-             console.log("REquest isparsed.queryResult.fulfillmentText "+parsed.queryResult.fulfillmentText)
+              
+              console.log("parsed.queryResult.parameters " + parsed.queryResult.parameters)
+             console.log("REquest is parsed.queryResult.fulfillmentText "+parsed.queryResult.fulfillmentText)
             callback("",parsed.queryResult.fulfillmentText);
          
             }
          else{
         
-          console.log("REquest isparsed.queryResult.intent.displayName "+parsed.queryResult.parameters.sendmeme)
+          console.log("REquest is parsed.queryResult.parameters.sendmeme "+parsed.queryResult.parameters.sendmeme)
 
-              callback("",parsed.queryResult.parameters[0]);
+              callback("",parsed.queryResult.parameters.sendmeme);
 
         
            
