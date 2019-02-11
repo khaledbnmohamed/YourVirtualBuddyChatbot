@@ -314,7 +314,7 @@ var req = https.request(options, (res)=> {
         if(JSON.stringify(parsed.queryResult.parameters) != "{}"  ){
 
               console.log("parsed.queryResult.parameters"+parsed.queryResult.parameters.sendmeme)
-              if(parsed.queryResult.parameters=="sendmeme"){
+              if(parsed.queryResult.parameters.sendmeme != "undefined"){
 
                    DialogflowhasParameters=true
                    console.log("REquest is parsed.queryResult.parameters.sendmeme "+parsed.queryResult.parameters.sendmeme)
