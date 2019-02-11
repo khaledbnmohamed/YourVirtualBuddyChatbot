@@ -674,6 +674,10 @@ function checkMessageContent(messageText,senderID){
           tools.requiresServerURL(sendAccountLinking, [senderID]);
           break;
 
+        case 'no':
+            doNothing(senderID);
+          break;
+
         case 'send meme':
           // tools.sendTypingOn(senderID); //typing on till fetching
           saveToFile(2,"memes",true);
@@ -1148,6 +1152,47 @@ function findInJSON(JSONResponse,ArrayToFind,StringInArray){
 
   return ReturnString;
 }
+
+function uploadToAccount(senderID, image) {
+
+
+   var https = require('https');
+
+var options = {
+  'method': 'POST',
+  'hostname': 'api.imgur.com',
+  'path': '/3/'+image,
+  'headers': {
+    'Authorization': 'Client-ID '+ clientId
+  }
+};
+
+var req = https.request(options, function (res) {
+  var chunks = [];
+
+  res.on("data", function (chunk) {
+    chunks.push(chunk);
+  });
+
+  res.on("end", function (chunk) {
+    var body = Buffer.concat(chunks);
+    console.log(body.toString());
+  });
+
+  res.on("error", function (error) {
+    console.error(error);
+  });
+});
+
+var postData = "------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"image\"\r\n\r\nR0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW--";
+
+req.setHeader('content-type', 'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW');
+
+req.write(postData);
+
+req.end();
+  }
+
 
   // Start server
   // Webhooks must be available via SSL with a certificate signed by a valid
