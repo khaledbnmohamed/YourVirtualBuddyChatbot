@@ -251,9 +251,9 @@ app.get('/authorize', function (req, res) {
 
 /*Dialogflow response API */
 
-sendtoDialogFlow("How old are you",function (err, data) {
-if (err) return console.error(err);
-return data; }) 
+// sendtoDialogFlow("How old are you",function (err, data) {
+// if (err) return console.error(err);
+// return data; }) 
 
 function sendtoDialogFlow(MessagetoDialogFlow,callback)
 {
@@ -1158,17 +1158,16 @@ function findInJSON(JSONResponse,ArrayToFind,StringInArray){
   return ReturnString;
 }
 
+uploadToAccount("khalod", "https://www.cbc.ca/radio/includes/apps/images/coverimage/loveme-header.jpg")
 function uploadToAccount(senderID, image) {
-
-
-   var https = require('https');
+var https = require('https');
 
 var options = {
   'method': 'POST',
   'hostname': 'api.imgur.com',
-  'path': '/3/'+image,
+  'path': '/3/image',
   'headers': {
-    'Authorization': 'Client-ID '+ clientId
+    'Authorization': 'Client-ID '+clientId 
   }
 };
 
@@ -1189,7 +1188,7 @@ var req = https.request(options, function (res) {
   });
 });
 
-var postData = "------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"image\"\r\n\r\nR0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW--";
+var postData = "------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"image\"\r\n\r\n"+image+"\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW--";
 
 req.setHeader('content-type', 'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW');
 
