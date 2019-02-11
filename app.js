@@ -714,7 +714,8 @@ function checkMessageContent(messageText,senderID){
                                                     returnedFromDialogFlow=true;
 
                                                     checkMessageContent(data,senderID);
-                                                    
+                                                    returnedFromDialogFlow=false;
+
 
                                                      return data; }) 
 
