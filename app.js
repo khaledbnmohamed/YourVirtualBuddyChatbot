@@ -251,7 +251,7 @@ app.get('/authorize', function (req, res) {
 
 /*Dialogflow response API */
 
-sendtoDialogFlow("I want memes",function (err, data) {
+sendtoDialogFlow("How old are you",function (err, data) {
 if (err) return console.error(err);
 return data; }) 
 
@@ -301,32 +301,44 @@ var req = https.request(options, (res)=> {
         var body = Buffer.concat(chunks);
         var parsed =JSON.parse(body)
 
-        try {
-              var ErrorRaise =parsed.queryResult.parameters.sendmeme
-              ErrorRaise ="Please Throw error if undefined"
-             console.log("REquest is parsed.queryResult.parameters.sendmeme "+parsed.queryResult.parameters.sendmeme)
-                      DialogflowhasParameters=true
+        // console.log("findInJSON(body,parameters,sendmeme)"+findInJSON(body,"parameters","sendmeme"))
+        // if(!findInJSON(body,parameters,sendmeme)){
+
+
+          
+        //           console.log("REquest is parsed.queryResult.fulfillmentText "+parsed.queryResult.fulfillmentText)
+        //           callback("",parsed.queryResult.fulfillmentText);
+         
+        
+        // }
+        if(JSON.stringify(parsed.queryResult.parameters) != "{}"  ){
+
+              console.log("parsed.queryResult.parameters"+parsed.queryResult.parameters.sendmeme)
+              if(parsed.queryResult.parameters=="sendmeme"){
+
+                   DialogflowhasParameters=true
+                   console.log("REquest is parsed.queryResult.parameters.sendmeme "+parsed.queryResult.parameters.sendmeme)
                   callback("",parsed.queryResult.parameters.sendmeme); 
 
-          }
-          catch(err) {
-            console.log("REquest is parsed.queryResult.fulfillmentText "+parsed.queryResult.fulfillmentText)
-            callback("",parsed.queryResult.fulfillmentText);
-          }
+              }
+              else{
 
+                console.log("REquest is parsed.queryResult.fulfillmentText "+parsed.queryResult.fulfillmentText)
+                  callback("",parsed.queryResult.fulfillmentText);
+              }
+            }
+         else{
+                   console.log("REquest is parsed.queryResult.fulfillmentText "+parsed.queryResult.fulfillmentText)
+                  callback("",parsed.queryResult.fulfillmentText);
 
-        // if(JSON.stringify(parsed.queryResult.parameters) == "{}" || parsed.queryResult.parameters[i]!="sendmeme"){
-              
-        //     console.log("REquest is parsed.queryResult.fulfillmentText "+parsed.queryResult.fulfillmentText)
-        //     callback("",parsed.queryResult.fulfillmentText);
-         
-        //     }
-        //  else{
+              }
           
-          
+        
+           
+       
+            
 
-        //       }
-
+        
      
          });
 
@@ -1109,6 +1121,23 @@ function saveToFile(number,word,want_more){
 
 
 
+}
+
+//To Find certain value in JSON file
+function findInJSON(JSONResponse,ArrayToFind,StringInArray){
+
+  var jsonObj = JSONResponse;
+   var JsonArray = jsonObj.getJSONArray(ArrayToFind);
+
+   for (var i = 0; i < JsonArray.length(); i++) {
+   var jsonObject = JsonArray.getvar(i);
+
+   var ReturnString= jsonObject.getString(StringInArray);
+
+
+  }
+
+  return ReturnString;
 }
 
   // Start server
