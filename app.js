@@ -300,22 +300,18 @@ var req = https.request(options, (res)=> {
       res.on("end", function (chunk) {
         var body = Buffer.concat(chunks);
         var parsed =JSON.parse(body)
-        if(parsed.queryResult.intent.displayName ){
-              if(parsed.queryResult.intent.displayName != input_unknown){
-              console.log("REquest isparsed.queryResult.intent.displayName "+parsed.queryResult.intent.displayName)
+        if(parsed.queryResult.intent.parameters != null ){
+              console.log("REquest isparsed.queryResult.intent.displayName "+parsed.queryResult.parameters.displayName)
 
-              callback("",parsed.queryResult.intent.displayName);
+              callback("",parsed.queryResult.intent.parameters.sendmeme);
             }
          else{
         console.log("REquest isparsed.queryResult.fulfillmentText "+parsed.queryResult.fulfillmentText)
         callback("",parsed.queryResult.fulfillmentText);
       }
-      
-        }
-        else{
-        console.log("REquest isparsed.queryResult.fulfillmentText "+parsed.queryResult.fulfillmentText)
-        callback("",parsed.queryResult.fulfillmentText);
-      }
+
+        
+     
          });
 
       res.on("error", function (error) {
