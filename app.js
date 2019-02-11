@@ -709,7 +709,7 @@ function checkMessageContent(messageText,senderID){
                                                       // To allow generic search for any category using the intents from DialogFlow
                                                       console.log("I will save to file "+ data)
                                                       saveToFile(2,data,true);
-                                                      chooseCaller(2,null,senderID); 
+                                                      chooseCaller(2,data,senderID); 
 
                                                       return;
                                                     }
