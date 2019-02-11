@@ -302,6 +302,8 @@ var req = https.request(options, (res)=> {
         var parsed =JSON.parse(body)
 
         try {
+              var ErrorRaise =parsed.queryResult.parameters.sendmeme
+              ErrorRaise ="Please Throw error if undefined"
              console.log("REquest is parsed.queryResult.parameters.sendmeme "+parsed.queryResult.parameters.sendmeme)
                       DialogflowhasParameters=true
                   callback("",parsed.queryResult.parameters.sendmeme); 
