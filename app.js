@@ -675,6 +675,7 @@ function checkMessageContent(messageText,senderID){
           // tools.sendTypingOn(senderID); //typing on till fetching
           saveToFile(2,"memes",true);
           chooseCaller(2,null,senderID); 
+         checkToSendMore(senderID);
 
           break;
 
