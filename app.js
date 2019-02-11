@@ -300,7 +300,7 @@ var req = https.request(options, (res)=> {
       res.on("end", function (chunk) {
         var body = Buffer.concat(chunks);
         var parsed =JSON.parse(body)
-        if(parsed.queryResult.parameters == null ){
+        if(parsed.queryResult.parameters == undefined ){
 
            console.log("REquest isparsed.queryResult.fulfillmentText "+parsed.queryResult.fulfillmentText)
             callback("",parsed.queryResult.fulfillmentText);
@@ -1063,9 +1063,6 @@ if (fileObject.want_more ){
 }
 }
 
-function firstEntity(nlp, name) {
-  return nlp && nlp.entities && nlp.entities[name] && nlp.entities[name][0];
-}
 
 function saveToFile(number,word,want_more){
 
