@@ -1057,7 +1057,7 @@ function specialMemesFromMyAccount(senderID,quickReplyPayload){
     let random_factor = 70
 
     if (accountImages) {
-      random_factor = 10
+      random_factor = 40
 
     }
 
