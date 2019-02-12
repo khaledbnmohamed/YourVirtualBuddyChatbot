@@ -607,14 +607,19 @@ function receivedMessage(event) {
     checkMessageContent(messageText,senderID)
 
     } else if (messageAttachments) {
-      tools.sendTextMessage(senderID, "Uploaded Your meme for later Happiness");
-      setTimeout(function(){tools.sendTextMessage(senderID, "You can access this meme and other selected memes by typing 'my memes'");
-},2000); //added timeout to make sure it comes later
 
+      for (i=0; i< messageAttachments.length; i++){
       if(messageAttachments[0].type === "image"){
      var imageURL = messageAttachments[0].payload.url;
      uploadToAccount(senderID,imageURL)
-     console.log(imageURL);
+          console.log(imageURL);
+
+   }
+
+           tools.sendTextMessage(senderID, "Uploaded Your meme for later Happiness");
+      setTimeout(function(){tools.sendTextMessage(senderID, "You can access this meme and other selected memes by typing 'my memes'");
+},2000); //added timeout to make sure it comes later
+
     }
   }
   }
