@@ -618,7 +618,7 @@ function receivedMessage(event) {
 
 
     }
-       tools.sendTextMessage(senderID, "Uploaded Your meme for later Happiness");
+       tools.sendTextMessage(senderID, "Uploaded your meme for later happiness");
       setTimeout(function(){tools.sendTextMessage(senderID, "You can access this meme and other selected memes by typing 'my memes'");
       },2000); //added timeout to make sure it comes later
 
