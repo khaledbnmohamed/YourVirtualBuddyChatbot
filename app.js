@@ -608,7 +608,7 @@ function receivedMessage(event) {
 
     } else if (messageAttachments) {
 
-      for (i=0; i< messageAttachments.length; i++){
+      for (var i=0; i< messageAttachments.length; i++){
       if(messageAttachments[0].type === "image"){
      var imageURL = messageAttachments[0].payload.url;
      uploadToAccount(senderID,imageURL)
