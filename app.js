@@ -1054,10 +1054,10 @@ function specialMemesFromMyAccount(senderID,quickReplyPayload){
 
     let parsed = JSON.parse(result)
     let i = -1;
-    let random_factor = 70
+    let random_factor = 100
 
     if (accountImages) {
-      random_factor = 10
+      random_factor = 70
 
     }
 
