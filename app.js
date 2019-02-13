@@ -33,6 +33,7 @@ var imgur_access_token = '2a8f6dacd57b657d8f9542b166724964c1ed8f8f'
 var imgur_username = 'khaledbnmohamed'
 var returnedFromDialogFlow=false
 var DialogflowhasParameters=false
+var uniqueRandoms = [];
 
 var google_access_token =tokenFile.sign();
 
@@ -1074,9 +1075,7 @@ function specialMemesFromMyAccount(senderID,quickReplyPayload){
 
     }
     else {
-      i = Math.floor((Math.random() * random_factor) + 1);
-
-      console.log("Else random value" + Math.random())
+        i = makeUniqueRandom(random_factor)
     }
    while (parsed.data[i]==null){
 
@@ -1165,23 +1164,25 @@ function saveToFile(number,word,want_more){
 
 }
 
-//To Find certain value in JSON file
-function findInJSON(JSONResponse,ArrayToFind,StringInArray){
 
-  var jsonObj = JSONResponse;
-   var JsonArray = jsonObj.getJSONArray(ArrayToFind);
+function makeUniqueRandom(numRandoms) {
 
-   for (var i = 0; i < JsonArray.length(); i++) {
-   var jsonObject = JsonArray.getvar(i);
+  
+    // refill the array if needed
+    if (!uniqueRandoms.length) {
+        for (var i = 0; i < numRandoms; i++) {
+            uniqueRandoms.push(i);
+        }
+    }
+    var index = Math.floor(Math.random() * uniqueRandoms.length);
+    var val = uniqueRandoms[index];
 
-   var ReturnString= jsonObject.getString(StringInArray);
+    // now remove that value from the array
+    uniqueRandoms.splice(index, 1);
 
+    return val;
 
-  }
-
-  return ReturnString;
 }
-
 function uploadToAccount(senderID, image) {
 var https = require('https');
 
