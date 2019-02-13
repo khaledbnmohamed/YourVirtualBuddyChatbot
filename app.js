@@ -636,7 +636,7 @@ function checkMessageContent(messageText,senderID){
         case 'Help':
         case 'hi':
           tools.sendHiMessage(senderID);
-          tools.sendTextMessage(senderID, "You can also send me a meme as an attachment to save it");
+         setTimeout(function(){tools.sendTextMessage(senderID, "You can also send me a meme as an attachment to save it"); },1000);
           break;
 
         case 'image':
