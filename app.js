@@ -33,7 +33,9 @@ var imgur_access_token = '2a8f6dacd57b657d8f9542b166724964c1ed8f8f'
 var imgur_username = 'khaledbnmohamed'
 var returnedFromDialogFlow=false
 var DialogflowhasParameters=false
+var SortImagesbyPoints =true;
 var uniqueRandoms = [];
+var SortedByPointsCounter=0; // initlize the i globally for easer access so don't have to write extra code to determine if first query to set i =0 or not
 
 var google_access_token =tokenFile.sign();
 
@@ -666,6 +668,14 @@ function checkMessageContent(messageText,senderID){
         case 'receipt':
           tools.requiresServerURL(tools.sendReceiptMessage, [senderID]);
           break;
+      
+        case 'sort by points':
+          SortImagesbyPoints=true;
+          break;
+
+        case 'sort by time':
+          SortImagesbyPoints=false;
+          break;
 
         case 'memes':
           tools.sendQuickReply(senderID);
@@ -933,8 +943,6 @@ function specialMemesFromMyAccount(senderID,quickReplyPayload){
 
 
 
-
-
   function fetchingData_from_gallery_searchAPi(senderID, Search_query) {
 	     
      fileObject.want_more=true;
@@ -1002,6 +1010,26 @@ function specialMemesFromMyAccount(senderID,quickReplyPayload){
     req.end();
     // console.log(body);
   }
+function sortByPoints(parsed){
+
+
+   var Sorted=parsed.data.sort(predicateBy("points"));
+    Sorted = Sorted.reverse(); 
+    return(Sorted);
+
+}
+
+
+function predicateBy(prop){
+   return function(a,b){
+      if( a[prop] > b[prop]){
+          return 1;
+      }else if( a[prop] < b[prop] ){
+          return -1;
+      }
+      return 0;
+   }
+}
 
 
   function fetchingData_from_Account_ImagesAPi(senderID, Search_query) {
@@ -1060,30 +1088,57 @@ function specialMemesFromMyAccount(senderID,quickReplyPayload){
 
 
     let parsed = JSON.parse(result)
-    let i = -1;
     let random_factor = 70
+    let i =-1;
 
-    if (accountImages) {
+    if (accountImages) { //smaller range for account uploaded images
       random_factor = 40
 
     }
 
-    if (FirstQuery) {
+    if (SortImagesbyPoints)
+    {
+      var Sorted = sortByPoints(parsed);
+    
+       
+      console.log("Result points " + Sorted[SortedByPointsCounter].points);
 
-      FirstQuery = false;
-      i = 0;
+      var Target = Sorted[SortedByPointsCounter].images[0].link;
+      console.log("Image link " + Target);
+
+      console.log("SortedByPointsCounter"+SortedByPointsCounter);
+
+      SortedByPointsCounter++;
+      return Target;
 
     }
-    else {
-        i = makeUniqueRandom(random_factor)
-    }
-   while (parsed.data[i]==null){
+    else
+    {
 
-      console.log("while random value" + Math.random())
-      i = Math.floor((Math.random() * random_factor) + 1);
+   
+
+        if (FirstQuery) 
+        {
+
+          FirstQuery = false;
+          i = 0;
+
+        }
+        else 
+        {
+            i = makeUniqueRandom(random_factor)
+        }
+
+    
+       while (parsed.data[i]==null)
+       {
+
+          console.log("while random value" + Math.random())
+          i = Math.floor((Math.random() * random_factor) + 1);
 
 
-   } 
+       }
+  
 
       console.log("entered ", i)
       /* to check for images if it belongs to album or not and a special case for
@@ -1114,7 +1169,7 @@ function specialMemesFromMyAccount(senderID,quickReplyPayload){
 
     tools.sendTextMessage(senderID, "That's a random empty miss, Try again")
     tools.sendTextMessage(senderID, "Hopefully you might get your dunk meme this time !")
-
+   } 
     return;
   }
 
