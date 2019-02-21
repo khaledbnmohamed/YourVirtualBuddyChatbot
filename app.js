@@ -675,10 +675,14 @@ function checkMessageContent(messageText,senderID){
       
         case 'sort by points':
           SortImagesbyPoints=true;
+          tools.sendTextMessage(senderID, "Next memes will be upvote/points based");
+
           break;
 
         case 'sort by time':
           SortImagesbyPoints=false;
+          tools.sendTextMessage(senderID, "Next memes will be the most recent");
+
           break;
 
         case 'memes':
