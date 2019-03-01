@@ -949,7 +949,6 @@ function specialMemesFromMyAccount(senderID,quickReplyPayload){
    */
 
 
-fetchingData_from_gallery_searchAPi("khalod","happy memes");
 
   function fetchingData_from_gallery_searchAPi(senderID, Search_query) {
 	     
