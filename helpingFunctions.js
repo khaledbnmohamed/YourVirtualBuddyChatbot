@@ -33,25 +33,25 @@ module.exports =
           var urlParts = /^(?:\w+\:\/\/)?([^\/]+)(.*)$/.exec(ImageLink);
           ImageID = urlParts[2]; // /path/to/somwhere
           if(!MemoryArray.sentImages.includes(ImageID)){
-              
+
+                   if (MemoryArray.sentImages.length == 70){
+
+                        console.log( " I reseteed the memeory");
+                        MemoryArray.sentImages=[];
+
+                        fs.writeFileSync('./inputMemory.json', JSON.stringify(MemoryArray, null, 2) , 'utf-8');
+
+                      }
               MemoryArray.sentImages.push(ImageID);
               fs.writeFileSync('./inputMemory.json', JSON.stringify(MemoryArray, null, 2) , 'utf-8');
 
 
-              console.log("I pushed the value to the array " + MemoryArray.sentImages.length)
+              console.log("Array length Now " + MemoryArray.sentImages.length)
               return false;
 
           }
 
-          else if (MemoryArray.sentImages.length == 6){
-
-            console.log( " I reseteed the memeory");
-            MemoryArray.sentImages=[];
-            MemoryArray.sentImages.push(ImageID);
-
-            fs.writeFileSync('./inputMemory.json', JSON.stringify(MemoryArray, null, 2) , 'utf-8');
-
-          }
+     
           console.log("It's already there  ");
 
           return true;
