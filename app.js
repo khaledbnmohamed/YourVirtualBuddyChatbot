@@ -15,7 +15,8 @@ const
   tokenFile = require('./JWTtoken.js'),
   dialogflow = require('dialogflow'),
   {WebhookClient} = require('dialogflow-fulfillment'),
-  functions = require('firebase-functions'),
+   functions = require('./helpingFunctions.js'),
+
   {google} = require('googleapis');
 //   oauth2Client = new google.auth.OAuth2(
 //   YOUR_CLIENT_ID,
@@ -1103,7 +1104,7 @@ function predicateBy(prop){
 
     }
 
-    if (SortImagesbyPoints)
+    if (SortImagesbyPoints && !accountImages)
     {
       var Sorted = sortByPoints(parsed);
     
