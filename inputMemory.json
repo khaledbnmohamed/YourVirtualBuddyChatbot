@@ -1,8 +1,9 @@
 {
-    
-        "function_number": "1",
-        "search_word": "memes",
-        "SentImages ": [],
-        "want_more": true
-    
+  "function_number": "1",
+  "search_word": "memes",
+  "sentImages": [
+    "/YKHG03B.jpg",
+    "/ebWJ4cd.png"
+  ],
+  "want_more": true
 }

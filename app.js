@@ -949,7 +949,7 @@ function specialMemesFromMyAccount(senderID,quickReplyPayload){
    */
 
 
-
+fetchingData_from_gallery_searchAPi("khalod","happy memes");
 
   function fetchingData_from_gallery_searchAPi(senderID, Search_query) {
 	     
@@ -1092,6 +1092,13 @@ function predicateBy(prop){
     // console.log(body);
   }
 
+/* 
+formingElements is the function responsible for parsing the  JSON response,choose which image to fetch its link, 
+handles albums and solo images issue and check for duplicated images to make sure not to send to the user the same image twice 
+in a counter of 100 images saved in a SentImages in inputMemory.json file
+
+
+*/
   function formingElements(result, senderID, accountImages) {
 
 
@@ -1104,20 +1111,40 @@ function predicateBy(prop){
 
     }
 
+    /*
+    if Condition to check if user chose to sort images by points and cancel the randmoization 
+    PS: doesn't work with community uploaded images on account images that's why it's added in if condition
+    */
     if (SortImagesbyPoints && !accountImages)
     {
       var Sorted = sortByPoints(parsed);
     
-       
+	  console.log("SortedByPointsCounter MAIN"+SortedByPointsCounter);
+
       console.log("Result points " + Sorted[SortedByPointsCounter].points);
 
-      var Target = Sorted[SortedByPointsCounter].images[0].link;
+      var Target = functions.getImageLink(Sorted,SortedByPointsCounter,-1);
+
       console.log("Image link " + Target);
 
-      console.log("SortedByPointsCounter"+SortedByPointsCounter);
+	      while(functions.checkIfSentBefore(Target))
 
-      SortedByPointsCounter++;
-      return Target;
+	      {
+			      //wait until you get a target image that was not sent before to the user
+			         			  
+			      SortedByPointsCounter++;
+  			      console.log("Sorted[SortedByPointsCounter]" +Sorted[SortedByPointsCounter].points);
+
+       			  console.log("SortedByPointsCounter"+SortedByPointsCounter);
+
+			      Target = functions.getImageLink(Sorted,SortedByPointsCounter,-1);
+
+
+	      }
+	      return Target;
+
+
+
 
     }
     else
@@ -1163,23 +1190,27 @@ function predicateBy(prop){
           return parsed.data[i].images[0].link
         }
       }
-      else if (parsed.data[i].is_album == false) {
-          if(parsed.data[i].link){
-           return parsed.data[i].link
-          }
-        }
+      else if (getImageLink(parsed.data,i,-1)){
+
+      	return getImageLink(parsed.data,i,-1);
+      }
 
         else{
         i++
       }
       
     
-
+      //Handle Worst case of missed links
     tools.sendTextMessage(senderID, "That's a random empty miss, Try again")
     tools.sendTextMessage(senderID, "Hopefully you might get your dunk meme this time !")
    } 
+
+
     return;
+
   }
+
+
 
 function chooseCaller(function_number,last_input_search_word,senderID){
 /* 
