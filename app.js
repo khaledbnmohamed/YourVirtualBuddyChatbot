@@ -1024,9 +1024,9 @@ in a counter of 100 images saved in a SentImages in inputMemory.json file
           return parsed.data[i].images[0].link
         }
       }
-      else if (getImageLink(parsed.data,i,-1)){
+      else if (functions.getImageLink(parsed.data,i,-1)){
 
-      	return getImageLink(parsed.data,i,-1);
+      	return functions.getImageLink(parsed.data,i,-1);
       }
 
         else{
