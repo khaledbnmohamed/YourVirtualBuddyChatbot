@@ -489,13 +489,7 @@ function receivedMessage(event) {
   }
   }
 
-for (var i =0 ; i <25 ; i++){
 
-
-fetchingData_from_gallery_searchAPi("Khalod","sad memes")
-
-
-}
 /* Check for message content*/
 
 function checkMessageContent(messageText,senderID){
