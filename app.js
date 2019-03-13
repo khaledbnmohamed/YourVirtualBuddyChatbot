@@ -304,7 +304,7 @@ var req = https.request(options, (res)=> {
 
 
 
-function getFirstName (senderID,callback)
+  getFirstName= function (senderID,callback)
  {
 
 
@@ -643,7 +643,7 @@ function checkMessageContent(messageText,senderID){
 
 /* quick reply send like*/
 
-function sendLike(senderID){
+ sendLike=function(senderID){
 
       fileObject.want_more=true;
        console.log(" I CHOSE SEND_ALIKE");
@@ -655,7 +655,7 @@ function sendLike(senderID){
 
 /* quick reply gallery memes*/
 
-function manyCategoriesSearch(senderID,quickReplyPayload){
+var manyCategoriesSearch:function(senderID,quickReplyPayload){
 
       fetchingData_from_gallery_searchAPi(senderID,quickReplyPayload);
       saveToFile(2,quickReplyPayload,true);
@@ -666,7 +666,7 @@ function manyCategoriesSearch(senderID,quickReplyPayload){
 
 /* quick reply  do nothing**/
 
-function doNothing(senderID){
+ doNothing= function(senderID){
 
           tools.sendTypingOff(senderID);
          console.log(" I CHOSE do nothing");
@@ -677,7 +677,7 @@ function doNothing(senderID){
 
 /* quick reply personal accunt memes*/
 
-function specialMemesFromMyAccount(senderID,quickReplyPayload){
+ specialMemesFromMyAccount=function(senderID,quickReplyPayload){
 
       fetchingData_from_Account_ImagesAPi(senderID, quickReplyPayload);
       saveToFile(1,quickReplyPayload,true);
@@ -1185,5 +1185,4 @@ module.exports = {
     manyCategoriesSearch: manyCategoriesSearch
 }
 
-module.exports.getFirstName = getFirstName;
 

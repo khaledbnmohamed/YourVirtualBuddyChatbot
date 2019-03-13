@@ -10,7 +10,7 @@ const
   https = require('https'),
   request = require('request'),
   URL = require('url'),
-  appJS = require('./app'),
+  appJS = require('./app.js'),
   fs = require('fs'),
   tools = require('./sendFunctions.js');
 
