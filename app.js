@@ -933,7 +933,7 @@ in a counter of 100 images saved in a SentImages in inputMemory.json file
     let i =-1;
 
     if (accountImages) { //smaller range for account uploaded images
-      random_factor = 1400
+      random_factor = 1200
 
     }
 
