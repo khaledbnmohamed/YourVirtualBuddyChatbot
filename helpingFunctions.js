@@ -10,13 +10,10 @@ const
   https = require('https'),
   request = require('request'),
   URL = require('url'),
-  appJS = require('./app.js'),
   fs = require('fs'),
-  tools = require('./sendFunctions.js');
+  tools = require('./sendFunctions.js')
 
 
-var app = express();
-app.set('port', process.env.PORT || 5000);
 
 
 var MemoryArray =JSON.parse(fs.readFileSync('./inputMemory.json', 'utf8'));
@@ -35,7 +32,6 @@ module.exports =
    * get the message id in a response
    *
    */
-
 
 
      checkIfSentBefore: function (ImageLink) {
@@ -94,60 +90,9 @@ module.exports =
 
           }
         
-          },
+          }
 
 
-           handlePayload: function (payload,senderID) {
-
-
-        switch (payload) {
-          case 'personal_account_memes':
-
-                appJS.specialMemesFromMyAccount(senderID,payload);
-
-                 break;
-          case 'send_alike':
-
-                 appJS.sendLike(senderID);
-                break;
-
-         case 'do nothing':
-                  
-                appJS.doNothing(senderID);
-                break;
-
-          case 'help':
-                  
-                tools.sendTextMessage(senderID, help_text);
-                break;
-
-         case 'get_started':
-                  
-            var user_first_name='';
-            appJS.getFirstName(senderID,function (err, data) {
-               if (err) return console.error(err);
-               console.log("dataaaa" +data);
-               user_first_name =data
-            
-                  
-            console.log("user_first_name" + user_first_name)
-            var message_first_time = ["Hi " + user_first_name +",", "Try me by sending 'Send meme' or 'memes' "].join('\n');
-                //present user with some greeting or call to action
-                tools.sendTextMessage(senderID,message_first_time );
-                                });                
-
-              break;
-
-              default:
-              console.log("I should work here");
-               appJS.manyCategoriesSearch(senderID,payload);
-
-
-
-                
-    }
-    
-      }
 
 
 

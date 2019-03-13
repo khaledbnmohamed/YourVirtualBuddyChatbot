@@ -304,7 +304,7 @@ var req = https.request(options, (res)=> {
 
 
 
- var getFirstName= function (senderID,callback)
+function getFirstName (senderID,callback)
  {
 
 
@@ -458,7 +458,7 @@ function receivedMessage(event) {
       messageId, quickReplyPayload);
     tools.sendTypingOn(senderID); //typing on till fetching
 
-	functions.handlePayload(quickReplyPayload,senderID);
+	handlePayload(quickReplyPayload,senderID);
   // setTimeout(SendMore(senderID), 3000);
   return;
   }
@@ -643,7 +643,7 @@ function checkMessageContent(messageText,senderID){
 
 /* quick reply send like*/
 
- var sendLike=function(senderID){
+function sendLike(senderID){
 
       fileObject.want_more=true;
        console.log(" I CHOSE SEND_ALIKE");
@@ -655,7 +655,7 @@ function checkMessageContent(messageText,senderID){
 
 /* quick reply gallery memes*/
 
- var manyCategoriesSearch=function(senderID,quickReplyPayload){
+function manyCategoriesSearch(senderID,quickReplyPayload){
 
       fetchingData_from_gallery_searchAPi(senderID,quickReplyPayload);
       saveToFile(2,quickReplyPayload,true);
@@ -666,7 +666,7 @@ function checkMessageContent(messageText,senderID){
 
 /* quick reply  do nothing**/
 
- var doNothing= function(senderID){
+function doNothing(senderID){
 
           tools.sendTypingOff(senderID);
          console.log(" I CHOSE do nothing");
@@ -677,7 +677,7 @@ function checkMessageContent(messageText,senderID){
 
 /* quick reply personal accunt memes*/
 
- var specialMemesFromMyAccount=function(senderID,quickReplyPayload){
+function specialMemesFromMyAccount(senderID,quickReplyPayload){
 
       fetchingData_from_Account_ImagesAPi(senderID, quickReplyPayload);
       saveToFile(1,quickReplyPayload,true);
@@ -735,7 +735,7 @@ function checkMessageContent(messageText,senderID){
 	 if(event.postback)
         {	
 
-             functions.handlePayload(event.postback.payload,senderID);
+             handlePayload(event.postback.payload,senderID);
 
         	   
         } 
@@ -1122,6 +1122,57 @@ function makeUniqueRandom(numRandoms) {
     return val;
 
 }
+
+
+function handlePayload (payload,senderID) {
+
+
+        switch (payload) {
+          case 'personal_account_memes':
+
+                specialMemesFromMyAccount(senderID,payload)
+
+                 break;
+          case 'send_alike':
+
+                 sendLike(senderID);
+                break;
+
+         case 'do nothing':
+                  
+                doNothing(senderID);
+                break;
+
+          case 'help':
+                  
+                tools.sendTextMessage(senderID, help_text);
+                break;
+
+         case 'get_started':
+                  
+            var user_first_name=''
+            getFirstName(senderID,function (err, data) {
+               if (err) return console.error(err);
+               console.log("dataaaa" +data);
+               user_first_name =data
+            
+                  
+            console.log("user_first_name" + user_first_name)
+            var message_first_time = ["Hi " + user_first_name +",", "Try me by sending 'Send meme' or 'memes' "].join('\n');
+                //present user with some greeting or call to action
+                tools.sendTextMessage(senderID,message_first_time );
+                                });                
+
+              break;
+
+              default:
+              console.log("I should work here")
+               manyCategoriesSearch(senderID,payload);
+
+                
+    }
+    
+      }
 function uploadToAccount(senderID, image) {
 var https = require('https');
 
@@ -1168,21 +1219,6 @@ req.end();
     console.log('Node app is running on port', app.get('port'));
   });
 
-/*
 
-Exporting app and Functions called in helpingFunctions to allow calling functions from app.js based on solution
-
-https://stackoverflow.com/questions/31458770/call-app-js-function-in-route-file-node-js
-
-*/
-
-module.exports = {
-    app: app,
-    specialMemesFromMyAccount: specialMemesFromMyAccount,
-    sendLike: sendLike,
-    doNothing: doNothing,
-    getFirstName: getFirstName,
-    manyCategoriesSearch: manyCategoriesSearch
-}
-
+  module.exports = app;
 
