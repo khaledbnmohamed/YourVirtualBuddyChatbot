@@ -163,79 +163,79 @@ const PAGE_ACCESS_TOKEN = (process.env.MESSENGER_PAGE_ACCESS_TOKEN) ?
 
 
 /* ONLY RUN ONCE IN A BOT for persistent_menu on the side button instead of like button */
-// persistent_menu(); 
+persistent_menu(); 
 
-// function persistent_menu()
-// {
+function persistent_menu()
+{
 
 
-// var https = require('https');
+var https = require('https');
 
-// const access_token = PAGE_ACCESS_TOKEN ;
+const access_token = PAGE_ACCESS_TOKEN ;
 
-// const data = JSON.stringify({
+const data = JSON.stringify({
 
-//   "persistent_menu":[
-//     {
-//       "locale":"default",
-//       "composer_input_disabled": true,
-//       "call_to_actions":[
-//         {
-//           "title":"Memes Categories",
-//           "type":"nested",
-//           "call_to_actions":[
-//             {
-//               "title":"Sad Memes",
-//               "type":"postback",
-//               "payload":"Sad Memes"
-//             },
-//               {
-//               "title":"Love Memes",
-//               "type":"postback",
-//               "payload":"Love Memes"
-//             },
-//               {
-//               "title":"Our Community Memes",
-//               "type":"postback",
-//               "payload":"surprise me"
-//             }
-//           ],
+  "persistent_menu":[
+    {
+      "locale":"default",
+      "composer_input_disabled": false,
+      "call_to_actions":[
+        {
+          "title":"Memes Categories",
+          "type":"nested",
+          "call_to_actions":[
+            {
+              "title":"Sad Memes",
+              "type":"postback",
+              "payload":"Sad Memes"
+            },
+              {
+              "title":"Love Memes",
+              "type":"postback",
+              "payload":"Love Memes"
+            },
+              {
+              "title":"Our Community Memes",
+              "type":"postback",
+              "payload":"surprise me"
+            }
+          ],
 
 		 
-//         },
-//         {
-//          "title": "Help",
-//           "type": "postback",
-// 		  "payload": "help"
+        },
+        {
+         "title": "Help",
+          "type": "postback",
+		  "payload": "help"
 
-// 		 }
-//       ]
-//     }
-//   ]
-// })
-
-
-// const options = {
-//   method: 'POST',
-//   hostname: 'graph.facebook.com',
-//   port:443,
-//   path: '/v2.6/me/messenger_profile?access_token='+ access_token,
-//   headers: {
-//     'Content-Type': 'application/json',
-//     'Content-Length': data.length
-//   }
-// }
-// var req = https.request(options, (res)=> {
-//   res.on('data',(d) => {process.stdout.write(d)})
+		 }
+      ]
+    }
+  ]
+})
 
 
-//     })
+const options = {
+  method: 'POST',
+  hostname: 'graph.facebook.com',
+  port:443,
+  path: '/v2.6/me/messenger_profile?access_token='+ access_token,
+  headers: {
+    'Content-Type': 'application/json',
+    'Content-Length': data.length
+  }
+}
+var req = https.request(options, (res)=> {
+  res.on('data',(d) => {process.stdout.write(d)})
 
-//     req.on("error", (error) => { console.error(error)})
 
-//    req.write(data)
-//    req.end()
+    })
+
+    req.on("error", (error) => { console.error(error)})
+
+   req.write(data)
+   req.end()
 
 
 
-// }
+}

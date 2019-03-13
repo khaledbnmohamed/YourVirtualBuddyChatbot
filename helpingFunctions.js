@@ -10,7 +10,10 @@ const
   https = require('https'),
   request = require('request'),
   URL = require('url'),
-  fs = require('fs')
+  fs = require('fs'),
+  app = require('./app.js'),
+  tools = require('./sendFunctions.js')
+
 
 
 var MemoryArray =JSON.parse(fs.readFileSync('./inputMemory.json', 'utf8'));
@@ -82,7 +85,42 @@ module.exports =
 
           }
         
-          }
+          },
+
+
+           handlePayload: function (payload) {
+
+
+        switch (payload) {
+          case 'personal_account_memes':
+
+                app.specialMemesFromMyAccount(senderID,quickReplyPayload)
+
+                 break;
+          case 'send_alike':
+
+                 app.sendLike(senderID);
+                break;
+
+             case 'do nothing':
+                  
+                app.doNothing(senderID);
+                break;
+
+              case 'help':
+                  
+                tools.sendTextMessage(senderID, help_text);
+                break;
+
+              default:
+              console.log("I should work here")
+               app.manyCategoriesSearch(senderID,quickReplyPayload);
+
+                
+    }
+    
+      }
+
 
 
 

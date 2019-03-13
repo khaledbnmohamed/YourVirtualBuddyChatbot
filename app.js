@@ -777,8 +777,7 @@ function specialMemesFromMyAccount(senderID,quickReplyPayload){
 
         {
 
-             tools.sendTextMessage(senderID, help_text);
-
+             functions.handlePayload("love yourself");
         }
     console.log("Received postback for user %d and page %d with payload '%s' " +
       "at %d", senderID, recipientID, payload, timeOfPostback);
