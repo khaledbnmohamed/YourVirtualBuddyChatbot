@@ -1181,5 +1181,6 @@ module.exports = {
     specialMemesFromMyAccount: specialMemesFromMyAccount,
     sendLike: sendLike,
     doNothing: doNothing,
-    getFirstName: getFirstName
+    getFirstName: getFirstName,
+    manyCategoriesSearch: manyCategoriesSearch
 }
