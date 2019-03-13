@@ -1168,7 +1168,13 @@ req.end();
     console.log('Node app is running on port', app.get('port'));
   });
 
-//Exporting app and Functions called in helpingFunctions
+/*
+
+Exporting app and Functions called in helpingFunctions to allow calling functions from app.js based on solution
+
+https://stackoverflow.com/questions/31458770/call-app-js-function-in-route-file-node-js
+
+*/
 
 module.exports = {
     app: app,

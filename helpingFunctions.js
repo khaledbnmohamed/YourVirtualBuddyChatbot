@@ -134,7 +134,7 @@ module.exports =
 
               default:
               console.log("I should work here")
-               manyCategoriesSearch(senderID,payload);
+               appJS.manyCategoriesSearch(senderID,payload);
 
                 
     }
