@@ -655,7 +655,7 @@ function checkMessageContent(messageText,senderID){
 
 /* quick reply gallery memes*/
 
-var manyCategoriesSearch:function(senderID,quickReplyPayload){
+ manyCategoriesSearch=function(senderID,quickReplyPayload){
 
       fetchingData_from_gallery_searchAPi(senderID,quickReplyPayload);
       saveToFile(2,quickReplyPayload,true);
