@@ -204,11 +204,11 @@ const PAGE_ACCESS_TOKEN = (process.env.MESSENGER_PAGE_ACCESS_TOKEN) ?
 		 
 //         },
 //         {
-//           "title":"Sorting Memes with",
+//           "title":"Sort Memes by",
 //           "type":"nested",
 //           "call_to_actions":[
 //             {
-//               "title":"Highes Points First",
+//               "title":"Highest Points First",
 //               "type":"postback",
 //               "payload":"sort by points"
 //             },

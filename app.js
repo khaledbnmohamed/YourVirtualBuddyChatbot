@@ -513,21 +513,6 @@ function checkMessageContent(messageText,senderID){
           tools.requiresServerURL(tools.sendVideoMessage, [senderID]);
           break;
 
-        case 'file':
-          tools.requiresServerURL(tools.sendFileMessage, [senderID]);
-          break;
-
-        case 'button':
-          tools.sendButtonMessage(senderID);
-          break;
-
-        case 'generic':
-          tools.requiresServerURL(tools.sendGenericMessage, [senderID]);
-          break;
-
-        case 'receipt':
-          tools.requiresServerURL(tools.sendReceiptMessage, [senderID]);
-          break;
       
         case 'sort by points':
           SortImagesbyPoints=true;
@@ -1178,6 +1163,15 @@ function handlePayload (payload,senderID) {
          case 'sort by time':
           SortImagesbyPoints=false;
           tools.sendTextMessage(senderID, "Next memes will be the most recent");
+          break;
+
+       	case 'surprise me':
+        
+        specialMemesFromMyAccount(senderID,payload);
+
+
+          break;
+
 
           break;
               default:
