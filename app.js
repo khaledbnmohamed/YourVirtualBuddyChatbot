@@ -304,7 +304,7 @@ var req = https.request(options, (res)=> {
 
 
 
-  getFirstName= function (senderID,callback)
+ var getFirstName= function (senderID,callback)
  {
 
 
@@ -643,7 +643,7 @@ function checkMessageContent(messageText,senderID){
 
 /* quick reply send like*/
 
- sendLike=function(senderID){
+ var sendLike=function(senderID){
 
       fileObject.want_more=true;
        console.log(" I CHOSE SEND_ALIKE");
@@ -655,7 +655,7 @@ function checkMessageContent(messageText,senderID){
 
 /* quick reply gallery memes*/
 
- manyCategoriesSearch=function(senderID,quickReplyPayload){
+ var manyCategoriesSearch=function(senderID,quickReplyPayload){
 
       fetchingData_from_gallery_searchAPi(senderID,quickReplyPayload);
       saveToFile(2,quickReplyPayload,true);
@@ -666,7 +666,7 @@ function checkMessageContent(messageText,senderID){
 
 /* quick reply  do nothing**/
 
- doNothing= function(senderID){
+ var doNothing= function(senderID){
 
           tools.sendTypingOff(senderID);
          console.log(" I CHOSE do nothing");
@@ -677,7 +677,7 @@ function checkMessageContent(messageText,senderID){
 
 /* quick reply personal accunt memes*/
 
- specialMemesFromMyAccount=function(senderID,quickReplyPayload){
+ var specialMemesFromMyAccount=function(senderID,quickReplyPayload){
 
       fetchingData_from_Account_ImagesAPi(senderID, quickReplyPayload);
       saveToFile(1,quickReplyPayload,true);
