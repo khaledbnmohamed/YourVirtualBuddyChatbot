@@ -88,7 +88,7 @@ module.exports =
           },
 
 
-           handlePayload: function (payload) {
+           handlePayload: function (payload,senderID) {
 
 
         switch (payload) {
@@ -102,15 +102,32 @@ module.exports =
                  app.sendLike(senderID);
                 break;
 
-             case 'do nothing':
+         case 'do nothing':
                   
                 app.doNothing(senderID);
                 break;
 
-              case 'help':
+          case 'help':
                   
                 tools.sendTextMessage(senderID, help_text);
                 break;
+
+         case 'get_started':
+                  
+            var user_first_name=''
+            app.getFirstName(senderID,function (err, data) {
+               if (err) return console.error(err);
+               console.log("dataaaa" +data);
+               user_first_name =data
+            
+                  
+            console.log("user_first_name" + user_first_name)
+            var message_first_time = ["Hi " + user_first_name +",", "Try me by sending 'Send meme' or 'memes' "].join('\n');
+                //present user with some greeting or call to action
+                tools.sendTextMessage(senderID,message_first_time );
+                                });                
+
+              break;
 
               default:
               console.log("I should work here")

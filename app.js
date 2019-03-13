@@ -458,27 +458,7 @@ function receivedMessage(event) {
       messageId, quickReplyPayload);
     tools.sendTypingOn(senderID); //typing on till fetching
 
-	switch (quickReplyPayload) {
-	case 'personal_account_memes':
-
-        specialMemesFromMyAccount(senderID,quickReplyPayload)
-
-         break;
-	case 'send_alike':
-
-	       sendLike(senderID);
-        break;
-
-     case 'do nothing':
-          
-        doNothing(senderID);
-        break;
-
-      default:
-       manyCategoriesSearch(senderID,quickReplyPayload);
-
-        
-    }
+	functions.handlePayload(quickReplyPayload,senderID);
   // setTimeout(SendMore(senderID), 3000);
   return;
   }
@@ -749,36 +729,18 @@ function specialMemesFromMyAccount(senderID,quickReplyPayload){
     var senderID = event.sender.id;
     var recipientID = event.recipient.id;
     var timeOfPostback = event.timestamp;
-	var user_first_name=''
     // The 'payload' param is a developer-defined field which is set in a postback
     // button for Structured Messages.
     var payload = event.postback.payload;
-	 if(event.postback && event.postback.payload === "get_started" )
+	 if(event.postback)
         {	
-        		// if(!getFirstName(senderID,callback)){
 
-        		// 		console.log("ERRRRRRORR EMPTY")
-        		// }
-        		getFirstName(senderID,function (err, data) {
-						   if (err) return console.error(err);
-						   console.log("dataaaa" +data);
-						   user_first_name =data
-						
-			        		
-        		console.log("user_first_name" + user_first_name)
-        		var message_first_time = ["Hi " + user_first_name +",", "Try me by sending 'Send meme' or 'memes' "].join('\n');
-                //present user with some greeting or call to action
-                tools.sendTextMessage(senderID,message_first_time );
-                                });   
+             functions.handlePayload(event.postback.payload,senderID);
+
+        	   
         } 
 
-        else if (event.postback && event.postback.payload === "help" )
-        	//recieved help postback
-
-        {
-
-             functions.handlePayload("love yourself");
-        }
+     
     console.log("Received postback for user %d and page %d with payload '%s' " +
       "at %d", senderID, recipientID, payload, timeOfPostback);
 
