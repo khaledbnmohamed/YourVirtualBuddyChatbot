@@ -12,7 +12,7 @@ const
   URL = require('url'),
   appJS = require('./app.js'),
   fs = require('fs'),
-  tools = require('./sendFunctions.js')
+  tools = require('./sendFunctions.js');
 
 
 
@@ -22,7 +22,6 @@ var help_text = [ "You can send me various messages:","=========================
   "* 'Send meme' -> sends you a fresh meme",  "* 'Sort by time' -> gets you latest memes without considering community's upvotes",  "* 'Sort by points' -> sends you most upvoted memes in choosen category",
     "* 'Memes' -> Quick categories selection",   "* 'Surprise me' -> sends you a meme uploaded by our community", "* You can send an image to be uploaded to the community section where you can access it anytime"
 ].join('\n');
-
 
 module.exports = 
 {
