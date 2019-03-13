@@ -16,33 +16,33 @@ const
   tools = require('./sendFunctions.js'),
   tokenFile = require('./JWTtoken.js'),
   dialogflow = require('dialogflow'),
+  sk = require('./config/SecretKeys.js'),
   {WebhookClient} = require('dialogflow-fulfillment'),
    functions = require('./helpingFunctions.js'),
 
   {google} = require('googleapis');
-//   oauth2Client = new google.auth.OAuth2(
-//   YOUR_CLIENT_ID,
-//   YOUR_CLIENT_SECRET,
-//   YOUR_REDIRECT_URL
-// );
+
+
+
+//Secret Keys saved in different file for security 
+var clientId = sk.getClientID();
+var imgur_access_token = sk.getImgurAccessToken();
+var imgur_username = sk.getImgurUserName();
+var google_project_id = sk.getGoogleProjectID(); 
+var google_access_token =tokenFile.sign();
 
 
 
 var MessagetoDialogFlow= ""
 
 var ImageLink = 'https://i.imgur.com/KZC2CW9.jpg'
-var clientId = '8056e5db3f369d1'
-var imgur_access_token = '2a8f6dacd57b657d8f9542b166724964c1ed8f8f'
-var imgur_username = 'khaledbnmohamed'
+
 var returnedFromDialogFlow=false
 var DialogflowhasParameters=false
 var SortImagesbyPoints =true;
 var uniqueRandoms = [];
 var SortedByPointsCounter=0; // initlize the i globally for easer access so don't have to write extra code to determine if first query to set i =0 or not
 
-var google_access_token =tokenFile.sign();
-
-var google_project_id = 'myvirtualbuddy-fab9e' // from google console
 
 
 var FirstQuery = true;
@@ -776,7 +776,6 @@ function specialMemesFromMyAccount(senderID,quickReplyPayload){
    * If users came here through testdrive, they need to configure the server URL
    * in default.json before they can access local resources likes images/videos.
    */
-
 
   function fetchingData_from_gallery_searchAPi(senderID, Search_query) {
 	     

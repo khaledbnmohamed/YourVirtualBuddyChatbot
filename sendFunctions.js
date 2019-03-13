@@ -10,14 +10,17 @@ const
   https = require('https'),
   request = require('request'),
   fs = require('fs'),
+  sk = require('./config/SecretKeys.js'),
   tools = require('./sendFunctions.js');
 
 
 
+
+var clientId = sk.getClientID();
+var imgur_access_token = sk.getImgurAccessToken();
+var imgur_username = sk.getImgurUserName();
+
 var ImageLink = 'https://i.imgur.com/KZC2CW9.jpg'
-var clientId = '8056e5db3f369d1'
-var imgur_access_token = '2a8f6dacd57b657d8f9542b166724964c1ed8f8f'
-var imgur_username = 'khaledbnmohamed'
 var FirstQuery = true;
 let counter = 0;
 var default_text = ["You know that no matter how cool I am to you,",
