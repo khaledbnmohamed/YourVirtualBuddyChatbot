@@ -11,6 +11,7 @@ const
   request = require('request'),
   URL = require('url'),
   fs = require('fs'),
+  path = require('path'),
   tools = require('./sendFunctions.js')
 
 
@@ -40,6 +41,17 @@ module.exports =
          
           var urlParts = /^(?:\w+\:\/\/)?([^\/]+)(.*)$/.exec(ImageLink);
           ImageID = urlParts[2]; // /path/to/somwhere
+
+          if(path.extname(ImageID)=='.mp4')
+          {
+
+            //Continue Cycling on different resposne if found a video to handle empty response of a video not supported in sending image API
+            
+              console.log("Extension " + path.extname(ImageID) +"Is not supported ")
+
+              return true;
+
+          }
           if(!MemoryArray.sentImages.includes(ImageID)){
 
                     //Make sure to have UniqueMemes of certain number before resetting

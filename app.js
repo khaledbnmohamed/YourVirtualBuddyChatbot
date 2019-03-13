@@ -778,7 +778,6 @@ function specialMemesFromMyAccount(senderID,quickReplyPayload){
    */
 
 
-
   function fetchingData_from_gallery_searchAPi(senderID, Search_query) {
 	     
      fileObject.want_more=true;
@@ -803,7 +802,7 @@ function specialMemesFromMyAccount(senderID,quickReplyPayload){
       'hostname': 'api.imgur.com',
       'path': '/3/gallery/search/{{sort}}/{{window}}/{{page}}?q=' + Search_query,
       'headers': {
-        'Authorization': 'Client-ID 8056e5db3f369d1'
+        'Authorization': 'Client-ID '+clientId
       }
     };
 
