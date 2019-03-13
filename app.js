@@ -489,7 +489,13 @@ function receivedMessage(event) {
   }
   }
 
+for (var i =0 ; i <25 ; i++){
 
+
+fetchingData_from_gallery_searchAPi("Khalod","sad memes")
+
+
+}
 /* Check for message content*/
 
 function checkMessageContent(messageText,senderID){
@@ -974,18 +980,22 @@ in a counter of 100 images saved in a SentImages in inputMemory.json file
 
 	      {
 			      //wait until you get a target image that was not sent before to the user
-			         			  
+			      
 			      SortedByPointsCounter++;
+
+  		  	      Target = functions.getImageLink(Sorted,SortedByPointsCounter,-1);
+   			  
   			      console.log("Sorted[SortedByPointsCounter]" +Sorted[SortedByPointsCounter].points);
 
        			  console.log("SortedByPointsCounter"+SortedByPointsCounter);
 
 
 
+
 	      }
 
-	      Target = functions.getImageLink(Sorted,SortedByPointsCounter,-1);
-
+	      console.log("Image link Just before returning  " + Target + " it's count is " + SortedByPointsCounter);
+	      console.log("======================================================================================")
 	      return Target;
 
 
@@ -1165,6 +1175,17 @@ function handlePayload (payload,senderID) {
 
               break;
 
+	     case 'sort by points':
+          SortImagesbyPoints=true;
+          tools.sendTextMessage(senderID, "Next memes will be upvote/points based");
+
+          break;
+
+         case 'sort by time':
+          SortImagesbyPoints=false;
+          tools.sendTextMessage(senderID, "Next memes will be the most recent");
+
+          break;
               default:
               console.log("I should work here")
                manyCategoriesSearch(senderID,payload);

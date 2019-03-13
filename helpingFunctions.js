@@ -17,7 +17,7 @@ const
 
 
 var MemoryArray =JSON.parse(fs.readFileSync('./inputMemory.json', 'utf8'));
-
+var UniqueMemesNumber = 20;
 var help_text = [ "You can send me various messages:","=========================="," ",
   "* 'Send meme' -> sends you a fresh meme",  "* 'Sort by time' -> gets you latest memes without considering community's upvotes",  "* 'Sort by points' -> sends you most upvoted memes in choosen category",
     "* 'Memes' -> Quick categories selection",   "* 'Surprise me' -> sends you a meme uploaded by our community", "* You can send an image to be uploaded to the community section where you can access it anytime"
@@ -42,7 +42,8 @@ module.exports =
           ImageID = urlParts[2]; // /path/to/somwhere
           if(!MemoryArray.sentImages.includes(ImageID)){
 
-                   if (MemoryArray.sentImages.length == 70){
+                    //Make sure to have UniqueMemes of certain number before resetting
+                   if (MemoryArray.sentImages.length == UniqueMemesNumber){
 
                         console.log( " I reseteed the memeory");
                         MemoryArray.sentImages=[];
@@ -61,8 +62,8 @@ module.exports =
 
           }
 
-     
-          console.log("It's already there  ");
+          console.log("MemoryArray.sentImages.ImageID " + ImageID);
+          console.log("It's already there and Array length is " + MemoryArray.sentImages.length)
 
           return true;
         },
@@ -78,13 +79,14 @@ module.exports =
           {
 
             console.log("This data is an album so I got the first image link")
-
+            console.log("link is "+ data[i].images[counter].link)
             return data[i].images[counter].link;
           }
           
           else {
 
             console.log("This data is an Image so I sent the Link directly without any changes")
+            console.log("link is "+ data[i].link)
 
             return data[i].link;
 
