@@ -119,7 +119,7 @@ module.exports =
          case 'get_started':
                   
             var user_first_name=''
-            user_first_name= app.getFirstName(senderID) {
+            user_first_name= app.getFirstName(senderID) 
           
             console.log("user_first_name" + user_first_name)
             var message_first_time = ["Hi " + user_first_name +",", "Try me by sending 'Send meme' or 'memes' "].join('\n');
