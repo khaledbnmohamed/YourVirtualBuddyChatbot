@@ -304,7 +304,7 @@ var req = https.request(options, (res)=> {
 
 
 
-function getFirstName (senderID)
+function getFirstName (senderID,callback)
  {
 
 
@@ -1168,5 +1168,12 @@ req.end();
     console.log('Node app is running on port', app.get('port'));
   });
 
-  module.exports = app;
+//Exporting app and Functions called in helpingFunctions
 
+module.exports = {
+    app: app,
+    specialMemesFromMyAccount: specialMemesFromMyAccount,
+    sendLike: sendLike,
+    doNothing: doNothing,
+    getFirstName: getFirstName
+}
