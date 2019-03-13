@@ -187,84 +187,6 @@ app.get('/authorize', function (req, res) {
   });
 });
 
-/* ONLY RUN ONCE IN A BOT for get started button */
-// enable_get_started(); 
-
-// function enable_get_started()
-// {
-
-
-// var https = require('https');
-// const access_token = PAGE_ACCESS_TOKEN ;
-
-// const data = JSON.stringify({
-
-//   "get_started":{"payload":"get_started"}
-
-// })
-
-
-// const options = {
-//   method: 'POST',
-//   hostname: 'graph.facebook.com',
-//   port:443,
-//   path: '/v2.6/me/messenger_profile?access_token='+ access_token,
-//   headers: {
-//     'Content-Type': 'application/json',
-//     'Content-Length': data.length
-//   }
-// }
-
-
-
-
-
-
-// var req = https.request(options, (res)=> {
-//   res.on('data',(d) => {process.stdout.write(d)})
-
-
-//     })
-
-//     req.on("error", (error) => { console.error(error)})
-
-//    req.write(data)
-//    req.end()
-
-
-
-// }
-
-/* DialogFlow API
- * All callbacks for Messenger are POST-ed. They will be sent to the same
- * webhook. Be sure to subscribe your app to your page to receive callbacks
- * for your page.
- * https://developers.facebook.com/docs/messenger-platform/product-overview/setup#subscribe_app
- *
- */
-// app.post('/webhook', function (req, res) {
-//   exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, response) => {
-//   const agent = new WebhookClient({ request, response });
-
-//   console.log("dialogflowFirebaseFulfillment"+dialogflowFirebaseFulfillment)
-//   function hours (agent) {
-//     if (currentlyOpen()) {
-//       agent.add(`We're open now! We close at 5pm today.`);
-//     } else {
-//       agent.add(`We're currently closed, but we open every weekday at 9am!`);
-//     }
-//   }
-// });
-
-// });
-
-  
-
-/*Dialogflow response API */
-
-// sendtoDialogFlow("How old are you",function (err, data) {
-// if (err) return console.error(err);
-// return data; }) 
 
 function sendtoDialogFlow(MessagetoDialogFlow,callback)
 {
@@ -378,56 +300,7 @@ var req = https.request(options, (res)=> {
 
 
 
-/* ONLY RUN ONCE IN A BOT for greeting message */
-// greeting(); 
 
-// function greeting()
-// {
-
-
-// var https = require('https');
-// const access_token = PAGE_ACCESS_TOKEN ;
-
-// const data = JSON.stringify({
-
-
-//   "greeting": [
-//     {
-//       "locale":"default",
-//       "text":"Hello {{user_first_name}} !" 
-//     }, {
-//       "locale":"en_US",
-//       "text":"Hi. This is Automated Meme sender so you don't have to communicate with any humans"
-//     }
-//   ]
-
-// })
-
-
-// const options = {
-//   method: 'POST',
-//   hostname: 'graph.facebook.com',
-//   port:443,
-//   path: '/v2.6/me/messenger_profile?access_token='+ access_token,
-//   headers: {
-//     'Content-Type': 'application/json',
-//     'Content-Length': data.length
-//   }
-// }
-// var req = https.request(options, (res)=> {
-//   res.on('data',(d) => {process.stdout.write(d)})
-
-
-//     })
-
-//     req.on("error", (error) => { console.error(error)})
-
-//    req.write(data)
-//    req.end()
-
-
-
-// }
 
 
 
@@ -896,9 +769,17 @@ function specialMemesFromMyAccount(senderID,quickReplyPayload){
         		var message_first_time = ["Hi " + user_first_name +",", "Try me by sending 'Send meme' or 'memes' "].join('\n');
                 //present user with some greeting or call to action
                 tools.sendTextMessage(senderID,message_first_time );
-                                //sendMessage(event.sender.id,msg);   
                                 });   
         } 
+
+        else if (event.postback && event.postback.payload === "help" )
+        	//recieved help postback
+
+        {
+
+             tools.sendTextMessage(senderID, help_text);
+
+        }
     console.log("Received postback for user %d and page %d with payload '%s' " +
       "at %d", senderID, recipientID, payload, timeOfPostback);
 
