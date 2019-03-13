@@ -1184,3 +1184,6 @@ module.exports = {
     getFirstName: getFirstName,
     manyCategoriesSearch: manyCategoriesSearch
 }
+
+module.exports.getFirstName = getFirstName;
+

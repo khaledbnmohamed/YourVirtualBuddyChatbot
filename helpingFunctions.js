@@ -10,7 +10,7 @@ const
   https = require('https'),
   request = require('request'),
   URL = require('url'),
-  appJS = require('./app.js'),
+  appJS = require('./app'),
   fs = require('fs'),
   tools = require('./sendFunctions.js');
 
@@ -23,6 +23,8 @@ var help_text = [ "You can send me various messages:","=========================
     "* 'Memes' -> Quick categories selection",   "* 'Surprise me' -> sends you a meme uploaded by our community", "* You can send an image to be uploaded to the community section where you can access it anytime"
 ].join('\n');
 
+
+
 module.exports = 
 {
     /*
@@ -30,6 +32,7 @@ module.exports =
    * get the message id in a response
    *
    */
+
 
 
      checkIfSentBefore: function (ImageLink) {
@@ -97,7 +100,7 @@ module.exports =
         switch (payload) {
           case 'personal_account_memes':
 
-                appJS.specialMemesFromMyAccount(senderID,payload)
+                appJS.specialMemesFromMyAccount(senderID,payload);
 
                  break;
           case 'send_alike':
@@ -117,7 +120,7 @@ module.exports =
 
          case 'get_started':
                   
-            var user_first_name=''
+            var user_first_name='';
             appJS.getFirstName(senderID,function (err, data) {
                if (err) return console.error(err);
                console.log("dataaaa" +data);
@@ -133,8 +136,10 @@ module.exports =
               break;
 
               default:
-              console.log("I should work here")
+              console.log("I should work here");
                appJS.manyCategoriesSearch(senderID,payload);
+
+
 
                 
     }
