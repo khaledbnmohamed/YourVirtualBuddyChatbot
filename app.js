@@ -1,6 +1,8 @@
 
 
 //////////TODO add media filtration to extract videos out of images
+/////////TODO Apply memeory to all parts of sending process
+////////TODO Add instruction at the begining 
 'use strict';
 
 const
@@ -1136,10 +1138,12 @@ in a counter of 100 images saved in a SentImages in inputMemory.json file
 
        			  console.log("SortedByPointsCounter"+SortedByPointsCounter);
 
-			      Target = functions.getImageLink(Sorted,SortedByPointsCounter,-1);
 
 
 	      }
+
+	      Target = functions.getImageLink(Sorted,SortedByPointsCounter,-1);
+
 	      return Target;
 
 

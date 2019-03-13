@@ -42,12 +42,14 @@ module.exports =
                         fs.writeFileSync('./inputMemory.json', JSON.stringify(MemoryArray, null, 2) , 'utf-8');
 
                       }
+
+               //Add Image to Send Array
+                      
               MemoryArray.sentImages.push(ImageID);
               fs.writeFileSync('./inputMemory.json', JSON.stringify(MemoryArray, null, 2) , 'utf-8');
-
-
-              console.log("Array length Now " + MemoryArray.sentImages.length)
+              console.log("Added to array and Array length Now " + MemoryArray.sentImages.length)
               return false;
+              //return false indicates that it wasn't sent before and send the link to the user
 
           }
 
@@ -59,6 +61,7 @@ module.exports =
 
      getImageLink: function (data,i,counter) {
 
+
           if (counter ==-1){
             counter=0;
           }
@@ -66,10 +69,14 @@ module.exports =
           if(data[i].is_album==true)
           {
 
+            console.log("This data is an album so I got the first image link")
+
             return data[i].images[counter].link;
           }
           
           else {
+
+            console.log("This data is an Image so I sent the Link directly without any changes")
 
             return data[i].link;
 
