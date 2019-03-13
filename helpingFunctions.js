@@ -15,6 +15,9 @@ const
   tools = require('./sendFunctions.js');
 
 
+var app = express();
+app.set('port', process.env.PORT || 5000);
+
 
 var MemoryArray =JSON.parse(fs.readFileSync('./inputMemory.json', 'utf8'));
 

@@ -10,7 +10,6 @@ const
   https = require('https'),
   request = require('request'),
   fs = require('fs'),
-  tools = require('./sendFunctions.js');
 
 
 
