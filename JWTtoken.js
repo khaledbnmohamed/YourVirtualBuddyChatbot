@@ -22,7 +22,7 @@ var payload = {
   var signOptions = {
       issuer:  "dialogflowversion2@myvirtualbuddy-fab9e.iam.gserviceaccount.com",
       subject: "dialogflowversion2@myvirtualbuddy-fab9e.iam.gserviceaccount.com",
-      audience:  "https://dialogflow.googleapis.com/google.cloud.dialogflow.v2.Sessions",
+      audience:  "https://dialogflow.googleapis.com/google.cloud.dialogflow.v2beta1.Sessions",
       expiresIn:  "1h",    // 30 days validity
       algorithm:  "RS256",
       keyid :"4285b9a752db1057b238729826e15e030c2824fb"    
