@@ -188,7 +188,7 @@ app.get('/authorize', function (req, res) {
   });
 });
 
-sendtoDialogFlow("Depression Kills believve me  ");
+// sendtoDialogFlow("Depression Kills believve me  ");
  function sendtoDialogFlow(MessagetoDialogFlow, callback) {
 
 
