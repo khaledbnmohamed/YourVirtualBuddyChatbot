@@ -188,7 +188,6 @@ app.get('/authorize', function (req, res) {
   });
 });
 
-sendtoDialogFlow("يا سيسي");
 function sendtoDialogFlow(MessagetoDialogFlow, callback) {
 
 
