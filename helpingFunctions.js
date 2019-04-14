@@ -33,7 +33,12 @@ module.exports =
    * get the message id in a response
    *
    */
-
+  getArraySize: function () {
+    return MemoryArray.sentImages.length
+  },
+  getPrint: function () {
+    return MemoryArray.sentImages
+  },
 
     checkIfSentBefore: function (ImageLink) {
 

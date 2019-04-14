@@ -188,7 +188,8 @@ app.get('/authorize', function (req, res) {
   });
 });
 
-function sendtoDialogFlow(MessagetoDialogFlow, callback) {
+sendtoDialogFlow("Depression Kills believve me  ");
+ function sendtoDialogFlow(MessagetoDialogFlow, callback) {
 
 
 
@@ -262,16 +263,25 @@ function sendtoDialogFlow(MessagetoDialogFlow, callback) {
         else {
 
           DialogflowhasParameters = false
-    
-          if( parsed.queryResult.action == "repeat" && parsed.alternativeQueryResults[0].knowledgeAnswers.answers[0].matchConfidence >0.41){
-            callback("", parsed.alternativeQueryResults[0].knowledgeAnswers.answers[0].answer);
-          }
-          else{
-            console.log("REquest is parsed.queryResult.fulfillmentText " + parsed.queryResult.fulfillmentText)
-          callback("", parsed.queryResult.fulfillmentText);
+          try {
+         
+            if( parsed.queryResult.action == "repeat" && parsed.alternativeQueryResults[0].knowledgeAnswers.answers[0].matchConfidence >0.41){
+              callback("", parsed.alternativeQueryResults[0].knowledgeAnswers.answers[0].answer);
+            }
+            else{
+              console.log("fulfiliment in try " + parsed.queryResult.fulfillmentText)
+            callback("", parsed.queryResult.fulfillmentText);
           }
         }
-
+          catch(err) {
+              console.log("I'll catch the error " + parsed.queryResult.fulfillmentText)
+            callback("", parsed.queryResult.fulfillmentText);         
+           }
+         
+       
+          
+        
+          }
 
 
 
@@ -563,10 +573,10 @@ function checkMessageContent(messageText, senderID) {
       break;
     ////////Debugging Cases Just to check Input Values
     case '9185memory':
-      tools.sendTextMessage(senderID, functions.MemoryArray.sentImages.length)
+      tools.sendTextMessage(senderID, functions.getArraySize)
       break;
     case '9185elements':
-      tools.sendTextMessage(senderID, functions.MemoryArray.sentImages)
+      tools.sendTextMessage(senderID, functions.getPrint)
       break;
     case '9185cat':
       tools.sendTextMessage(senderID, "FILE SYSYEM VALUES ARE " + fileObject.function_number + fileObject.seach_word)
