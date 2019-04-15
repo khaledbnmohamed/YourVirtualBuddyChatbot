@@ -571,6 +571,7 @@ function checkMessageContent(messageText, senderID) {
         console.log("returnedFromKnoweldge ")
 
         tools.sendTextMessage(senderID, messageText)
+        returnedFromKnoweldge = false;
         break;
       }
       if (returnedFromDialogFlow) 
