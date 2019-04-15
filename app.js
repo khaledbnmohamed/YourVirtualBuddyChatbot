@@ -790,14 +790,12 @@ function DialogFlowParameteresHandler(senderID,data)
               // To access saved memes on my imgur account
 
               specialMemesFromMyAccount(senderID, data);
-              returnedFromDialogFlow = false;
 
               return;
             }
             else if (data == "help") {
 
               tools.sendTextMessage(senderID, help_text);
-              returnedFromDialogFlow = false;
 
               return;
 
@@ -811,6 +809,8 @@ function DialogFlowParameteresHandler(senderID,data)
               return;
             }
           }
+          returnedFromDialogFlow = false;
+
 
 }
 
