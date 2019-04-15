@@ -189,7 +189,7 @@ app.get('/authorize', function (req, res) {
   });
 });
 
-sendtoDialogFlow("I'm depressed");
+// sendtoDialogFlow("I'm depressed");
  function sendtoDialogFlow(MessagetoDialogFlow, callback) {
 
   var CallBackReturn;
