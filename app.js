@@ -245,7 +245,7 @@ app.get('/authorize', function (req, res) {
           }
           else {
 
-            DialogflowhasParameters = false
+            DialogflowhasParameters = true
             console.log("REquest is parsed.queryResult.fulfillmentText " + parsed.queryResult.fulfillmentText)
             CallBackReturn =parsed.queryResult.fulfillmentText ;
           }
@@ -568,6 +568,7 @@ function checkMessageContent(messageText, senderID) {
       break;
     default:
       tools.sendTypingOn(senderID);
+
       if(returnedFromKnoweldge){
 
         console.log("returnedFromKnoweldge ")
@@ -576,7 +577,7 @@ function checkMessageContent(messageText, senderID) {
         returnedFromKnoweldge = false;
         return;
       }
-      if (returnedFromDialogFlow) 
+      else if (returnedFromDialogFlow) 
       {
         console.log("Entered here at return from dialog flow")
 
@@ -617,6 +618,7 @@ function checkMessageContent(messageText, senderID) {
               }
             }
           }
+          else{
           returnedFromDialogFlow = true;
           
           console.log("I'm repeating myself her")
@@ -625,6 +627,8 @@ function checkMessageContent(messageText, senderID) {
 
 
           return data;
+
+        }
         })
 
 
