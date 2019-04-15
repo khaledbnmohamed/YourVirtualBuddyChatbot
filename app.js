@@ -493,6 +493,7 @@ function receivedMessage(event) {
 /* Check for message content*/
 
 function checkMessageContent(messageText, senderID) {
+console.log(" I restart checkMessageContent ");
 
   switch (messageText.replace(/[^\w\s]/gi, '').trim().toLowerCase()) {
     case 'hello':
