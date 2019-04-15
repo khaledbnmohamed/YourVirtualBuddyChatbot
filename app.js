@@ -611,10 +611,9 @@ console.log(" I restart checkMessageContent ");
           console.log("returnedFromDialogFlowreturnedFromDialogFlow" + data)
           console.log("returnedFromDialogFlow  = "+ returnedFromDialogFlow);
           console.log("I'm repeating myself her")
-          
+
           returnedFromDialogFlow = true;
           checkMessageContent(data, senderID);
-          returnedFromDialogFlow=false;
 
 
           return data;
