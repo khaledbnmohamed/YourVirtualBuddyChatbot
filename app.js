@@ -15,7 +15,7 @@ const
   fs = require('fs'),
   tools = require('./sendFunctions.js'),
   tokenFile = require('./JWTtoken.js'),
-  
+
   dialogflow = require('dialogflow'),
   { WebhookClient } = require('dialogflow-fulfillment'),
   functions = require('./helpingFunctions.js'),
@@ -190,7 +190,7 @@ app.get('/authorize', function (req, res) {
 });
 
 // sendtoDialogFlow("I'm depressed");
- function sendtoDialogFlow(MessagetoDialogFlow, callback) {
+function sendtoDialogFlow(MessagetoDialogFlow, callback) {
 
   var CallBackReturn;
 
@@ -215,10 +215,10 @@ app.get('/authorize', function (req, res) {
   const options = {
     method: 'POST',
     host: 'dialogflow.googleapis.com',
-    path: '/v2beta1/projects/'+ google_project_id +'/agent/environments/draft/users/6542423/sessions/124567:detectIntent',
+    path: '/v2beta1/projects/' + google_project_id + '/agent/environments/draft/users/6542423/sessions/124567:detectIntent',
     headers: {
 
-      'Authorization': 'Bearer ' +google_access_token,
+      'Authorization': 'Bearer ' + google_access_token,
       'Content-Type': 'application/json',
       'Accept': 'application/json'
 
@@ -230,7 +230,7 @@ app.get('/authorize', function (req, res) {
 
     res.on("data", function (chunk) {
       chunks.push(chunk);
-      res.on("end", function (chunk) { 
+      res.on("end", function (chunk) {
         var body = Buffer.concat(chunks);
         var parsed = JSON.parse(body)
         if (JSON.stringify(parsed.queryResult.parameters) != "{}") {
@@ -240,39 +240,39 @@ app.get('/authorize', function (req, res) {
 
             DialogflowhasParameters = true
             console.log("REquest is parsed.queryResult.parameters.sendmeme " + parsed.queryResult.parameters.sendmeme)
-            CallBackReturn= parsed.queryResult.parameters.sendmeme;
+            CallBackReturn = parsed.queryResult.parameters.sendmeme;
 
           }
           else {
 
             DialogflowhasParameters = false
             console.log("REquest is parsed.queryResult.fulfillmentText " + parsed.queryResult.fulfillmentText)
-            CallBackReturn =parsed.queryResult.fulfillmentText ;
+            CallBackReturn = parsed.queryResult.fulfillmentText;
           }
         }
         else {
 
           DialogflowhasParameters = false;
           try {
-         
-            if( parsed.queryResult.action == "repeat" && parsed.alternativeQueryResults[0].knowledgeAnswers.answers[0].matchConfidence >0.41){
-              CallBackReturn = parsed.alternativeQueryResults[0].knowledgeAnswers.answers[0].answer ;
+
+            if (parsed.queryResult.action == "repeat" && parsed.alternativeQueryResults[0].knowledgeAnswers.answers[0].matchConfidence > 0.41) {
+              CallBackReturn = parsed.alternativeQueryResults[0].knowledgeAnswers.answers[0].answer;
               returnedFromKnoweldge = true;
 
             }
-            else{
+            else {
               console.log("fulfiliment in try " + parsed.queryResult.fulfillmentText)
               CallBackReturn = parsed.queryResult.fulfillmentText;
+            }
           }
+          catch (err) {
+            console.log("I'll catch the error " + parsed.queryResult.fulfillmentText)
+            CallBackReturn = parsed.queryResult.fulfillmentText;
+          }
+
         }
-          catch(err) {
-              console.log("I'll catch the error " + parsed.queryResult.fulfillmentText)
-              CallBackReturn = parsed.queryResult.fulfillmentText;
-           }
 
-          }
-
-          callback("", CallBackReturn);     
+        callback("", CallBackReturn);
 
 
       });
@@ -493,7 +493,7 @@ function receivedMessage(event) {
 /* Check for message content*/
 
 function checkMessageContent(messageText, senderID) {
-console.log(" I restart checkMessageContent ");
+  console.log(" I restart checkMessageContent ");
 
   switch (messageText.replace(/[^\w\s]/gi, '').trim().toLowerCase()) {
     case 'hello':
@@ -571,36 +571,36 @@ console.log(" I restart checkMessageContent ");
     default:
       tools.sendTypingOn(senderID);
 
-      console.log("returnedFromDialogFlow UP  = "+ returnedFromDialogFlow);
+      console.log("returnedFromDialogFlow UP  = " + returnedFromDialogFlow);
 
       if (returnedFromDialogFlow) 
       {
         console.log("Entered here at return from dialog flow")
 
-      
-               
-      if(returnedFromKnoweldge){
 
-        console.log("returnedFromKnoweldge ")
 
-        tools.sendTextMessage(senderID, messageText)
-        returnedFromKnoweldge = false;
+        if (returnedFromKnoweldge) {
 
-      }
-
-      else{       
-        if (DialogflowhasParameters) {
-            DialogFlowParameteresHandler(senderID,data);
-        }
-        else{
+          console.log("returnedFromKnoweldge ")
 
           tools.sendTextMessage(senderID, messageText)
-          returnedFromDialogFlow = false;
-  
+          returnedFromKnoweldge = false;
+
         }
 
-      }
-      returnedFromDialogFlow = false;
+        else {
+          if (DialogflowhasParameters) {
+            DialogFlowParameteresHandler(senderID, data);
+          }
+          else {
+
+            tools.sendTextMessage(senderID, messageText)
+            returnedFromDialogFlow = false;
+
+          }
+
+        }
+        returnedFromDialogFlow = false;
 
       }
 
@@ -609,16 +609,15 @@ console.log(" I restart checkMessageContent ");
         sendtoDialogFlow(messageText, function (err, data) {
           if (err) return console.error(err);
           console.log("returnedFromDialogFlowreturnedFromDialogFlow" + data)
-          console.log("returnedFromDialogFlow  = "+ returnedFromDialogFlow);
+          console.log("returnedFromDialogFlow  = " + returnedFromDialogFlow);
           console.log("I'm repeating myself her")
 
           returnedFromDialogFlow = true;
           checkMessageContent(data, senderID);
 
 
-          return data;
 
-        
+
         })
 
 
@@ -628,6 +627,7 @@ console.log(" I restart checkMessageContent ");
 
     //setTimeout(function(){tools.sendQuickReply(senderID)},3000); //added timeout to make sure it comes later
 
+    break;
 
   }
 
@@ -783,37 +783,36 @@ function receivedAccountLink(event) {
  * in default.json before they can access local resources likes images/videos.
  */
 
-function DialogFlowParameteresHandler(senderID,data)
-{
-           //To Handle the search call from the dialogFlow function 
-          //TODO : Find a template calling theme for cleaner code
-          if (data != "memes" || data != "send meme") {
+function DialogFlowParameteresHandler(senderID, data) {
+  //To Handle the search call from the dialogFlow function 
+  //TODO : Find a template calling theme for cleaner code
+  if (data != "memes" || data != "send meme") {
 
-            if (data == "surprise me") {
+    if (data == "surprise me") {
 
-              // To access saved memes on my imgur account
+      // To access saved memes on my imgur account
 
-              specialMemesFromMyAccount(senderID, data);
+      specialMemesFromMyAccount(senderID, data);
 
-              return;
-            }
-            else if (data == "help") {
+      return;
+    }
+    else if (data == "help") {
 
-              tools.sendTextMessage(senderID, help_text);
+      tools.sendTextMessage(senderID, help_text);
 
-              return;
+      return;
 
-            }
-            else {
-              // To allow generic search for any category using the intents from DialogFlow
-              console.log("I will save to file " + data)
-              saveToFile(2, data, true);
-              chooseCaller(2, data, senderID);
+    }
+    else {
+      // To allow generic search for any category using the intents from DialogFlow
+      console.log("I will save to file " + data)
+      saveToFile(2, data, true);
+      chooseCaller(2, data, senderID);
 
-              return;
-            }
-          }
-          returnedFromDialogFlow = false;
+      return;
+    }
+  }
+  returnedFromDialogFlow = false;
 
 
 }
