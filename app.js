@@ -245,7 +245,7 @@ app.get('/authorize', function (req, res) {
           }
           else {
 
-            DialogflowhasParameters = true
+            DialogflowhasParameters = false
             console.log("REquest is parsed.queryResult.fulfillmentText " + parsed.queryResult.fulfillmentText)
             CallBackReturn =parsed.queryResult.fulfillmentText ;
           }
@@ -569,66 +569,79 @@ function checkMessageContent(messageText, senderID) {
     default:
       tools.sendTypingOn(senderID);
 
+      if (returnedFromDialogFlow) 
+      {
+        console.log("Entered here at return from dialog flow")
+
+               
       if(returnedFromKnoweldge){
 
         console.log("returnedFromKnoweldge ")
 
         tools.sendTextMessage(senderID, messageText)
         returnedFromKnoweldge = false;
-        return;
-      }
-      else if (returnedFromDialogFlow) 
-      {
-        console.log("Entered here at return from dialog flow")
-
-        tools.sendTextMessage(senderID, messageText)
         returnedFromDialogFlow = false;
 
+        return;
+      }
+
+      else{       
+        if (DialogflowhasParameters) {
+          //To Handle the search call from the dialogFlow function 
+          //TODO : Find a template calling theme for cleaner code
+          if (data != "memes" || data != "send meme") {
+
+            if (data == "surprise me") {
+
+              // To access saved memes on my imgur account
+
+              specialMemesFromMyAccount(senderID, data);
+              returnedFromDialogFlow = false;
+
+              return;
+            }
+            else if (data == "help") {
+
+              tools.sendTextMessage(senderID, help_text);
+              returnedFromDialogFlow = false;
+
+              return;
+
+            }
+            else {
+              // To allow generic search for any category using the intents from DialogFlow
+              console.log("I will save to file " + data)
+              saveToFile(2, data, true);
+              chooseCaller(2, data, senderID);
+
+              return;
+            }
+          }
+        }
+        else{
+
+          tools.sendTextMessage(senderID, messageText)
+          returnedFromDialogFlow = false;
+  
+        }
+
+      }
       }
       else {
         sendtoDialogFlow(messageText, function (err, data) {
           if (err) return console.error(err);
           console.log("returnedFromDialogFlowreturnedFromDialogFlow" + data)
 
-          if (DialogflowhasParameters) {
-            //To Handle the search call from the dialogFlow function 
-            //TODO : Find a template calling theme for cleaner code
-            if (data != "memes" || data != "send meme") {
-
-              if (data == "surprise me") {
-
-                // To access saved memes on my imgur account
-
-                specialMemesFromMyAccount(senderID, data);
-                return;
-              }
-              else if (data == "help") {
-
-                tools.sendTextMessage(senderID, help_text);
-                return;
-
-              }
-              else {
-                // To allow generic search for any category using the intents from DialogFlow
-                console.log("I will save to file " + data)
-                saveToFile(2, data, true);
-                chooseCaller(2, data, senderID);
-
-                return;
-              }
-            }
-          }
-          else{
           returnedFromDialogFlow = true;
           
           console.log("I'm repeating myself her")
           checkMessageContent(data, senderID);
-          returnedFromDialogFlow = false;
+          returnedFromDialogFlow = true;
 
 
           return data;
 
-        }
+        
         })
 
 
