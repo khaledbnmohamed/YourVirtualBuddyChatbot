@@ -36,7 +36,6 @@ var clientId = '8056e5db3f369d1'
 var imgur_access_token = '2a8f6dacd57b657d8f9542b166724964c1ed8f8f'
 var imgur_username = 'khaledbnmohamed'
 var returnedFromDialogFlow = false
-var AlreadySentMessage = false
 var returnedFromKnoweldge = false
 var DialogflowhasParameters = false
 var SortImagesbyPoints = true;
@@ -575,7 +574,6 @@ function checkMessageContent(messageText, senderID) {
 
         tools.sendTextMessage(senderID, messageText)
         returnedFromKnoweldge = false;
-        AlreadySentMessage = true ;
         return;
       }
       if (returnedFromDialogFlow) 
@@ -583,7 +581,6 @@ function checkMessageContent(messageText, senderID) {
         console.log("Entered here at return from dialog flow")
 
         tools.sendTextMessage(senderID, messageText)
-        AlreadySentMessage = true
         returnedFromDialogFlow = false;
 
       }
@@ -602,13 +599,11 @@ function checkMessageContent(messageText, senderID) {
                 // To access saved memes on my imgur account
 
                 specialMemesFromMyAccount(senderID, data);
-                AlreadySentMessage = true ;
                 return;
               }
               else if (data == "help") {
 
                 tools.sendTextMessage(senderID, help_text);
-                AlreadySentMessage = true ;
                 return;
 
               }
@@ -624,11 +619,10 @@ function checkMessageContent(messageText, senderID) {
           }
           returnedFromDialogFlow = true;
           
-          if(!AlreadySentMessage)
-          {
+          console.log("I'm repeating myself her")
           checkMessageContent(data, senderID);
           returnedFromDialogFlow = false;
-          }
+
 
           return data;
         })
