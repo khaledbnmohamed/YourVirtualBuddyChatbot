@@ -604,8 +604,8 @@ function checkMessageContent(messageText, senderID) {
 
       }
 
-
       else if (returnedFromDialogFlow == false) {
+        console.log("I'm here bitches");
         sendtoDialogFlow(messageText, function (err, data) {
           if (err) return console.error(err);
           console.log("returnedFromDialogFlowreturnedFromDialogFlow" + data)
