@@ -36,6 +36,7 @@ var clientId = '8056e5db3f369d1'
 var imgur_access_token = '2a8f6dacd57b657d8f9542b166724964c1ed8f8f'
 var imgur_username = 'khaledbnmohamed'
 var returnedFromDialogFlow = false
+var returnedFromKnoweldge = false
 var DialogflowhasParameters = false
 var SortImagesbyPoints = true;
 var uniqueRandoms = [];
@@ -232,17 +233,6 @@ app.get('/authorize', function (req, res) {
       res.on("end", function (chunk) { 
         var body = Buffer.concat(chunks);
         var parsed = JSON.parse(body)
-
-        // console.log("findInJSON(body,parameters,sendmeme)"+findInJSON(body,"parameters","sendmeme"))
-        // if(!findInJSON(body,parameters,sendmeme)){
-
-
-
-        //           console.log("REquest is parsed.queryResult.fulfillmentText "+parsed.queryResult.fulfillmentText)
-        //           callback("",parsed.queryResult.fulfillmentText);
-
-
-        // }
         if (JSON.stringify(parsed.queryResult.parameters) != "{}") {
 
           console.log("parsed.queryResult.parameters" + parsed.queryResult.parameters.sendmeme)
@@ -262,7 +252,8 @@ app.get('/authorize', function (req, res) {
         }
         else {
 
-          DialogflowhasParameters = false
+          DialogflowhasParameters = false;
+          returnedFromKnoweldge = true;
           try {
          
             if( parsed.queryResult.action == "repeat" && parsed.alternativeQueryResults[0].knowledgeAnswers.answers[0].matchConfidence >0.41){
@@ -275,19 +266,11 @@ app.get('/authorize', function (req, res) {
         }
           catch(err) {
               console.log("I'll catch the error " + parsed.queryResult.fulfillmentText)
-            callback("", parsed.queryResult.fulfillmentText);         
+            callback("", parsed.queryResult.fulfillmentText);     
+                
            }
-         
-       
-          
-        
+
           }
-
-
-
-
-
-
 
       });
 
@@ -583,10 +566,15 @@ function checkMessageContent(messageText, senderID) {
       break;
     default:
       tools.sendTypingOn(senderID);
-      // tools.sendTextMessage(senderID, default_text);
+      if(returnedFromKnoweldge){
 
-      console.log("Entered here at default")
-      if (returnedFromDialogFlow) {
+        console.log("returnedFromKnoweldge ")
+
+        tools.sendTextMessage(senderID, messageText)
+        break;
+      }
+      if (returnedFromDialogFlow) 
+      {
         console.log("Entered here at return from dialog flow")
 
         tools.sendTextMessage(senderID, messageText)
