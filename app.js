@@ -249,6 +249,9 @@ function sendtoDialogFlow(MessagetoDialogFlow, callback) {
             console.log("REquest is parsed.queryResult.fulfillmentText " + parsed.queryResult.fulfillmentText)
             CallBackReturn = parsed.queryResult.fulfillmentText;
           }
+
+          callback("", CallBackReturn);
+
         }
         else {
 
@@ -269,10 +272,10 @@ function sendtoDialogFlow(MessagetoDialogFlow, callback) {
             console.log("I'll catch the error " + parsed.queryResult.fulfillmentText)
             CallBackReturn = parsed.queryResult.fulfillmentText;
           }
+          callback("", CallBackReturn);
 
         }
 
-        callback("", CallBackReturn);
 
 
       });
