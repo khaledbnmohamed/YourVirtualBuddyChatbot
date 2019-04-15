@@ -192,7 +192,7 @@ app.get('/authorize', function (req, res) {
 // sendtoDialogFlow("Depression Kills believve me  ");
  function sendtoDialogFlow(MessagetoDialogFlow, callback) {
 
-
+  var CallBackReturn;
 
   var https = require('https');
   var chunks = [];
@@ -240,14 +240,14 @@ app.get('/authorize', function (req, res) {
 
             DialogflowhasParameters = true
             console.log("REquest is parsed.queryResult.parameters.sendmeme " + parsed.queryResult.parameters.sendmeme)
-            callback("", parsed.queryResult.parameters.sendmeme);
+            CallBackReturn= parsed.queryResult.parameters.sendmeme;
 
           }
           else {
 
             DialogflowhasParameters = false
             console.log("REquest is parsed.queryResult.fulfillmentText " + parsed.queryResult.fulfillmentText)
-            callback("", parsed.queryResult.fulfillmentText);
+            CallBackReturn =parsed.queryResult.fulfillmentText ;
           }
         }
         else {
@@ -257,20 +257,22 @@ app.get('/authorize', function (req, res) {
           try {
          
             if( parsed.queryResult.action == "repeat" && parsed.alternativeQueryResults[0].knowledgeAnswers.answers[0].matchConfidence >0.41){
-              callback("", parsed.alternativeQueryResults[0].knowledgeAnswers.answers[0].answer);
+              CallBackReturn = parsed.alternativeQueryResults[0].knowledgeAnswers.answers[0].answer ;
             }
             else{
               console.log("fulfiliment in try " + parsed.queryResult.fulfillmentText)
-            callback("", parsed.queryResult.fulfillmentText);
+              CallBackReturn = parsed.queryResult.fulfillmentText;
           }
         }
           catch(err) {
               console.log("I'll catch the error " + parsed.queryResult.fulfillmentText)
-            callback("", parsed.queryResult.fulfillmentText);     
-                
+              CallBackReturn = parsed.queryResult.fulfillmentText;
            }
 
           }
+
+          callback("", CallBackReturn);     
+
 
       });
 
