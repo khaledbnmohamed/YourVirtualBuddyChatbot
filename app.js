@@ -189,7 +189,7 @@ app.get('/authorize', function (req, res) {
   });
 });
 
-// sendtoDialogFlow("Depression Kills believve me  ");
+sendtoDialogFlow("I'm depressed");
  function sendtoDialogFlow(MessagetoDialogFlow, callback) {
 
   var CallBackReturn;
@@ -589,8 +589,6 @@ function checkMessageContent(messageText, senderID) {
           if (err) return console.error(err);
           console.log("returnedFromDialogFlowreturnedFromDialogFlow" + data)
 
-
-
           if (DialogflowhasParameters) {
             //To Handle the search call from the dialogFlow function 
             //TODO : Find a template calling theme for cleaner code
@@ -620,7 +618,8 @@ function checkMessageContent(messageText, senderID) {
             }
           }
           returnedFromDialogFlow = true;
-
+          
+          console.log("I'm repeating myself her")
           checkMessageContent(data, senderID);
           returnedFromDialogFlow = false;
 
