@@ -572,7 +572,7 @@ function checkMessageContent(messageText, senderID) {
 
         tools.sendTextMessage(senderID, messageText)
         returnedFromKnoweldge = false;
-        break;
+        return;
       }
       if (returnedFromDialogFlow) 
       {
