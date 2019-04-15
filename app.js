@@ -571,6 +571,8 @@ console.log(" I restart checkMessageContent ");
     default:
       tools.sendTypingOn(senderID);
 
+      console.log("returnedFromDialogFlow UP  = "+ returnedFromDialogFlow);
+
       if (returnedFromDialogFlow) 
       {
         console.log("Entered here at return from dialog flow")
@@ -583,9 +585,7 @@ console.log(" I restart checkMessageContent ");
 
         tools.sendTextMessage(senderID, messageText)
         returnedFromKnoweldge = false;
-        returnedFromDialogFlow = false;
 
-        return;
       }
 
       else{       
@@ -600,6 +600,8 @@ console.log(" I restart checkMessageContent ");
         }
 
       }
+      returnedFromDialogFlow = false;
+
       }
 
 
@@ -607,7 +609,7 @@ console.log(" I restart checkMessageContent ");
         sendtoDialogFlow(messageText, function (err, data) {
           if (err) return console.error(err);
           console.log("returnedFromDialogFlowreturnedFromDialogFlow" + data)
-          
+          console.log("returnedFromDialogFlow  = "+ returnedFromDialogFlow);
           console.log("I'm repeating myself her")
           returnedFromDialogFlow = true;
           checkMessageContent(data, senderID);
