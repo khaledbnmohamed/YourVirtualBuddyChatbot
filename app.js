@@ -608,7 +608,7 @@ function checkMessageContent(messageText, senderID) {
         console.log("I'm here bitches");
         sendtoDialogFlow(messageText, function (err, data) {
           if (err) return console.error(err);
-          console.log("returnedFromDialogFlowreturnedFromDialogFlow" + data)
+          
           console.log("returnedFromDialogFlow  = " + returnedFromDialogFlow);
           console.log("I'm repeating myself her")
 
