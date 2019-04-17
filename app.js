@@ -189,13 +189,26 @@ app.get('/authorize', function (req, res) {
   });
 });
 
-// sendtoDialogFlow("I'm depressed");
+sendtoDialogFlow("I want to Kill myself", function (err, data) {
+  if (err) return console.error(err);
+  
+  console.log("returnedFromDialogFlow  = " + returnedFromDialogFlow);
+  console.log("I'm repeating myself her")
+
+  returnedFromDialogFlow = true;
+  checkMessageContent(data, "Khaled");
+
+
+
+
+})
+
 function sendtoDialogFlow(MessagetoDialogFlow, callback) {
 
   var CallBackReturn;
 
   var https = require('https');
-  var chunks = [];
+  var DFchunks = [];
 
   const data = JSON.stringify({
 
@@ -228,10 +241,10 @@ function sendtoDialogFlow(MessagetoDialogFlow, callback) {
     res.on('data', (d) => { process.stdout.write(d) })
 
 
-    res.on("data", function (chunk) {
-      chunks.push(chunk);
-      res.on("end", function (chunk) {
-        var body = Buffer.concat(chunks);
+    res.on("data", function (DF) {
+      DFchunks.push(DF);
+      res.on("end", function (DF) {
+        var body = Buffer.concat(DFchunks);
         var parsed = JSON.parse(body)
         if (JSON.stringify(parsed.queryResult.parameters) != "{}") {
 
@@ -249,9 +262,6 @@ function sendtoDialogFlow(MessagetoDialogFlow, callback) {
             console.log("REquest is parsed.queryResult.fulfillmentText " + parsed.queryResult.fulfillmentText)
             CallBackReturn = parsed.queryResult.fulfillmentText;
           }
-
-          callback("", CallBackReturn);
-
         }
         else {
 
@@ -272,13 +282,14 @@ function sendtoDialogFlow(MessagetoDialogFlow, callback) {
             console.log("I'll catch the error " + parsed.queryResult.fulfillmentText)
             CallBackReturn = parsed.queryResult.fulfillmentText;
           }
-          callback("", CallBackReturn);
 
         }
 
+        callback("", CallBackReturn);
 
 
       });
+
 
       res.on("error", function (error) {
         console.error(error);
@@ -297,6 +308,10 @@ function sendtoDialogFlow(MessagetoDialogFlow, callback) {
 
 
 }
+
+
+
+
 
 
 
@@ -611,15 +626,16 @@ function checkMessageContent(messageText, senderID) {
         console.log("I'm here bitches");
         sendtoDialogFlow(messageText, function (err, data) {
           if (err) return console.error(err);
-          
+   
+
+          console.log("returnedFromDialogFlow  = " + data);
+
           console.log("returnedFromDialogFlow  = " + returnedFromDialogFlow);
           console.log("I'm repeating myself her")
-
+  
           returnedFromDialogFlow = true;
           checkMessageContent(data, senderID);
-
-
-
+  
 
         })
 
