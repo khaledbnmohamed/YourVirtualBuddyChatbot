@@ -191,14 +191,14 @@ app.get('/authorize', function (req, res) {
 
 sendtoDialogFlow("I want to Kill myself", function (err, data) {
   if (err) return console.error(err);
-  
+  else{
   console.log("returnedFromDialogFlow  = " + returnedFromDialogFlow);
   console.log("I'm repeating myself her")
 
   returnedFromDialogFlow = true;
   checkMessageContent(data, "Khaled");
 
-
+  }
 
 
 })
@@ -246,6 +246,11 @@ function sendtoDialogFlow(MessagetoDialogFlow, callback) {
       res.on("end", function (DF) {
         var body = Buffer.concat(DFchunks);
         var parsed = JSON.parse(body)
+        res.on("error", function (error) {
+          console.error(error);
+          callback(error, "")
+        });
+
         if (JSON.stringify(parsed.queryResult.parameters) != "{}") {
 
           console.log("parsed.queryResult.parameters" + parsed.queryResult.parameters.sendmeme)
@@ -285,16 +290,12 @@ function sendtoDialogFlow(MessagetoDialogFlow, callback) {
 
         }
 
-        callback("", CallBackReturn);
 
 
       });
 
 
-      res.on("error", function (error) {
-        console.error(error);
-        callback(error, "")
-      });
+  
     });
 
   })
@@ -306,6 +307,7 @@ function sendtoDialogFlow(MessagetoDialogFlow, callback) {
   req.end()
 
 
+  callback("", CallBackReturn);
 
 }
 
