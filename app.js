@@ -16,6 +16,8 @@ const
   tools = require('./sendFunctions.js'),
   tokenFile = require('./JWTtoken.js'),
   sk = require('./config/SecretKeys.js'),
+  util = require('util'),
+  PromisedSendtoDialogFlow = util.promisify(sendtoDialogFlow),
 
   dialogflow = require('dialogflow'),
   { WebhookClient } = require('dialogflow-fulfillment'),
@@ -191,19 +193,22 @@ app.get('/authorize', function (req, res) {
   });
 });
 
-sendtoDialogFlow("I want to Kill myself", function (err, data) {
-  if (err) return console.error(err);
-  else{
-  console.log("returnedFromDialogFlow  = " + returnedFromDialogFlow);
-  console.log("I'm repeating myself her")
-
-  returnedFromDialogFlow = true;
-  checkMessageContent(data, "Khaled");
-
-  }
 
 
-})
+
+// sendtoDialogFlow("I want to Kill myself", function (err, data) {
+//   if (err) return console.error(err);
+//   else{
+//   console.log("returnedFromDialogFlow  = " + returnedFromDialogFlow);
+//   console.log("I'm repeating myself her")
+
+//   returnedFromDialogFlow = true;
+//   checkMessageContent(data, "Khaled");
+
+//   }
+
+
+// })
 
 function sendtoDialogFlow(MessagetoDialogFlow, callback) {
 
@@ -292,6 +297,7 @@ function sendtoDialogFlow(MessagetoDialogFlow, callback) {
 
         }
 
+        callback("", CallBackReturn);
 
 
       });
@@ -309,7 +315,6 @@ function sendtoDialogFlow(MessagetoDialogFlow, callback) {
   req.end()
 
 
-  callback("", CallBackReturn);
 
 }
 
@@ -628,21 +633,17 @@ function checkMessageContent(messageText, senderID) {
 
       else if (returnedFromDialogFlow == false) {
         console.log("I'm here bitches");
-        sendtoDialogFlow(messageText, function (err, data) {
-          if (err) return console.error(err);
-   
-
-          console.log("returnedFromDialogFlow  = " + data);
-
+        
+        PromisedSendtoDialogFlow(messageText)
+          .then(data => { 
           console.log("returnedFromDialogFlow  = " + returnedFromDialogFlow);
           console.log("I'm repeating myself her")
-  
+
           returnedFromDialogFlow = true;
           checkMessageContent(data, senderID);
-  
-
-        })
-
+        }
+        )
+          .catch(err => console.error(`[Error]: ${err}`));
 
 
       }
