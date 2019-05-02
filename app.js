@@ -195,20 +195,8 @@ app.get('/authorize', function (req, res) {
 
 
 
-
-// sendtoDialogFlow("I want to Kill myself", function (err, data) {
-//   if (err) return console.error(err);
-//   else{
-//   console.log("returnedFromDialogFlow  = " + returnedFromDialogFlow);
-//   console.log("I'm repeating myself her")
-
-//   returnedFromDialogFlow = true;
-//   checkMessageContent(data, "Khaled");
-
-//   }
-
-
-// })
+//Test Function
+// checkMessageContent("I want sad memes","Khaled")
 
 function sendtoDialogFlow(MessagetoDialogFlow, callback) {
 
@@ -617,7 +605,9 @@ function checkMessageContent(messageText, senderID) {
 
         else {
           if (DialogflowhasParameters) {
-            DialogFlowParameteresHandler(senderID, data);
+            console.log(" I have Parameters");
+            
+            DialogFlowParameteresHandler(senderID, messageText);
           }
           else {
 
