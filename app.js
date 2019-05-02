@@ -191,149 +191,131 @@ app.get('/authorize', function (req, res) {
   });
 });
 
-
-
-var PromiseHolder = sendtoDialogflow("I want to Kill myself");
-PromiseHolder.then(function (data) {
+sendtoDialogFlow("I want to Kill myself", function (err, data) {
+  if (err) return console.error(err);
+  else{
   console.log("returnedFromDialogFlow  = " + returnedFromDialogFlow);
-  console.log("I'm repeating myself her");
-  console.log("fulfilled", data);
+  console.log("I'm repeating myself her")
 
   returnedFromDialogFlow = true;
   checkMessageContent(data, "Khaled");
 
-}).catch(function (error) {
-  // ops, mom don't buy it
-  console.log(error.message);
-});
+  }
 
 
+})
 
-
-function sendtoDialogflow(MessagetoDialogFlow) {
-
-
-  return new Promise(function (resolve, reject) {
-
-
+function sendtoDialogFlow(MessagetoDialogFlow, callback) {
 
   var CallBackReturn;
 
   var https = require('https');
-  var DFChunks = [];
-  var p1 = new Promise(
-    // The resolver function is called with the ability to resolve or
-    // reject the promise
-    function (resolve, reject) {
+  var DFchunks = [];
 
-      const data = JSON.stringify({
+  const data = JSON.stringify({
 
 
 
-        "queryInput": {
-          "text": {
-            "languageCode": "en",
-            "text": MessagetoDialogFlow
+    "queryInput": {
+      "text": {
+        "languageCode": "en",
+        "text": MessagetoDialogFlow
+      }
+    }
+
+
+  })
+
+
+  const options = {
+    method: 'POST',
+    host: 'dialogflow.googleapis.com',
+    path: '/v2beta1/projects/' + google_project_id + '/agent/environments/draft/users/6542423/sessions/124567:detectIntent',
+    headers: {
+
+      'Authorization': 'Bearer ' + google_access_token,
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+
+    }
+  }
+  var req = https.request(options, (res) => {
+    res.on('data', (d) => { process.stdout.write(d) })
+
+
+    res.on("data", function (DF) {
+      DFchunks.push(DF);
+      res.on("end", function (DF) {
+        var body = Buffer.concat(DFchunks);
+        var parsed = JSON.parse(body)
+        res.on("error", function (error) {
+          console.error(error);
+          callback(error, "")
+        });
+
+        if (JSON.stringify(parsed.queryResult.parameters) != "{}") {
+
+          console.log("parsed.queryResult.parameters" + parsed.queryResult.parameters.sendmeme)
+          if (parsed.queryResult.parameters.sendmeme !== undefined) {
+
+            DialogflowhasParameters = true
+            console.log("REquest is parsed.queryResult.parameters.sendmeme " + parsed.queryResult.parameters.sendmeme)
+            CallBackReturn = parsed.queryResult.parameters.sendmeme;
+
+          }
+          else {
+
+            DialogflowhasParameters = false
+            console.log("REquest is parsed.queryResult.fulfillmentText " + parsed.queryResult.fulfillmentText)
+            CallBackReturn = parsed.queryResult.fulfillmentText;
           }
         }
+        else {
+
+          DialogflowhasParameters = false;
+          try {
+
+            if (parsed.queryResult.action == "repeat" && parsed.alternativeQueryResults[0].knowledgeAnswers.answers[0].matchConfidence > 0.41) {
+              CallBackReturn = parsed.alternativeQueryResults[0].knowledgeAnswers.answers[0].answer;
+              returnedFromKnoweldge = true;
+
+            }
+            else {
+              console.log("fulfiliment in try " + parsed.queryResult.fulfillmentText)
+              CallBackReturn = parsed.queryResult.fulfillmentText;
+            }
+          }
+          catch (err) {
+            console.log("I'll catch the error " + parsed.queryResult.fulfillmentText)
+            CallBackReturn = parsed.queryResult.fulfillmentText;
+          }
+
+        }
+
 
 
       });
 
 
-      const options = {
-        method: 'POST',
-        host: 'dialogflow.googleapis.com',
-        path: '/v2beta1/projects/' + google_project_id + '/agent/environments/draft/users/6542423/sessions/124567:detectIntent',
-        headers: {
-
-          'Authorization': 'Bearer ' + google_access_token,
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-
-        }
-      };
-
-     var callback = function (ResultofCallback) {
-
-      var Chunks = []
-      // another chunk of data has been recieved, so append it to `str`
-        ResultofCallback.on('data', function (chunk) {
-          Chunks.push(chunk);
-        });
-
-        // capture the google response and relay it to the original api call.
-        ResultofCallback.on('end', function () {
-
-          var body = Buffer.concat(Chunks);
-          var parsed = JSON.parse(body)
-          resolve(parsed);
-        });
-      }
-
-
-  var req= https.request(options, data,callback).end();
-
- 
-
-  console.log(" Request is ",req );
-});
-p1.then(function (parsed) {
-
-
-
-    console.log(" Im HERE BABYYY ",parsed);
-
-
-
-    if (JSON.stringify(parsed.queryResult.parameters) != "{}") {
-
-      console.log("parsed.queryResult.parameters" + parsed.queryResult.parameters.sendmeme)
-      if (parsed.queryResult.parameters.sendmeme !== undefined) {
-
-        DialogflowhasParameters = true
-        console.log("REquest is parsed.queryResult.parameters.sendmeme " + parsed.queryResult.parameters.sendmeme)
-        CallBackReturn = parsed.queryResult.parameters.sendmeme;
-
-      }
-      else {
-
-        DialogflowhasParameters = false
-        console.log("REquest is parsed.queryResult.fulfillmentText " + parsed.queryResult.fulfillmentText)
-        CallBackReturn = parsed.queryResult.fulfillmentText;
-      }
-    }
-    else {
-
-      DialogflowhasParameters = false;
-      try {
-
-        if (parsed.queryResult.action == "repeat" && parsed.alternativeQueryResults[0].knowledgeAnswers.answers[0].matchConfidence > 0.41) {
-          CallBackReturn = parsed.alternativeQueryResults[0].knowledgeAnswers.answers[0].answer;
-          returnedFromKnoweldge = true;
-
-        }
-        else {
-          console.log("fulfiliment in try " + parsed.queryResult.fulfillmentText)
-          CallBackReturn = parsed.queryResult.fulfillmentText;
-        }
-      }
-      catch (err) {
-        console.log("I'll catch the error " + parsed.queryResult.fulfillmentText)
-        CallBackReturn = parsed.queryResult.fulfillmentText;
-      }
-
-    }
-
-
-    resolve(CallBackReturn);
-
-
-  });
-
-});
   
-  }
+    });
+
+  })
+
+  req.on("error", (error) => { console.error(error) })
+
+  req.write(data)
+
+  req.end()
+
+
+  callback("", CallBackReturn);
+
+}
+
+
+
+
 
 
 
@@ -532,7 +514,7 @@ function receivedMessage(event) {
 
 /* Check for message content*/
 
-async function checkMessageContent(messageText, senderID) {
+function checkMessageContent(messageText, senderID) {
   console.log(" I restart checkMessageContent ");
 
   switch (messageText.replace(/[^\w\s]/gi, '').trim().toLowerCase()) {
@@ -613,7 +595,8 @@ async function checkMessageContent(messageText, senderID) {
 
       console.log("returnedFromDialogFlow UP  = " + returnedFromDialogFlow);
 
-      if (returnedFromDialogFlow) {
+      if (returnedFromDialogFlow) 
+      {
         console.log("Entered here at return from dialog flow")
 
 
@@ -647,16 +630,16 @@ async function checkMessageContent(messageText, senderID) {
         console.log("I'm here bitches");
         sendtoDialogFlow(messageText, function (err, data) {
           if (err) return console.error(err);
-
+   
 
           console.log("returnedFromDialogFlow  = " + data);
 
           console.log("returnedFromDialogFlow  = " + returnedFromDialogFlow);
           console.log("I'm repeating myself her")
-
+  
           returnedFromDialogFlow = true;
           checkMessageContent(data, senderID);
-
+  
 
         })
 
@@ -665,9 +648,9 @@ async function checkMessageContent(messageText, senderID) {
       }
       tools.sendTypingOff(senderID);
 
-      //setTimeout(function(){tools.sendQuickReply(senderID)},3000); //added timeout to make sure it comes later
+    //setTimeout(function(){tools.sendQuickReply(senderID)},3000); //added timeout to make sure it comes later
 
-      break;
+    break;
 
   }
 
