@@ -15,6 +15,7 @@ const
   fs = require('fs'),
   tools = require('./sendFunctions.js'),
   tokenFile = require('./JWTtoken.js'),
+  sk = require('./config/SecretKeys.js'),
 
   dialogflow = require('dialogflow'),
   { WebhookClient } = require('dialogflow-fulfillment'),
@@ -31,10 +32,12 @@ const
 
 var MessagetoDialogFlow = ""
 
-var ImageLink = 'https://i.imgur.com/KZC2CW9.jpg'
-var clientId = '8056e5db3f369d1'
-var imgur_access_token = '2a8f6dacd57b657d8f9542b166724964c1ed8f8f'
-var imgur_username = 'khaledbnmohamed'
+//Secret Keys saved in different file for security 
+var clientId = sk.getClientID();
+var imgur_access_token = sk.getImgurAccessToken();
+var imgur_username = sk.getImgurUserName();
+var google_project_id = sk.getGoogleProjectID(); 
+var google_access_token =tokenFile.sign();
 var returnedFromDialogFlow = false
 var returnedFromKnoweldge = false
 var DialogflowhasParameters = false
@@ -44,7 +47,6 @@ var SortedByPointsCounter = 0; // initlize the i globally for easer access so do
 
 var google_access_token = tokenFile.sign();
 
-var google_project_id = 'myvirtualbuddy-fab9e' // from google console
 
 
 var FirstQuery = true;
