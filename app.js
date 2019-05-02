@@ -637,8 +637,8 @@ function checkMessageContent(messageText, senderID) {
         PromisedSendtoDialogFlow(messageText)
           .then(data => { 
           console.log("returnedFromDialogFlow  = " + returnedFromDialogFlow);
-          console.log("I'm repeating myself her")
-
+          console.log("Data is , ",data)
+          
           returnedFromDialogFlow = true;
           checkMessageContent(data, senderID);
         }
