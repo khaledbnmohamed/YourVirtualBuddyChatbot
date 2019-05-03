@@ -508,6 +508,9 @@ function receivedMessage(event) {
 /* Check for message content*/
 
 function checkMessageContent(messageText, senderID) {
+  
+  tools.sendReadReceipt(senderID);
+
   console.log(" I restart checkMessageContent ");
 
   switch (messageText.replace(/[^\w\s]/gi, '').trim().toLowerCase()) {
@@ -622,7 +625,6 @@ function checkMessageContent(messageText, senderID) {
       }
 
       else if (returnedFromDialogFlow == false) {
-        console.log("I'm here bitches");
         
         PromisedSendtoDialogFlow(messageText)
           .then(data => { 
