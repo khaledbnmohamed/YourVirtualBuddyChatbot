@@ -31,7 +31,6 @@ const
 // );
 
 
-
 var MessagetoDialogFlow = ""
 
 //Secret Keys saved in different file for security 
@@ -39,6 +38,7 @@ var clientId = sk.getClientID();
 var imgur_access_token = sk.getImgurAccessToken();
 var imgur_username = sk.getImgurUserName();
 var google_project_id = sk.getGoogleProjectID(); 
+var DATABASE_URL = sk.getDatabaseURL();
 var google_access_token =tokenFile.sign();
 var returnedFromDialogFlow = false
 var returnedFromKnoweldge = false
@@ -68,6 +68,14 @@ var app = express();
 
 
 var fileObject = JSON.parse(fs.readFileSync('./inputMemory.json', 'utf8'));
+
+//Database conncetion setup
+const { Pool } = require('pg');
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: true
+});
+
 
 app.set('port', process.env.PORT || 5000);
 app.set('view engine', 'ejs');
@@ -123,6 +131,18 @@ app.get('/webhook', function (req, res) {
   }
 });
 
+.get('/db', async (req, res) => {
+  try {
+    const client = await pool.connect()
+    const result = await client.query('SELECT * FROM test_table');
+    const results = { 'results': (result) ? result.rows : null};
+    res.render('pages/db', results );
+    client.release();
+  } catch (err) {
+    console.error(err);
+    res.send("Error " + err);
+  }
+})
 
 /*
  * All callbacks for Messenger are POST-ed. They will be sent to the same

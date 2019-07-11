@@ -25,6 +25,7 @@
     "firebase": "^5.8.2",
     "firebase-admin": "^7.0.0",
     "firebase-functions": "^2.2.0",
+    "pg": "^7.11.0",
     "request": "^2.72.0"
   },
   "engines": {
