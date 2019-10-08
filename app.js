@@ -131,7 +131,7 @@ app.get('/webhook', function (req, res) {
   }
 });
 
-.get('/db', async (req, res) => {
+app.get('/db', async (req, res) => {
   try {
     const client = await pool.connect()
     const result = await client.query('SELECT * FROM test_table');
@@ -268,18 +268,15 @@ function sendtoDialogFlow(MessagetoDialogFlow, callback) {
 
         if (JSON.stringify(parsed.queryResult.parameters) != "{}") {
 
-          console.log("parsed.queryResult.parameters" + parsed.queryResult.parameters.sendmeme)
           if (parsed.queryResult.parameters.sendmeme !== undefined) {
 
             DialogflowhasParameters = true
-            console.log("REquest is parsed.queryResult.parameters.sendmeme " + parsed.queryResult.parameters.sendmeme)
             CallBackReturn = parsed.queryResult.parameters.sendmeme;
 
           }
           else {
 
             DialogflowhasParameters = false
-            console.log("REquest is parsed.queryResult.fulfillmentText " + parsed.queryResult.fulfillmentText)
             CallBackReturn = parsed.queryResult.fulfillmentText;
           }
         }
@@ -294,12 +291,10 @@ function sendtoDialogFlow(MessagetoDialogFlow, callback) {
 
             }
             else {
-              console.log("fulfiliment in try " + parsed.queryResult.fulfillmentText)
               CallBackReturn = parsed.queryResult.fulfillmentText;
             }
           }
           catch (err) {
-            console.log("I'll catch the error " + parsed.queryResult.fulfillmentText)
             CallBackReturn = parsed.queryResult.fulfillmentText;
           }
 
@@ -364,11 +359,8 @@ function getFirstName(senderID, callback) {
 
     res.on("end", function (chunk) {
       var body = Buffer.concat(chunks);
-      console.log("name before pasring " + body)
 
-      console.log("name after pasring " + JSON.parse(body).first_name)
       first_name = JSON.parse(body).first_name;
-      console.log("first_name at get first name " + first_name)
       callback("", first_name);
     });
 
@@ -488,8 +480,6 @@ function receivedMessage(event) {
     return;
   } else if (quickReply) {
     var quickReplyPayload = quickReply.payload;
-    console.log("Quick reply for message %s with payload %s",
-      messageId, quickReplyPayload);
     tools.sendTypingOn(senderID); //typing on till fetching
 
     handlePayload(quickReplyPayload, senderID);
@@ -530,8 +520,6 @@ function receivedMessage(event) {
 function checkMessageContent(messageText, senderID) {
   
   tools.sendReadReceipt(senderID);
-
-  console.log(" I restart checkMessageContent ");
 
   switch (messageText.replace(/[^\w\s]/gi, '').trim().toLowerCase()) {
     case 'hello':
@@ -609,17 +597,11 @@ function checkMessageContent(messageText, senderID) {
     default:
       tools.sendTypingOn(senderID);
 
-      console.log("returnedFromDialogFlow UP  = " + returnedFromDialogFlow);
 
       if (returnedFromDialogFlow) 
       {
-        console.log("Entered here at return from dialog flow")
-
-
 
         if (returnedFromKnoweldge) {
-
-          console.log("returnedFromKnoweldge ")
 
           tools.sendTextMessage(senderID, messageText)
           returnedFromKnoweldge = false;
@@ -627,9 +609,7 @@ function checkMessageContent(messageText, senderID) {
         }
 
         else {
-          if (DialogflowhasParameters) {
-            console.log(" I have Parameters");
-            
+          if (DialogflowhasParameters) {            
             DialogFlowParameteresHandler(senderID, messageText);
           }
           else {
@@ -647,10 +627,7 @@ function checkMessageContent(messageText, senderID) {
       else if (returnedFromDialogFlow == false) {
         
         PromisedSendtoDialogFlow(messageText)
-          .then(data => { 
-          console.log("returnedFromDialogFlow  = " + returnedFromDialogFlow);
-          console.log("Data is , ",data)
-          
+          .then(data => {           
           returnedFromDialogFlow = true;
           checkMessageContent(data, senderID);
         }
@@ -674,8 +651,6 @@ function checkMessageContent(messageText, senderID) {
 function sendLike(senderID) {
 
   fileObject.want_more = true;
-  console.log(" I CHOSE SEND_ALIKE");
-  console.log("FILE SYSYEM VALUES FOR ALIKE" + fileObject.function_number + fileObject.seach_word)
   chooseCaller(fileObject.function_number, fileObject.seach_word, senderID);
   checkToSendMore(senderID)
   // console.log(last_input_function_name + last_input_search_word)
@@ -687,7 +662,6 @@ function manyCategoriesSearch(senderID, quickReplyPayload) {
 
   fetchingData_from_gallery_searchAPi(senderID, quickReplyPayload);
   saveToFile(2, quickReplyPayload, true);
-  console.log("FILE SYSYEM VALUES ARE " + fileObject.function_number + fileObject.seach_word);
   checkToSendMore(senderID)
 
 }
@@ -697,7 +671,6 @@ function manyCategoriesSearch(senderID, quickReplyPayload) {
 function doNothing(senderID) {
 
   tools.sendTypingOff(senderID);
-  console.log(" I CHOSE do nothing");
   saveToFile(null, null, false);
   tools.sendTextMessage(senderID, "Whatever you want <3 ")
 
@@ -709,7 +682,6 @@ function specialMemesFromMyAccount(senderID, quickReplyPayload) {
 
   fetchingData_from_Account_ImagesAPi(senderID, quickReplyPayload);
   saveToFile(1, quickReplyPayload, true);
-  console.log("FILE SYSYEM VALUES ARE " + fileObject.function_number + fileObject.seach_word);
   checkToSendMore(senderID)
 
 
@@ -841,7 +813,6 @@ function DialogFlowParameteresHandler(senderID, data) {
     }
     else {
       // To allow generic search for any category using the intents from DialogFlow
-      console.log("I will save to file " + data)
       saveToFile(2, data, true);
       chooseCaller(2, data, senderID);
 
@@ -1019,14 +990,7 @@ function formingElements(result, senderID, accountImages) {
   */
   if (SortImagesbyPoints && !accountImages) {
     var Sorted = sortByPoints(parsed);
-
-    console.log("SortedByPointsCounter MAIN" + SortedByPointsCounter);
-
-    console.log("Result points " + Sorted[SortedByPointsCounter].points);
-
     var Target = functions.getImageLink(Sorted, SortedByPointsCounter, -1);
-
-    console.log("Image link " + Target);
 
     while (functions.checkIfSentBefore(Target)) {
       //wait until you get a target image that was not sent before to the user
@@ -1034,57 +998,27 @@ function formingElements(result, senderID, accountImages) {
       SortedByPointsCounter++;
 
       Target = functions.getImageLink(Sorted, SortedByPointsCounter, -1);
-
-      console.log("Sorted[SortedByPointsCounter]" + Sorted[SortedByPointsCounter].points);
-
-      console.log("SortedByPointsCounter" + SortedByPointsCounter);
-
-
-
-
     }
 
-    console.log("Image link Just before returning  " + Target + " it's count is " + SortedByPointsCounter);
-    console.log("======================================================================================")
     return Target;
-
-
-
-
   }
   else {
 
-
-
     if (FirstQuery) {
-
       FirstQuery = false;
       i = 0;
-
     }
     else {
       i = makeUniqueRandom(random_factor)
     }
-
-
     while (parsed.data[i] == null) {
-
-      console.log("while random value" + Math.random())
       i = Math.floor((Math.random() * random_factor) + 1);
-
-
     }
-
-
-    console.log("entered ", i)
     /* to check for images if it belongs to album or not and a special case for
      account API images that doesn't belong to the albums at all  */
     if (parsed.data[i].is_album == true || accountImages == true) {
-      console.log("Found it")
       counter = counter + 1;
-      console.log("Counter is now " + counter);
       if (accountImages) {
-        console.log("LINK IS " + parsed.data[i].link)
         return parsed.data[i].link //Fetched data from personal account are not in albums, single images so no Images variabel at all
       }
       else {
@@ -1099,19 +1033,12 @@ function formingElements(result, senderID, accountImages) {
     else {
       i++
     }
-
-
     //Handle Worst case of missed links
     tools.sendTextMessage(senderID, "That's a random empty miss, Try again")
     tools.sendTextMessage(senderID, "Hopefully you might get your dunk meme this time !")
   }
-
-
   return;
-
 }
-
-
 
 function chooseCaller(function_number, last_input_search_word, senderID) {
   /* 
@@ -1120,32 +1047,24 @@ function chooseCaller(function_number, last_input_search_word, senderID) {
    */
   if (last_input_search_word == null) {
     last_input_search_word = "memes";  //special case for send meme
-    console.log("last_input_search_word " + last_input_search_word)
   }
   if (function_number == 1) {
 
     fetchingData_from_Account_ImagesAPi(senderID, last_input_search_word);
     return;
-
   }
   else if (function_number == 2) {
-
     fetchingData_from_gallery_searchAPi(senderID, last_input_search_word);
     return;
-
   }
 }
 
 function checkToSendMore(senderID) {
-
   if (fileObject.want_more) {
-
     setTimeout(function () { tools.SendMore(senderID) }, 5000); //must be called like that   why ? https://stackoverflow.com/a/5520159/5627553
-
 
   }
 }
-
 
 function saveToFile(number, word, want_more) {
 
@@ -1154,15 +1073,9 @@ function saveToFile(number, word, want_more) {
   fileObject.seach_word = word;
   fileObject.want_more = want_more;
   fs.writeFileSync('./inputMemory.json', JSON.stringify(fileObject, null, 2), 'utf-8');
-
-
-
 }
 
-
 function makeUniqueRandom(numRandoms) {
-
-
   // refill the array if needed
   if (!uniqueRandoms.length) {
     for (var i = 0; i < numRandoms; i++) {
@@ -1171,81 +1084,50 @@ function makeUniqueRandom(numRandoms) {
   }
   var index = Math.floor(Math.random() * uniqueRandoms.length);
   var val = uniqueRandoms[index];
-
   // now remove that value from the array
   uniqueRandoms.splice(index, 1);
-
   return val;
-
 }
 
 
 function handlePayload(payload, senderID) {
-
-
   switch (payload) {
     case 'personal_account_memes':
-
       specialMemesFromMyAccount(senderID, payload)
-
       break;
     case 'send_alike':
-
       sendLike(senderID);
       break;
-
     case 'do nothing':
-
       doNothing(senderID);
       break;
-
     case 'help':
-
       tools.sendTextMessage(senderID, help_text);
       break;
-
     case 'get_started':
-
       var user_first_name = ''
       getFirstName(senderID, function (err, data) {
         if (err) return console.error(err);
         console.log("dataaaa" + data);
         user_first_name = data
-
-
-        console.log("user_first_name" + user_first_name)
         var message_first_time = ["Hi " + user_first_name + ",", "Try me by sending 'Send meme' or 'memes' "].join('\n');
         //present user with some greeting or call to action
         tools.sendTextMessage(senderID, message_first_time);
       });
-
       break;
-
     case 'sort by points':
       SortImagesbyPoints = true;
       tools.sendTextMessage(senderID, "Next memes will be upvote/points based");
-
       break;
-
     case 'sort by time':
       SortImagesbyPoints = false;
       tools.sendTextMessage(senderID, "Next memes will be the most recent");
       break;
-
     case 'surprise me':
-
       specialMemesFromMyAccount(senderID, payload);
-
-
-      break;
-
-
       break;
     default:
-      console.log("I should work here")
       manyCategoriesSearch(senderID, payload);
-
-
   }
 
 }
@@ -1287,7 +1169,6 @@ function uploadToAccount(senderID, image) {
   req.end();
 }
 
-
 // Start server
 // Webhooks must be available via SSL with a certificate signed by a valid
 // certificate authority.
@@ -1297,4 +1178,3 @@ app.listen(app.get('port'), function () {
 
 
 module.exports = app;
-

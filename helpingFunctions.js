@@ -61,7 +61,6 @@ module.exports =
         //Make sure to have UniqueMemes of certain number before resetting
         if (MemoryArray.sentImages.length == UniqueMemesNumber) {
 
-          console.log(" I reseteed the memeory");
           MemoryArray.sentImages = [];
 
           fs.writeFileSync('./inputMemory.json', JSON.stringify(MemoryArray, null, 2), 'utf-8');
@@ -72,14 +71,11 @@ module.exports =
 
         MemoryArray.sentImages.push(ImageID);
         fs.writeFileSync('./inputMemory.json', JSON.stringify(MemoryArray, null, 2), 'utf-8');
-        console.log("Added to array and Array length Now " + MemoryArray.sentImages.length)
         return false;
         //return false indicates that it wasn't sent before and send the link to the user
 
       }
 
-      console.log("MemoryArray.sentImages.ImageID " + ImageID);
-      console.log("It's already there and Array length is " + MemoryArray.sentImages.length)
 
       return true;
     },
@@ -93,15 +89,11 @@ module.exports =
 
       if (data[i].is_album == true) {
 
-        console.log("This data is an album so I got the first image link")
-        console.log("link is " + data[i].images[counter].link)
+
         return data[i].images[counter].link;
       }
 
       else {
-
-        console.log("This data is an Image so I sent the Link directly without any changes")
-        console.log("link is " + data[i].link)
 
         return data[i].link;
 
