@@ -98,18 +98,18 @@ class grpc_channel_security_connector : public grpc_security_connector {
   /// Returns true if completed synchronously, in which case \a error will
   /// be set to indicate the result.  Otherwise, \a on_call_host_checked
   /// will be invoked when complete.
-  virtual bool check_call_host(const char* host,
+  virtual bool check_call_host(grpc_core::StringView host,
                                grpc_auth_context* auth_context,
                                grpc_closure* on_call_host_checked,
                                grpc_error** error) GRPC_ABSTRACT;
-  /// Cancels a pending asychronous call to
+  /// Cancels a pending asynchronous call to
   /// grpc_channel_security_connector_check_call_host() with
   /// \a on_call_host_checked as its callback.
   virtual void cancel_check_call_host(grpc_closure* on_call_host_checked,
                                       grpc_error* error) GRPC_ABSTRACT;
   /// Registers handshakers with \a handshake_mgr.
   virtual void add_handshakers(grpc_pollset_set* interested_parties,
-                               grpc_handshake_manager* handshake_mgr)
+                               grpc_core::HandshakeManager* handshake_mgr)
       GRPC_ABSTRACT;
 
   const grpc_channel_credentials* channel_creds() const {
@@ -150,7 +150,7 @@ class grpc_server_security_connector : public grpc_security_connector {
   ~grpc_server_security_connector() override = default;
 
   virtual void add_handshakers(grpc_pollset_set* interested_parties,
-                               grpc_handshake_manager* handshake_mgr)
+                               grpc_core::HandshakeManager* handshake_mgr)
       GRPC_ABSTRACT;
 
   const grpc_server_credentials* server_creds() const {

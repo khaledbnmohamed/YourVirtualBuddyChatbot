@@ -128,13 +128,14 @@ class grpc_local_channel_security_connector final
 
   ~grpc_local_channel_security_connector() override { gpr_free(target_name_); }
 
-  void add_handshakers(grpc_pollset_set* interested_parties,
-                       grpc_handshake_manager* handshake_manager) override {
+  void add_handshakers(
+      grpc_pollset_set* interested_parties,
+      grpc_core::HandshakeManager* handshake_manager) override {
     tsi_handshaker* handshaker = nullptr;
     GPR_ASSERT(local_tsi_handshaker_create(true /* is_client */, &handshaker) ==
                TSI_OK);
-    grpc_handshake_manager_add(
-        handshake_manager, grpc_security_handshaker_create(handshaker, this));
+    handshake_manager->Add(
+        grpc_core::SecurityHandshakerCreate(handshaker, this));
   }
 
   int cmp(const grpc_security_connector* other_sc) const override {
@@ -155,10 +156,11 @@ class grpc_local_channel_security_connector final
                      creds->connect_type());
   }
 
-  bool check_call_host(const char* host, grpc_auth_context* auth_context,
+  bool check_call_host(grpc_core::StringView host,
+                       grpc_auth_context* auth_context,
                        grpc_closure* on_call_host_checked,
                        grpc_error** error) override {
-    if (host == nullptr || strcmp(host, target_name_) != 0) {
+    if (host.empty() || host != target_name_) {
       *error = GRPC_ERROR_CREATE_FROM_STATIC_STRING(
           "local call host does not match target name");
     }
@@ -184,13 +186,14 @@ class grpc_local_server_security_connector final
       : grpc_server_security_connector(nullptr, std::move(server_creds)) {}
   ~grpc_local_server_security_connector() override = default;
 
-  void add_handshakers(grpc_pollset_set* interested_parties,
-                       grpc_handshake_manager* handshake_manager) override {
+  void add_handshakers(
+      grpc_pollset_set* interested_parties,
+      grpc_core::HandshakeManager* handshake_manager) override {
     tsi_handshaker* handshaker = nullptr;
     GPR_ASSERT(local_tsi_handshaker_create(false /* is_client */,
                                            &handshaker) == TSI_OK);
-    grpc_handshake_manager_add(
-        handshake_manager, grpc_security_handshaker_create(handshaker, this));
+    handshake_manager->Add(
+        grpc_core::SecurityHandshakerCreate(handshaker, this));
   }
 
   void check_peer(tsi_peer peer, grpc_endpoint* ep,
