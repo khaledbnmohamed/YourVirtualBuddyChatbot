@@ -131,18 +131,7 @@ app.get('/webhook', function (req, res) {
   }
 });
 
-.get('/db', async (req, res) => {
-  try {
-    const client = await pool.connect()
-    const result = await client.query('SELECT * FROM test_table');
-    const results = { 'results': (result) ? result.rows : null};
-    res.render('pages/db', results );
-    client.release();
-  } catch (err) {
-    console.error(err);
-    res.send("Error " + err);
-  }
-})
+
 
 /*
  * All callbacks for Messenger are POST-ed. They will be sent to the same
