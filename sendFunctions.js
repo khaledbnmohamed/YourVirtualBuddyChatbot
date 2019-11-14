@@ -3,37 +3,21 @@
 //Holding ALL send functions in the bots for easier use
 
 const
-  bodyParser = require('body-parser'),
   config = require('config'),
-  crypto = require('crypto'),
   express = require('express'),
-  https = require('https'),
   request = require('request'),
-  fs = require('fs'),
-  sk = require('./config/SecretKeys.js'),
-  tools = require('./sendFunctions.js');
+  fs = require('fs');
 
 
 
 
-var clientId = sk.getClientID();
-var imgur_access_token = sk.getImgurAccessToken();
-var imgur_username = sk.getImgurUserName();
 
 var ImageLink = 'https://i.imgur.com/KZC2CW9.jpg'
-var FirstQuery = true;
-let counter = 0;
-var default_text = ["You know that no matter how cool I am to you,",
-  " at the end I'm a preprogrammed meme sender so please don't ask me for neither commitment or Anything I don't understand.",
-  " Just type SEND MEME"
-].join('\n');
+
 
 
 var app = express();
 app.set('port', process.env.PORT || 5000);
-
-
-var fileObject = JSON.parse(fs.readFileSync('./inputMemory.json', 'utf8'));
 
 
 // Generate a page access token for your page from the App Dashboard
@@ -121,7 +105,7 @@ I really hope one day, You'll find the right person to forward these memes to <3
      */
     sendMemeMessage: function (recipientId) {
       // var Search_query = messageText;
-      // ImageLink= fetchingData_from_gallery_searchAPi(senderID);
+      // ImageLink= public_images_consumer(senderID);
 
       var messageData = {
         recipient: {

@@ -4,14 +4,15 @@
 /////////TODO Apply memeory to all parts of sending process
 ////////TODO Add instruction at the begining 
 'use strict';
+// require('app/Initializer/initializer.js')();
+require('./app/imgur_handler/api_consumer.js')();
+require('./app/imgur_handler/response_handler.js')();
 
 const
   bodyParser = require('body-parser'),
   config = require('config'),
   crypto = require('crypto'),
   express = require('express'),
-  https = require('https'),
-  request = require('request'),
   fs = require('fs'),
   tools = require('./sendFunctions.js'),
   tokenFile = require('./JWTtoken.js'),
@@ -19,40 +20,24 @@ const
   util = require('util'),
   PromisedSendtoDialogFlow = util.promisify(sendtoDialogFlow),
 
-  dialogflow = require('dialogflow'),
-  { WebhookClient } = require('dialogflow-fulfillment'),
-  functions = require('./helpingFunctions.js'),
-
-  { google } = require('googleapis');
-//   oauth2Client = new google.auth.OAuth2(
-//   YOUR_CLIENT_ID,
-//   YOUR_CLIENT_SECRET,
-//   YOUR_REDIRECT_URL
-// );
-
+  functions = require('./helpingFunctions.js');
 
 var MessagetoDialogFlow = ""
 
 //Secret Keys saved in different file for security 
-var clientId = sk.getClientID();
 var imgur_access_token = sk.getImgurAccessToken();
-var imgur_username = sk.getImgurUserName();
 var google_project_id = sk.getGoogleProjectID(); 
 var DATABASE_URL = sk.getDatabaseURL();
 var google_access_token =tokenFile.sign();
 var returnedFromDialogFlow = false
 var returnedFromKnoweldge = false
 var DialogflowhasParameters = false
-var SortImagesbyPoints = true;
-var uniqueRandoms = [];
-var SortedByPointsCounter = 0; // initlize the i globally for easer access so don't have to write extra code to determine if first query to set i =0 or not
 
 var google_access_token = tokenFile.sign();
 
 
 
-var FirstQuery = true;
-let counter = 0;
+
 var default_text = ["You know that no matter how cool I am to you,",
   " at the end I'm a preprogrammed meme sender so please don't ask me for neither commitment or Anything I don't understand.",
   " Just type SEND MEME"
@@ -203,32 +188,21 @@ app.get('/authorize', function (req, res) {
 });
 
 
-
 //Test Function
-// checkMessageContent("I want sad memes","Khaled")
+checkMessageContent("I want sad memes","Khaled")
 
 function sendtoDialogFlow(MessagetoDialogFlow, callback) {
-
   var CallBackReturn;
-
   var https = require('https');
   var DFchunks = [];
-
   const data = JSON.stringify({
-
-
-
     "queryInput": {
       "text": {
         "languageCode": "en",
         "text": MessagetoDialogFlow
       }
     }
-
-
   })
-
-
   const options = {
     method: 'POST',
     host: 'dialogflow.googleapis.com',
@@ -256,87 +230,45 @@ function sendtoDialogFlow(MessagetoDialogFlow, callback) {
         });
 
         if (JSON.stringify(parsed.queryResult.parameters) != "{}") {
-
-          console.log("parsed.queryResult.parameters" + parsed.queryResult.parameters.sendmeme)
           if (parsed.queryResult.parameters.sendmeme !== undefined) {
-
             DialogflowhasParameters = true
-            console.log("REquest is parsed.queryResult.parameters.sendmeme " + parsed.queryResult.parameters.sendmeme)
             CallBackReturn = parsed.queryResult.parameters.sendmeme;
 
           }
           else {
-
             DialogflowhasParameters = false
-            console.log("REquest is parsed.queryResult.fulfillmentText " + parsed.queryResult.fulfillmentText)
             CallBackReturn = parsed.queryResult.fulfillmentText;
           }
         }
         else {
-
           DialogflowhasParameters = false;
           try {
-
             if (parsed.queryResult.action == "repeat" && parsed.alternativeQueryResults[0].knowledgeAnswers.answers[0].matchConfidence > 0.41) {
               CallBackReturn = parsed.alternativeQueryResults[0].knowledgeAnswers.answers[0].answer;
               returnedFromKnoweldge = true;
-
             }
             else {
-              console.log("fulfiliment in try " + parsed.queryResult.fulfillmentText)
               CallBackReturn = parsed.queryResult.fulfillmentText;
             }
           }
           catch (err) {
-            console.log("I'll catch the error " + parsed.queryResult.fulfillmentText)
             CallBackReturn = parsed.queryResult.fulfillmentText;
           }
-
         }
-
         callback("", CallBackReturn);
-
-
       });
-
-
-  
     });
-
   })
-
   req.on("error", (error) => { console.error(error) })
-
   req.write(data)
-
   req.end()
-
-
 
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 function getFirstName(senderID, callback) {
-
-
   var https = require('https');
   const access_token = PAGE_ACCESS_TOKEN;
-
   var first_name = ''
-
-
   const options = {
     method: 'GET',
     hostname: 'graph.facebook.com',
@@ -344,20 +276,13 @@ function getFirstName(senderID, callback) {
     path: '/' + senderID + '?fields=first_name&access_token=' + access_token,
   }
   var req = https.request(options, function (res) {
-
     var chunks = [];
-
     res.on("data", function (chunk) {
       chunks.push(chunk);
     });
-
     res.on("end", function (chunk) {
       var body = Buffer.concat(chunks);
-      console.log("name before pasring " + body)
-
-      console.log("name after pasring " + JSON.parse(body).first_name)
       first_name = JSON.parse(body).first_name;
-      console.log("first_name at get first name " + first_name)
       callback("", first_name);
     });
 
@@ -368,12 +293,7 @@ function getFirstName(senderID, callback) {
 
   });
 
-
-
   req.end();
-
-
-
 
 }
 
@@ -419,7 +339,6 @@ function receivedAuthentication(event) {
   var senderID = event.sender.id;
   var recipientID = event.recipient.id;
   var timeOfAuth = event.timestamp;
-
   // The 'ref' field is set in the 'Send to Messenger' plugin, in the 'data-ref'
   // The developer can set this to an arbitrary value to associate the
   // authentication callback with the 'Send to Messenger' click event. This is
@@ -455,16 +374,13 @@ function receivedMessage(event) {
   var recipientID = event.recipient.id;
   var timeOfMessage = event.timestamp;
   var message = event.message;
-
   console.log("Received message for user %d and page %d at %d with message:",
     senderID, recipientID, timeOfMessage);
   console.log(JSON.stringify(message));
-
   var isEcho = message.is_echo;
   var messageId = message.mid;
   var appId = message.app_id;
   var metadata = message.metadata;
-
   // You may get a text or attachment but not both
   var messageText = message.text;
   var messageAttachments = message.attachments;
@@ -485,7 +401,6 @@ function receivedMessage(event) {
     // setTimeout(SendMore(senderID), 3000);
     return;
   }
-
   if (messageText) {
 
     // If we receive a text message, check to see if it matches any special
@@ -494,34 +409,24 @@ function receivedMessage(event) {
     checkMessageContent(messageText, senderID)
 
   } else if (messageAttachments) {
-
     for (var i = 0; i < messageAttachments.length; i++) {
       if (messageAttachments[i].type === "image") {
         var imageURL = messageAttachments[i].payload.url;
         uploadToAccount(senderID, imageURL)
         console.log(imageURL);
-
       }
-
-
     }
     tools.sendTextMessage(senderID, "Uploaded your meme/s for later happiness");
     setTimeout(function () {
       tools.sendTextMessage(senderID, "You can access this meme and other selected memes by typing 'my memes'");
     }, 2000); //added timeout to make sure it comes later
-
   }
 }
 
-
 /* Check for message content*/
-
 function checkMessageContent(messageText, senderID) {
   
   tools.sendReadReceipt(senderID);
-
-  console.log(" I restart checkMessageContent ");
-
   switch (messageText.replace(/[^\w\s]/gi, '').trim().toLowerCase()) {
     case 'hello':
     case 'hi':
@@ -541,17 +446,14 @@ function checkMessageContent(messageText, senderID) {
       tools.requiresServerURL(tools.sendVideoMessage, [senderID]);
       break;
 
-
     case 'sort by points':
       SortImagesbyPoints = true;
       tools.sendTextMessage(senderID, "Next memes will be upvote/points based");
-
       break;
 
     case 'sort by time':
       SortImagesbyPoints = false;
       tools.sendTextMessage(senderID, "Next memes will be the most recent");
-
       break;
 
     case 'memes':
@@ -564,11 +466,9 @@ function checkMessageContent(messageText, senderID) {
       // checkToSendMore(senderID);
       break;
 
-
     case 'read receipt':
       tools.sendReadReceipt(senderID);
       break;
-
 
     case 'account linking':
       tools.requiresServerURL(sendAccountLinking, [senderID]);
@@ -583,79 +483,44 @@ function checkMessageContent(messageText, senderID) {
       saveToFile(2, "memes", true);
       chooseCaller(2, null, senderID);
       checkToSendMore(senderID);
-
       break;
     ////////Debugging Cases Just to check Input Values
-    case '9185memory':
-      tools.sendTextMessage(senderID, functions.getArraySize)
-      break;
-    case '9185elements':
-      tools.sendTextMessage(senderID, functions.getPrint)
-      break;
-    case '9185cat':
-      tools.sendTextMessage(senderID, "FILE SYSYEM VALUES ARE " + fileObject.function_number + fileObject.seach_word)
-      break;
     default:
       tools.sendTypingOn(senderID);
 
-      console.log("returnedFromDialogFlow UP  = " + returnedFromDialogFlow);
-
       if (returnedFromDialogFlow) 
       {
-        console.log("Entered here at return from dialog flow")
-
-
-
         if (returnedFromKnoweldge) {
-
-          console.log("returnedFromKnoweldge ")
-
           tools.sendTextMessage(senderID, messageText)
           returnedFromKnoweldge = false;
-
         }
-
         else {
-          if (DialogflowhasParameters) {
-            console.log(" I have Parameters");
-            
+          if (DialogflowhasParameters) {            
             DialogFlowParameteresHandler(senderID, messageText);
           }
           else {
-
             tools.sendTextMessage(senderID, messageText)
             returnedFromDialogFlow = false;
-
           }
 
         }
         returnedFromDialogFlow = false;
-
       }
-
       else if (returnedFromDialogFlow == false) {
         
         PromisedSendtoDialogFlow(messageText)
-          .then(data => { 
-          console.log("returnedFromDialogFlow  = " + returnedFromDialogFlow);
-          console.log("Data is , ",data)
-          
+          .then(data => {           
           returnedFromDialogFlow = true;
           checkMessageContent(data, senderID);
         }
         )
           .catch(err => console.error(`[Error]: ${err}`));
-
-
       }
       tools.sendTypingOff(senderID);
 
     //setTimeout(function(){tools.sendQuickReply(senderID)},3000); //added timeout to make sure it comes later
-
     break;
-
   }
-
 }
 
 /* quick reply send like*/
@@ -663,59 +528,35 @@ function checkMessageContent(messageText, senderID) {
 function sendLike(senderID) {
 
   fileObject.want_more = true;
-  console.log(" I CHOSE SEND_ALIKE");
-  console.log("FILE SYSYEM VALUES FOR ALIKE" + fileObject.function_number + fileObject.seach_word)
   chooseCaller(fileObject.function_number, fileObject.seach_word, senderID);
   checkToSendMore(senderID)
   // console.log(last_input_function_name + last_input_search_word)
 }
-
 /* quick reply gallery memes*/
-
 function manyCategoriesSearch(senderID, quickReplyPayload) {
 
-  fetchingData_from_gallery_searchAPi(senderID, quickReplyPayload);
+  public_images_consumer(senderID, quickReplyPayload);
   saveToFile(2, quickReplyPayload, true);
-  console.log("FILE SYSYEM VALUES ARE " + fileObject.function_number + fileObject.seach_word);
   checkToSendMore(senderID)
 
 }
-
 /* quick reply  do nothing**/
-
 function doNothing(senderID) {
-
   tools.sendTypingOff(senderID);
-  console.log(" I CHOSE do nothing");
   saveToFile(null, null, false);
   tools.sendTextMessage(senderID, "Whatever you want <3 ")
 
 }
 
 /* quick reply personal accunt memes*/
-
 function specialMemesFromMyAccount(senderID, quickReplyPayload) {
 
-  fetchingData_from_Account_ImagesAPi(senderID, quickReplyPayload);
+  personal_images_consumer(senderID, quickReplyPayload);
   saveToFile(1, quickReplyPayload, true);
-  console.log("FILE SYSYEM VALUES ARE " + fileObject.function_number + fileObject.seach_word);
   checkToSendMore(senderID)
 
 
 }
-
-
-
-
-
-
-/*
- * Delivery Confirmation Event
- *
- * This event is sent to confirm the delivery of a message. Read more about
- * these fields at https://developers.facebook.com/docs/messenger-platform/webhook-reference/message-delivered
- *
- */
 function receivedDeliveryConfirmation(event) {
   var senderID = event.sender.id;
   var recipientID = event.recipient.id;
@@ -812,25 +653,19 @@ function DialogFlowParameteresHandler(senderID, data) {
   //To Handle the search call from the dialogFlow function 
   //TODO : Find a template calling theme for cleaner code
   if (data != "memes" || data != "send meme") {
-
     if (data == "surprise me") {
-
       // To access saved memes on my imgur account
-
       specialMemesFromMyAccount(senderID, data);
-
       return;
+
     }
     else if (data == "help") {
-
       tools.sendTextMessage(senderID, help_text);
-
       return;
 
     }
     else {
       // To allow generic search for any category using the intents from DialogFlow
-      console.log("I will save to file " + data)
       saveToFile(2, data, true);
       chooseCaller(2, data, senderID);
 
@@ -839,268 +674,7 @@ function DialogFlowParameteresHandler(senderID, data) {
   }
   returnedFromDialogFlow = false;
 
-
 }
-
-function fetchingData_from_gallery_searchAPi(senderID, Search_query) {
-
-  fileObject.want_more = true;
-
-
-  if (!Search_query) {
-    Search_query = "memes"
-    fileObject.search_word = Search_query
-    fs.writeFileSync('./inputMemory.json', JSON.stringify(fileObject, null, 2), 'utf-8');
-
-  }
-  else {
-
-    Search_query = encodeURIComponent(Search_query);
-  }
-  //Imgur API Gallery Search Request
-  var https = require('https');
-  // console.log(Search_query);
-
-  var options = {
-    'method': 'GET',
-    'hostname': 'api.imgur.com',
-    'path': '/3/gallery/search/{{sort}}/{{window}}/{{page}}?q=' + Search_query,
-    'headers': {
-      'Authorization': 'Client-ID ' + clientId
-    }
-  };
-
-
-
-  var req = https.request(options, function (res) {
-
-    var chunks = [];
-
-    res.on("data", function (chunk) {
-      chunks.push(chunk);
-    });
-
-    res.on("end", function (chunk) {
-      var body = Buffer.concat(chunks);
-      // console.log(JSON.parse(body).data[0])
-      console.log(options.path)
-      let image_link = formingElements(body, senderID, false)
-      if (!image_link) {
-
-        image_link = formingElements(body, senderID, false)
-
-      }
-      else {
-        //Handling empty image responses 
-
-        tools.sendTypingOff(senderID);
-        tools.sendImageMessage(senderID, image_link);
-
-      }
-
-    });
-
-    res.on("error", function (error) {
-      console.error(error);
-    });
-
-  });
-
-  req.end();
-  // console.log(body);
-}
-function sortByPoints(parsed) {
-
-
-  var Sorted = parsed.data.sort(predicateBy("points"));
-  Sorted = Sorted.reverse();
-  return (Sorted);
-
-}
-
-
-function predicateBy(prop) {
-  return function (a, b) {
-    if (a[prop] > b[prop]) {
-      return 1;
-    } else if (a[prop] < b[prop]) {
-      return -1;
-    }
-    return 0;
-  }
-}
-
-
-function fetchingData_from_Account_ImagesAPi(senderID, Search_query) {
-
-
-  //Imgur API Gallery Search Request
-  var https = require('https');
-
-  var options = {
-    'method': 'GET',
-    'hostname': 'api.imgur.com',
-    'path': '/3/account/khaledbnmohamed/images',
-    'headers': {
-      'Authorization': 'Bearer ' + imgur_access_token
-    }
-  };
-
-
-  var req = https.request(options, function (res) {
-
-    var chunks = [];
-
-    res.on("data", function (chunk) {
-      chunks.push(chunk);
-    });
-
-    res.on("end", function (chunk) {
-      var body = Buffer.concat(chunks);
-      console.log("data after pasring " + JSON.parse(body))
-      console.log(options.path)
-      console.log("Authorization is" + options.headers.Authorization)
-
-      let image_link = formingElements(body, senderID, true)
-      if (image_link) {
-
-        tools.sendTypingOff(senderID);
-        tools.sendImageMessage(senderID, image_link);
-
-
-      }
-
-    });
-
-    res.on("error", function (error) {
-      console.error(error);
-    });
-
-  });
-
-  req.end();
-
-  // console.log(body);
-}
-
-/* 
-formingElements is the function responsible for parsing the  JSON response,choose which image to fetch its link, 
-handles albums and solo images issue and check for duplicated images to make sure not to send to the user the same image twice 
-in a counter of 100 images saved in a SentImages in inputMemory.json file
-
-
-*/
-function formingElements(result, senderID, accountImages) {
-
-
-  let parsed = JSON.parse(result)
-  let random_factor = 70
-  let i = -1;
-
-  if (accountImages) { //smaller range for account uploaded images
-    random_factor = 40
-
-  }
-
-  /*
-  if Condition to check if user chose to sort images by points and cancel the randmoization 
-  PS: doesn't work with community uploaded images on account images that's why it's added in if condition
-  */
-  if (SortImagesbyPoints && !accountImages) {
-    var Sorted = sortByPoints(parsed);
-
-    console.log("SortedByPointsCounter MAIN" + SortedByPointsCounter);
-
-    console.log("Result points " + Sorted[SortedByPointsCounter].points);
-
-    var Target = functions.getImageLink(Sorted, SortedByPointsCounter, -1);
-
-    console.log("Image link " + Target);
-
-    while (functions.checkIfSentBefore(Target)) {
-      //wait until you get a target image that was not sent before to the user
-
-      SortedByPointsCounter++;
-
-      Target = functions.getImageLink(Sorted, SortedByPointsCounter, -1);
-
-      console.log("Sorted[SortedByPointsCounter]" + Sorted[SortedByPointsCounter].points);
-
-      console.log("SortedByPointsCounter" + SortedByPointsCounter);
-
-
-
-
-    }
-
-    console.log("Image link Just before returning  " + Target + " it's count is " + SortedByPointsCounter);
-    console.log("======================================================================================")
-    return Target;
-
-
-
-
-  }
-  else {
-
-
-
-    if (FirstQuery) {
-
-      FirstQuery = false;
-      i = 0;
-
-    }
-    else {
-      i = makeUniqueRandom(random_factor)
-    }
-
-
-    while (parsed.data[i] == null) {
-
-      console.log("while random value" + Math.random())
-      i = Math.floor((Math.random() * random_factor) + 1);
-
-
-    }
-
-
-    console.log("entered ", i)
-    /* to check for images if it belongs to album or not and a special case for
-     account API images that doesn't belong to the albums at all  */
-    if (parsed.data[i].is_album == true || accountImages == true) {
-      console.log("Found it")
-      counter = counter + 1;
-      console.log("Counter is now " + counter);
-      if (accountImages) {
-        console.log("LINK IS " + parsed.data[i].link)
-        return parsed.data[i].link //Fetched data from personal account are not in albums, single images so no Images variabel at all
-      }
-      else {
-        return parsed.data[i].images[0].link
-      }
-    }
-    else if (functions.getImageLink(parsed.data, i, -1)) {
-
-      return functions.getImageLink(parsed.data, i, -1);
-    }
-
-    else {
-      i++
-    }
-
-
-    //Handle Worst case of missed links
-    tools.sendTextMessage(senderID, "That's a random empty miss, Try again")
-    tools.sendTextMessage(senderID, "Hopefully you might get your dunk meme this time !")
-  }
-
-
-  return;
-
-}
-
-
 
 function chooseCaller(function_number, last_input_search_word, senderID) {
   /* 
@@ -1113,13 +687,13 @@ function chooseCaller(function_number, last_input_search_word, senderID) {
   }
   if (function_number == 1) {
 
-    fetchingData_from_Account_ImagesAPi(senderID, last_input_search_word);
+    personal_images_consumer(senderID, last_input_search_word);
     return;
 
   }
   else if (function_number == 2) {
 
-    fetchingData_from_gallery_searchAPi(senderID, last_input_search_word);
+    public_images_consumer(senderID, last_input_search_word);
     return;
 
   }
@@ -1130,7 +704,6 @@ function checkToSendMore(senderID) {
   if (fileObject.want_more) {
 
     setTimeout(function () { tools.SendMore(senderID) }, 5000); //must be called like that   why ? https://stackoverflow.com/a/5520159/5627553
-
 
   }
 }
@@ -1149,24 +722,7 @@ function saveToFile(number, word, want_more) {
 }
 
 
-function makeUniqueRandom(numRandoms) {
 
-
-  // refill the array if needed
-  if (!uniqueRandoms.length) {
-    for (var i = 0; i < numRandoms; i++) {
-      uniqueRandoms.push(i);
-    }
-  }
-  var index = Math.floor(Math.random() * uniqueRandoms.length);
-  var val = uniqueRandoms[index];
-
-  // now remove that value from the array
-  uniqueRandoms.splice(index, 1);
-
-  return val;
-
-}
 
 
 function handlePayload(payload, senderID) {
