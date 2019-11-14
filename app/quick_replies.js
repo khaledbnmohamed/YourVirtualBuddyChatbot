@@ -6,12 +6,12 @@ var FirstQuery = true;
 let counter = 0;
 require('./imgur_handler/api_consumer.js')();
 require('./resend_handler.js')();
-require('./../app.js')();
+require('./../app.js');
 
 
 const 
 tools = require('./../sendFunctions.js'),
-fileObject = JSON.parse(fs.readFileSync('./../inputMemory.json', 'utf8'));
+fileObject = JSON.parse(fs.readFileSync('./inputMemory.json', 'utf8'));
 
 module.exports  = function() {
 

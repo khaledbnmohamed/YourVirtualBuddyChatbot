@@ -8,7 +8,7 @@ require('./imgur_handler/api_consumer.js')();
 
 const
   tools = require('../sendFunctions.js'),
-  fileObject = JSON.parse(fs.readFileSync('./../inputMemory.json', 'utf8'));
+  fileObject = JSON.parse(fs.readFileSync('./inputMemory.json', 'utf8'));
 
 module.exports = function () {
 
@@ -17,7 +17,7 @@ module.exports = function () {
     fileObject.function_number = number;
     fileObject.seach_word = word;
     fileObject.want_more = want_more;
-    fs.writeFileSync('./../inputMemory.json', JSON.stringify(fileObject, null, 2), 'utf-8');
+    fs.writeFileSync('./inputMemory.json', JSON.stringify(fileObject, null, 2), 'utf-8');
 
   }
   this.chooseCaller = function (function_number, last_input_search_word, senderID) {
