@@ -1,18 +1,10 @@
-var
-  returnedFromDialogFlow = false,
-  returnedFromKnoweldge = false,
-  DialogflowhasParameters = false;
-
-
 require('../imgur_handler/api_consumer.js')();
 require('./../imgur_handler/api_consumer.js')();
 require('./../quick_replies.js')();
 require('./../resend_handler.js')();
 const
   tools = require('../../sendFunctions.js'),
-  fileObject = JSON.parse(fs.readFileSync('./inputMemory.json', 'utf8')),
-  util = require('util'),
-  PromisedSendtoDialogFlow = util.promisify(sendtoDialogFlow);
+  crypto = require('crypto');
 
 module.exports = function () {
 
