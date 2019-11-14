@@ -5,8 +5,7 @@ require('./../resend_handler.js')();
 const
   tools = require('../../sendFunctions.js'),
   crypto = require('crypto'),
-  config = require('config'),
-  tools = require('./sendFunctions.js');
+  config = require('config');
 
 
   // App Secret can be retrieved from the App Dashboard
