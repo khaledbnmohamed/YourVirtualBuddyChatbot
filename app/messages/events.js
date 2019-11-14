@@ -6,6 +6,13 @@ const
   tools = require('../../sendFunctions.js'),
   crypto = require('crypto');
 
+
+  // App Secret can be retrieved from the App Dashboard
+const APP_SECRET = (process.env.MESSENGER_APP_SECRET) ?
+process.env.MESSENGER_APP_SECRET :
+config.get('appSecret');
+
+
 module.exports = function () {
 
 /*
