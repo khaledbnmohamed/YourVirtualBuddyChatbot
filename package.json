@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/fbsamples/messenger-platform-samples.git"
+    "url": "git+https://github.com/fbsamples/messenger-platform-samples.git"
   },
   "author": "Facebook",
   "license": "ISC",
@@ -30,5 +30,13 @@
   },
   "engines": {
     "node": "8.0"
-  }
+  },
+  "bugs": {
+    "url": "https://github.com/fbsamples/messenger-platform-samples/issues"
+  },
+  "homepage": "https://github.com/fbsamples/messenger-platform-samples#readme",
+  "devDependencies": {
+    "eslint": "^6.6.0"
+  },
+  "keywords": []
 }

@@ -8,17 +8,9 @@ const
   request = require('request'),
   fs = require('fs');
 
-
-
-
-
 var ImageLink = 'https://i.imgur.com/KZC2CW9.jpg'
-
-
-
 var app = express();
 app.set('port', process.env.PORT || 5000);
-
 
 // Generate a page access token for your page from the App Dashboard
 const PAGE_ACCESS_TOKEN = (process.env.MESSENGER_PAGE_ACCESS_TOKEN) ?
@@ -32,8 +24,6 @@ module.exports =
    * get the message id in a response
    *
    */
-
-
     requiresServerURL: function (next, [recipientId, ...args]) {
       if (SERVER_URL === "to_be_set_manually") {
         var messageData = {

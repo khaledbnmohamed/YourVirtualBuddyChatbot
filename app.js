@@ -5,6 +5,7 @@
 require('./app/imgur_handler/api_consumer.js')();
 require('./app/imgur_handler/response_handler.js')();
 require('./app/dialogflow_handler/api_consumer.js')();
+require('./app/messages/receiver.js')();
 require('./app/quick_replies.js')();
 require('./app/resend_handler.js')();
 
@@ -14,17 +15,12 @@ const
   crypto = require('crypto'),
   express = require('express'),
   fs = require('fs'),
-  tools = require('./sendFunctions.js'),
-  util = require('util'),
-  PromisedSendtoDialogFlow = util.promisify(sendtoDialogFlow);
+  tools = require('./sendFunctions.js');
 
 
-var MessagetoDialogFlow = "",
-  returnedFromDialogFlow = false,
-  returnedFromKnoweldge = false,
-  DialogflowhasParameters = false,
+
+var
   app = express(),
-  fileObject = JSON.parse(fs.readFileSync('./inputMemory.json', 'utf8')),
   default_text = ["You know that no matter how cool I am to you,",
     " at the end I'm a preprogrammed meme sender so please don't ask me for neither commitment or Anything I don't understand.",
     " Just type SEND MEME"
@@ -318,109 +314,6 @@ function receivedMessage(event) {
   }
 }
 
-/* Check for message content*/
-function checkMessageContent(messageText, senderID) {
-
-  tools.sendReadReceipt(senderID);
-  switch (messageText.replace(/[^\w\s]/gi, '').trim().toLowerCase()) {
-    case 'hello':
-    case 'hi':
-      tools.sendHiMessage(senderID);
-      setTimeout(function () { tools.sendTextMessage(senderID, "You can also send me a meme as an attachment to save it"); }, 1000);
-      break;
-
-    case 'image':
-      tools.requiresServerURL(tools.sendImageMessage, [senderID]);
-      break;
-
-    case 'gif':
-      tools.requiresServerURL(tools.sendGifMessage, [senderID]);
-      break;
-
-    case 'video':
-      tools.requiresServerURL(tools.sendVideoMessage, [senderID]);
-      break;
-
-    case 'sort by points':
-      SortImagesbyPoints = true;
-      tools.sendTextMessage(senderID, "Next memes will be upvote/points based");
-      break;
-
-    case 'sort by time':
-      SortImagesbyPoints = false;
-      tools.sendTextMessage(senderID, "Next memes will be the most recent");
-      break;
-
-    case 'memes':
-      tools.sendQuickReply(senderID);
-      // checkToSendMore(senderID);
-      break;
-
-    case 'another category':
-      tools.sendQuickReply(senderID);
-      // checkToSendMore(senderID);
-      break;
-
-    case 'read receipt':
-      tools.sendReadReceipt(senderID);
-      break;
-
-    case 'account linking':
-      tools.requiresServerURL(sendAccountLinking, [senderID]);
-      break;
-
-    case 'no':
-      doNothing(senderID);
-      break;
-
-    case 'send meme':
-      // tools.sendTypingOn(senderID); //typing on till fetching
-      saveToFile(2, "memes", true);
-      chooseCaller(2, null, senderID);
-      checkToSendMore(senderID);
-      break;
-    ////////Debugging Cases Just to check Input Values
-    default:
-      tools.sendTypingOn(senderID);
-
-      if (returnedFromDialogFlow) {
-        if (returnedFromKnoweldge) {
-          tools.sendTextMessage(senderID, messageText)
-          returnedFromKnoweldge = false;
-        }
-        else {
-          if (DialogflowhasParameters) {
-            DialogFlowParameteresHandler(senderID, messageText);
-          }
-          else {
-            tools.sendTextMessage(senderID, messageText)
-            returnedFromDialogFlow = false;
-          }
-
-        }
-        returnedFromDialogFlow = false;
-      }
-      else if (returnedFromDialogFlow == false) {
-
-        PromisedSendtoDialogFlow(messageText)
-          .then(data => {
-            returnedFromDialogFlow = true;
-            checkMessageContent(data, senderID);
-          }
-          )
-          .catch(err => console.error(`[Error]: ${err}`));
-      }
-      tools.sendTypingOff(senderID);
-
-      //setTimeout(function(){tools.sendQuickReply(senderID)},3000); //added timeout to make sure it comes later
-      break;
-  }
-}
-
-
-
-
-
 function receivedDeliveryConfirmation(event) {
   var senderID = event.sender.id;
   var recipientID = event.recipient.id;
@@ -456,7 +349,6 @@ function receivedPostback(event) {
   if (event.postback) {
 
     handlePayload(event.postback.payload, senderID);
-
 
   }
 
@@ -509,15 +401,6 @@ function receivedAccountLink(event) {
  * in default.json before they can access local resources likes images/videos.
  */
 
-
-
-function checkToSendMore(senderID) {
-  if (fileObject.want_more) {
-    setTimeout(function () { tools.SendMore(senderID) }, 5000); //must be called like that   why ? https://stackoverflow.com/a/5520159/5627553
-  }
-}
-
-
 function handlePayload(payload, senderID) {
   switch (payload) {
     case 'personal_account_memes':
@@ -550,13 +433,11 @@ function handlePayload(payload, senderID) {
         //present user with some greeting or call to action
         tools.sendTextMessage(senderID, message_first_time);
       });
-
       break;
 
     case 'sort by points':
       SortImagesbyPoints = true;
       tools.sendTextMessage(senderID, "Next memes will be upvote/points based");
-
       break;
 
     case 'sort by time':
@@ -565,7 +446,6 @@ function handlePayload(payload, senderID) {
       break;
 
     case 'surprise me':
-
       specialMemesFromMyAccount(senderID, payload);
 
       break;
