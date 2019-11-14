@@ -4,8 +4,14 @@ var SortedByPointsCounter = 0; // initlize the i globally for easer access so do
 
 var FirstQuery = true;
 let counter = 0;
+require('./imgur_handler/api_consumer.js')();
+require('./resend_handler.js')();
+require('./../app.js')();
+
+
 const 
-tools = require('./../sendFunctions.js');
+tools = require('./../sendFunctions.js'),
+fileObject = JSON.parse(fs.readFileSync('./../inputMemory.json', 'utf8'));
 
 module.exports  = function() {
 
