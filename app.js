@@ -1,12 +1,11 @@
-
-
-//////////TODO add media filtration to extract videos out of images
 /////////TODO Apply memeory to all parts of sending process
 ////////TODO Add instruction at the begining 
 'use strict';
 // require('app/Initializer/initializer.js')();
 require('./app/imgur_handler/api_consumer.js')();
 require('./app/imgur_handler/response_handler.js')();
+require('./app/dialogflow_handler/api_consumer.js')();
+require('./app/quick_replies.js')();
 
 const
   bodyParser = require('body-parser'),
@@ -15,44 +14,26 @@ const
   express = require('express'),
   fs = require('fs'),
   tools = require('./sendFunctions.js'),
-  tokenFile = require('./JWTtoken.js'),
-  sk = require('./config/SecretKeys.js'),
   util = require('util'),
-  PromisedSendtoDialogFlow = util.promisify(sendtoDialogFlow),
-
-  functions = require('./helpingFunctions.js');
-
-var MessagetoDialogFlow = ""
-
-//Secret Keys saved in different file for security 
-var imgur_access_token = sk.getImgurAccessToken();
-var google_project_id = sk.getGoogleProjectID(); 
-var DATABASE_URL = sk.getDatabaseURL();
-var google_access_token =tokenFile.sign();
-var returnedFromDialogFlow = false
-var returnedFromKnoweldge = false
-var DialogflowhasParameters = false
-
-var google_access_token = tokenFile.sign();
+  PromisedSendtoDialogFlow = util.promisify(sendtoDialogFlow);
 
 
+var MessagetoDialogFlow = "",
+  returnedFromDialogFlow = false,
+  returnedFromKnoweldge = false,
+  DialogflowhasParameters = false,
+  app = express(),
+  fileObject = JSON.parse(fs.readFileSync('./inputMemory.json', 'utf8')),
+  default_text = ["You know that no matter how cool I am to you,",
+    " at the end I'm a preprogrammed meme sender so please don't ask me for neither commitment or Anything I don't understand.",
+    " Just type SEND MEME"
+  ].join('\n'),
 
+  help_text = ["You can send me various messages:", "=================", " ",
+    "* *Send meme* -> sends you a fresh meme", " ", "* *Sort by time* -> gets you latest memes without considering community's upvotes", " ", "* *Sort by points* -> sends you most upvoted memes in choosen category", " ",
+    "* *Memes* -> Quick categories selection", " ", "* *Surprise me* -> sends you a meme uploaded by our community", " ", "* You can send an image to be uploaded to the community section where you can access it anytime"
+  ].join('\n');
 
-var default_text = ["You know that no matter how cool I am to you,",
-  " at the end I'm a preprogrammed meme sender so please don't ask me for neither commitment or Anything I don't understand.",
-  " Just type SEND MEME"
-].join('\n');
-
-var help_text = ["You can send me various messages:", "=================", " ",
-  "* *Send meme* -> sends you a fresh meme"," ", "* *Sort by time* -> gets you latest memes without considering community's upvotes"," ", "* *Sort by points* -> sends you most upvoted memes in choosen category"," ",
-  "* *Memes* -> Quick categories selection"," ", "* *Surprise me* -> sends you a meme uploaded by our community"," ", "* You can send an image to be uploaded to the community section where you can access it anytime"
-].join('\n');
-
-
-var app = express();
-
-
-var fileObject = JSON.parse(fs.readFileSync('./inputMemory.json', 'utf8'));
 
 //Database conncetion setup
 const { Pool } = require('pg');
@@ -61,17 +42,10 @@ const pool = new Pool({
   ssl: true
 });
 
-
 app.set('port', process.env.PORT || 5000);
 app.set('view engine', 'ejs');
 app.use(bodyParser.json({ verify: verifyRequestSignature }));
 app.use(express.static('public'));
-
-/*
- * Be sure to setup your config values before running this code. You can
- * set them using environment variables or modifying the config file in /config.
- *
- */
 
 // App Secret can be retrieved from the App Dashboard
 const APP_SECRET = (process.env.MESSENGER_APP_SECRET) ?
@@ -100,11 +74,6 @@ if (!(APP_SECRET && VALIDATION_TOKEN && PAGE_ACCESS_TOKEN && SERVER_URL)) {
   process.exit(1);
 }
 
-/*
- * Use your own validation token. Check that the token used in the Webhook
- * setup is the same token used here.
- *
- */
 app.get('/webhook', function (req, res) {
   if (req.query['hub.mode'] === 'subscribe' &&
     req.query['hub.verify_token'] === VALIDATION_TOKEN) {
@@ -115,7 +84,6 @@ app.get('/webhook', function (req, res) {
     res.sendStatus(403);
   }
 });
-
 
 
 /*
@@ -189,81 +157,7 @@ app.get('/authorize', function (req, res) {
 
 
 //Test Function
-checkMessageContent("I want sad memes","Khaled")
-
-function sendtoDialogFlow(MessagetoDialogFlow, callback) {
-  var CallBackReturn;
-  var https = require('https');
-  var DFchunks = [];
-  const data = JSON.stringify({
-    "queryInput": {
-      "text": {
-        "languageCode": "en",
-        "text": MessagetoDialogFlow
-      }
-    }
-  })
-  const options = {
-    method: 'POST',
-    host: 'dialogflow.googleapis.com',
-    path: '/v2beta1/projects/' + google_project_id + '/agent/environments/draft/users/6542423/sessions/124567:detectIntent',
-    headers: {
-
-      'Authorization': 'Bearer ' + google_access_token,
-      'Content-Type': 'application/json',
-      'Accept': 'application/json'
-
-    }
-  }
-  var req = https.request(options, (res) => {
-    res.on('data', (d) => { process.stdout.write(d) })
-
-
-    res.on("data", function (DF) {
-      DFchunks.push(DF);
-      res.on("end", function (DF) {
-        var body = Buffer.concat(DFchunks);
-        var parsed = JSON.parse(body)
-        res.on("error", function (error) {
-          console.error(error);
-          callback(error, "")
-        });
-
-        if (JSON.stringify(parsed.queryResult.parameters) != "{}") {
-          if (parsed.queryResult.parameters.sendmeme !== undefined) {
-            DialogflowhasParameters = true
-            CallBackReturn = parsed.queryResult.parameters.sendmeme;
-
-          }
-          else {
-            DialogflowhasParameters = false
-            CallBackReturn = parsed.queryResult.fulfillmentText;
-          }
-        }
-        else {
-          DialogflowhasParameters = false;
-          try {
-            if (parsed.queryResult.action == "repeat" && parsed.alternativeQueryResults[0].knowledgeAnswers.answers[0].matchConfidence > 0.41) {
-              CallBackReturn = parsed.alternativeQueryResults[0].knowledgeAnswers.answers[0].answer;
-              returnedFromKnoweldge = true;
-            }
-            else {
-              CallBackReturn = parsed.queryResult.fulfillmentText;
-            }
-          }
-          catch (err) {
-            CallBackReturn = parsed.queryResult.fulfillmentText;
-          }
-        }
-        callback("", CallBackReturn);
-      });
-    });
-  })
-  req.on("error", (error) => { console.error(error) })
-  req.write(data)
-  req.end()
-
-}
+checkMessageContent("what is love", "Khaled")
 
 function getFirstName(senderID, callback) {
   var https = require('https');
@@ -425,7 +319,7 @@ function receivedMessage(event) {
 
 /* Check for message content*/
 function checkMessageContent(messageText, senderID) {
-  
+
   tools.sendReadReceipt(senderID);
   switch (messageText.replace(/[^\w\s]/gi, '').trim().toLowerCase()) {
     case 'hello':
@@ -488,14 +382,13 @@ function checkMessageContent(messageText, senderID) {
     default:
       tools.sendTypingOn(senderID);
 
-      if (returnedFromDialogFlow) 
-      {
+      if (returnedFromDialogFlow) {
         if (returnedFromKnoweldge) {
           tools.sendTextMessage(senderID, messageText)
           returnedFromKnoweldge = false;
         }
         else {
-          if (DialogflowhasParameters) {            
+          if (DialogflowhasParameters) {
             DialogFlowParameteresHandler(senderID, messageText);
           }
           else {
@@ -507,56 +400,26 @@ function checkMessageContent(messageText, senderID) {
         returnedFromDialogFlow = false;
       }
       else if (returnedFromDialogFlow == false) {
-        
+
         PromisedSendtoDialogFlow(messageText)
-          .then(data => {           
-          returnedFromDialogFlow = true;
-          checkMessageContent(data, senderID);
-        }
-        )
+          .then(data => {
+            returnedFromDialogFlow = true;
+            checkMessageContent(data, senderID);
+          }
+          )
           .catch(err => console.error(`[Error]: ${err}`));
       }
       tools.sendTypingOff(senderID);
 
-    //setTimeout(function(){tools.sendQuickReply(senderID)},3000); //added timeout to make sure it comes later
-    break;
+      //setTimeout(function(){tools.sendQuickReply(senderID)},3000); //added timeout to make sure it comes later
+      break;
   }
 }
 
-/* quick reply send like*/
-
-function sendLike(senderID) {
-
-  fileObject.want_more = true;
-  chooseCaller(fileObject.function_number, fileObject.seach_word, senderID);
-  checkToSendMore(senderID)
-  // console.log(last_input_function_name + last_input_search_word)
-}
-/* quick reply gallery memes*/
-function manyCategoriesSearch(senderID, quickReplyPayload) {
-
-  public_images_consumer(senderID, quickReplyPayload);
-  saveToFile(2, quickReplyPayload, true);
-  checkToSendMore(senderID)
-
-}
-/* quick reply  do nothing**/
-function doNothing(senderID) {
-  tools.sendTypingOff(senderID);
-  saveToFile(null, null, false);
-  tools.sendTextMessage(senderID, "Whatever you want <3 ")
-
-}
-
-/* quick reply personal accunt memes*/
-function specialMemesFromMyAccount(senderID, quickReplyPayload) {
-
-  personal_images_consumer(senderID, quickReplyPayload);
-  saveToFile(1, quickReplyPayload, true);
-  checkToSendMore(senderID)
 
 
-}
+
+
 function receivedDeliveryConfirmation(event) {
   var senderID = event.sender.id;
   var recipientID = event.recipient.id;
@@ -571,7 +434,6 @@ function receivedDeliveryConfirmation(event) {
         messageID);
     });
   }
-
   console.log("All message before %d were delivered.", watermark);
 }
 
@@ -597,7 +459,6 @@ function receivedPostback(event) {
 
   }
 
-
   console.log("Received postback for user %d and page %d with payload '%s' " +
     "at %d", senderID, recipientID, payload, timeOfPostback);
 
@@ -616,7 +477,6 @@ function receivedPostback(event) {
 function receivedMessageRead(event) {
   var senderID = event.sender.id;
   var recipientID = event.recipient.id;
-
   // All messages before watermark (a timestamp) or sequence have been seen.
   var watermark = event.read.watermark;
   var sequenceNumber = event.read.seq;
@@ -636,7 +496,6 @@ function receivedMessageRead(event) {
 function receivedAccountLink(event) {
   var senderID = event.sender.id;
   var recipientID = event.recipient.id;
-
   var status = event.account_linking.status;
   var authCode = event.account_linking.authorization_code;
 
@@ -649,32 +508,6 @@ function receivedAccountLink(event) {
  * in default.json before they can access local resources likes images/videos.
  */
 
-function DialogFlowParameteresHandler(senderID, data) {
-  //To Handle the search call from the dialogFlow function 
-  //TODO : Find a template calling theme for cleaner code
-  if (data != "memes" || data != "send meme") {
-    if (data == "surprise me") {
-      // To access saved memes on my imgur account
-      specialMemesFromMyAccount(senderID, data);
-      return;
-
-    }
-    else if (data == "help") {
-      tools.sendTextMessage(senderID, help_text);
-      return;
-
-    }
-    else {
-      // To allow generic search for any category using the intents from DialogFlow
-      saveToFile(2, data, true);
-      chooseCaller(2, data, senderID);
-
-      return;
-    }
-  }
-  returnedFromDialogFlow = false;
-
-}
 
 function chooseCaller(function_number, last_input_search_word, senderID) {
   /* 
@@ -700,34 +533,21 @@ function chooseCaller(function_number, last_input_search_word, senderID) {
 }
 
 function checkToSendMore(senderID) {
-
   if (fileObject.want_more) {
-
     setTimeout(function () { tools.SendMore(senderID) }, 5000); //must be called like that   why ? https://stackoverflow.com/a/5520159/5627553
-
   }
 }
 
-
 function saveToFile(number, word, want_more) {
-
 
   fileObject.function_number = number;
   fileObject.seach_word = word;
   fileObject.want_more = want_more;
   fs.writeFileSync('./inputMemory.json', JSON.stringify(fileObject, null, 2), 'utf-8');
 
-
-
 }
 
-
-
-
-
 function handlePayload(payload, senderID) {
-
-
   switch (payload) {
     case 'personal_account_memes':
 
@@ -754,11 +574,7 @@ function handlePayload(payload, senderID) {
       var user_first_name = ''
       getFirstName(senderID, function (err, data) {
         if (err) return console.error(err);
-        console.log("dataaaa" + data);
         user_first_name = data
-
-
-        console.log("user_first_name" + user_first_name)
         var message_first_time = ["Hi " + user_first_name + ",", "Try me by sending 'Send meme' or 'memes' "].join('\n');
         //present user with some greeting or call to action
         tools.sendTextMessage(senderID, message_first_time);
@@ -781,55 +597,13 @@ function handlePayload(payload, senderID) {
 
       specialMemesFromMyAccount(senderID, payload);
 
-
-      break;
-
-
       break;
     default:
-      console.log("I should work here")
       manyCategoriesSearch(senderID, payload);
 
 
   }
 
-}
-function uploadToAccount(senderID, image) {
-  var https = require('https');
-
-  var options = {
-    'method': 'POST',
-    'hostname': 'api.imgur.com',
-    'path': '/3/image',
-    'headers': {
-      'Authorization': 'Bearer ' + imgur_access_token
-    }
-  };
-
-  var req = https.request(options, function (res) {
-    var chunks = [];
-
-    res.on("data", function (chunk) {
-      chunks.push(chunk);
-    });
-
-    res.on("end", function (chunk) {
-      var body = Buffer.concat(chunks);
-      console.log(body.toString());
-    });
-
-    res.on("error", function (error) {
-      console.error(error);
-    });
-  });
-
-  var postData = "------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"image\"\r\n\r\n" + image + "\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW--";
-
-  req.setHeader('content-type', 'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW');
-
-  req.write(postData);
-
-  req.end();
 }
 
 
