@@ -11,11 +11,8 @@ require('./../resend_handler.js')();
 
 const
   tools = require('../../sendFunctions.js'),
-  fileObject = JSON.parse(fs.readFileSync('./inputMemory.json', 'utf8')),
-  util = require('util'),
-  PromisedSendtoDialogFlow = util.promisify(sendtoDialogFlow);
-
-  // Generate a page access token for your page from the App Dashboard
+  config = require('config');
+    // Generate a page access token for your page from the App Dashboard
 const PAGE_ACCESS_TOKEN = (process.env.MESSENGER_PAGE_ACCESS_TOKEN) ?
 (process.env.MESSENGER_PAGE_ACCESS_TOKEN) :
 config.get('pageAccessToken');
