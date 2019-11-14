@@ -1,12 +1,6 @@
-var SortImagesbyPoints = true;
-var uniqueRandoms = [];
-var SortedByPointsCounter = 0; // initlize the i globally for easer access so don't have to write extra code to determine if first query to set i =0 or not
-
-var FirstQuery = true;
-let counter = 0;
 require('./imgur_handler/api_consumer.js')();
 require('./resend_handler.js')();
-require('./../app.js');
+// require('./messages/events.js')();
 
 
 const 
@@ -14,10 +8,7 @@ tools = require('./../sendFunctions.js'),
 fileObject = JSON.parse(fs.readFileSync('./inputMemory.json', 'utf8'));
 
 module.exports  = function() {
-
-
 /* quick reply send like*/
-
 this.sendLike = function(senderID) {
 
     fileObject.want_more = true;

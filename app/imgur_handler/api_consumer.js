@@ -1,6 +1,3 @@
-
-
-
 const 
 sk = require('./../../config/SecretKeys.js'),
 tools = require('./../../sendFunctions.js');

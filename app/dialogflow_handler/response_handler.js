@@ -1,10 +1,6 @@
 
-var SortImagesbyPoints = true;
-var uniqueRandoms = [];
-var SortedByPointsCounter = 0; // initlize the i globally for easer access so don't have to write extra code to determine if first query to set i =0 or not
+require('./../quick_replies.js')();
 
-var FirstQuery = true;
-let counter = 0;
 const 
 functions = require('./../../helpingFunctions.js'),
 tools = require('./../../sendFunctions.js');

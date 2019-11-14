@@ -1,0 +1,114 @@
+var
+  returnedFromDialogFlow = false,
+  returnedFromKnoweldge = false,
+  DialogflowhasParameters = false;
+
+
+require('../imgur_handler/api_consumer.js')();
+require('./../imgur_handler/api_consumer.js')();
+require('./../quick_replies.js')();
+require('./../resend_handler.js')();
+
+const
+  tools = require('../../sendFunctions.js'),
+  fileObject = JSON.parse(fs.readFileSync('./inputMemory.json', 'utf8')),
+  util = require('util'),
+  PromisedSendtoDialogFlow = util.promisify(sendtoDialogFlow);
+
+  // Generate a page access token for your page from the App Dashboard
+const PAGE_ACCESS_TOKEN = (process.env.MESSENGER_PAGE_ACCESS_TOKEN) ?
+(process.env.MESSENGER_PAGE_ACCESS_TOKEN) :
+config.get('pageAccessToken');
+
+module.exports = function () {
+
+/*
+ * If users came here through testdrive, they need to configure the server URL
+ * in default.json before they can access local resources likes images/videos.
+ */
+
+ this.handlePayload=function(payload, senderID) {
+    switch (payload) {
+      case 'personal_account_memes':
+        specialMemesFromMyAccount(senderID, payload)
+        break;
+
+      case 'send_alike':
+        sendLike(senderID);
+        break;
+  
+      case 'do nothing':
+        doNothing(senderID);
+        break;
+  
+      case 'help':
+        tools.sendTextMessage(senderID, help_text);
+        break;
+  
+      case 'get_started':
+        var user_first_name = ''
+        getFirstName(senderID, function (err, data) {
+          if (err) return console.error(err);
+          user_first_name = data
+          var message_first_time = ["Hi " + user_first_name + ",", "Try me by sending 'Send meme' or 'memes' "].join('\n');
+          //present user with some greeting or call to action
+          tools.sendTextMessage(senderID, message_first_time);
+        });
+        break;
+  
+      case 'sort by points':
+        SortImagesbyPoints = true;
+        tools.sendTextMessage(senderID, "Next memes will be upvote/points based");
+        break;
+  
+      case 'sort by time':
+        SortImagesbyPoints = false;
+        tools.sendTextMessage(senderID, "Next memes will be the most recent");
+        break;
+  
+      case 'surprise me':
+        specialMemesFromMyAccount(senderID, payload);
+        break;
+  
+      default:
+        manyCategoriesSearch(senderID, payload);
+    }
+  
+  }
+
+function getFirstName(senderID, callback) {
+  var https = require('https');
+  const access_token = PAGE_ACCESS_TOKEN;
+  var first_name = ''
+  const options = {
+    method: 'GET',
+    hostname: 'graph.facebook.com',
+    port: 443,
+    path: '/' + senderID + '?fields=first_name&access_token=' + access_token,
+  }
+  var req = https.request(options, function (res) {
+    var chunks = [];
+    res.on("data", function (chunk) {
+      chunks.push(chunk);
+    });
+    res.on("end", function (chunk) {
+      var body = Buffer.concat(chunks);
+      first_name = JSON.parse(body).first_name;
+      callback("", first_name);
+    });
+
+    res.on("error", function (error) {
+      console.error(error);
+      callback(error, "")
+    });
+
+  });
+
+  req.end();
+
+}
+
+
+
+
+}

@@ -1,13 +1,13 @@
+
+require('../imgur_handler/api_consumer.js')();
+require('./../dialogflow_handler/response_handler.js')();
+require('./../resend_handler.js')();
+
 var
   returnedFromDialogFlow = false,
   returnedFromKnoweldge = false,
   DialogflowhasParameters = false;
 
-
-require('../imgur_handler/api_consumer.js')();
-require('./../imgur_handler/api_consumer.js')();
-require('./../quick_replies.js')();
-require('./../resend_handler.js')();
 const
   tools = require('../../sendFunctions.js'),
   fileObject = JSON.parse(fs.readFileSync('./inputMemory.json', 'utf8')),
@@ -108,7 +108,6 @@ this.checkMessageContent=function(messageText, senderID) {
             .catch(err => console.error(`[Error]: ${err}`));
         }
         tools.sendTypingOff(senderID);
-  
         //setTimeout(function(){tools.sendQuickReply(senderID)},3000); //added timeout to make sure it comes later
         break;
     }
