@@ -5,6 +5,7 @@ tools = require('./../../sendFunctions.js');
 fs = require('fs');
 var fileObject = JSON.parse(fs.readFileSync('./inputMemory.json', 'utf8'));
 var clientId = sk.getClientID();
+var imgur_access_token = sk.getImgurAccessToken();
 
 module.exports = function() {
 
