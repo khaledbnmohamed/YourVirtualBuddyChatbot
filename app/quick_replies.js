@@ -1,6 +1,5 @@
 require('./imgur_handler/api_consumer.js')();
 require('./resend_handler.js')();
-// require('./messages/events.js')();
 
 
 const 

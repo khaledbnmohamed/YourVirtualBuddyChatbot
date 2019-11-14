@@ -155,7 +155,7 @@ app.get('/authorize', function (req, res) {
 
 
 //Test Function
-checkMessageContent("what is love", "Khaled")
+// checkMessageContent("what is love", "Khaled")
 
 /*
  * Message Event
