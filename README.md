@@ -1,17 +1,24 @@
-# Messenger Platform Sample -- node.js
+# Messenger Platform Chatbot sends memes Using DialogFlow API and Imgur API -- node.js
 
-This project is an example server for Messenger Platform built in Node.js. With this app, you can send it messages and it will echo them back to you. You can also see examples of the different types of Structured Messages. 
+This project is built on the top of Messenger Platform Test drive example built in Node.js (https://developers.facebook.com/docs/messenger-platform/getting-started/test-drive/?testdrive_messengerbot=true)
+
+
+With this app, you can send it messages and it will respond with images or plain text back to you. You can also test its live version using the Messenger platfrom [Live Version](https://www.messenger.com/t/MemesBuddy1) using Keywords like "Send meme" or "memes" or any other related sentences.
 
 It contains the following functionality:
 
-* Webhook (specifically for Messenger Platform events)
-* Send API 
-* Web Plugins
-* Messenger Platform v1.1 features
+* Basic Sending Functions(Text,Image,Quick Reply)
+* Imgur Search from Gallery API (https://apidocs.imgur.com/#7dde894b-a967-4419-9be2-082fbf379109)
+* Imgur get images from certain account
+* DialogFlow DetectIntent to Handle unexpected messages.
 
-Follow the [walk-through](https://developers.facebook.com/docs/messenger-platform/quickstart) to learn about this project in more detail.
+## Architecture
+
+![Image](Architecture.png)
 
 ## Setup
+
+PLEASE FOLLOW FACEBOOK DOCUMENTATION IN TEST DRIVE FOR MORE DEATILS. Any extra node modules are avaiable with the dependencies file  modificiation.
 
 Set the values in `config/default.json` before running the sample. Descriptions of each parameter can be found in `app.js`. Alternatively, you can set the corresponding environment variables as defined in `app.js`.
 
@@ -21,16 +28,31 @@ Replace values for `APP_ID` and `PAGE_ID` in `public/index.html`.
 
 You can start the server by running `npm start`. However, the webhook must be at a public URL that the Facebook servers can reach. Therefore, running the server locally on your machine will not work.
 
-You can run this example on a cloud service provider like Heroku, Google Cloud Platform or AWS. Note that webhooks must have a valid SSL certificate, signed by a certificate authority. Read more about setting up SSL for a [Webhook](https://developers.facebook.com/docs/graph-api/webhooks#setup).
+You can run this example on a cloud service provider like Heroku, Google Cloud Platform or AWS. [Gudie Video for Heroku](https://youtu.be/bUwiKFTvmDQ?t=552).
 
 ## Webhook
 
 All webhook code is in `app.js`. It is routed to `/webhook`. This project handles callbacks for authentication, messages, delivery confirmation and postbacks. More details are available at the [reference docs](https://developers.facebook.com/docs/messenger-platform/webhook-reference).
 
+
+## Files Usage
+
+* app.js -> index file
+* JWT.js -> generate the JWT signature to use it in DialogFlow calls
+* PrivateKey.Key -> Includes the private key only that extracted from Service app created in google cloud platform
+* inputMemory.json -> Program memory file used in (Send More Function) to save user previous choice and search word
+* config/SecretKeys.json -> Stores All the sensitive credentials that you'll need to access the used APIs.  
+
 ## "Send to Messenger" and "Message Us" Plugin
 
 An example of the "Send to Messenger" plugin and "Message Us" plugin are located at `index.html`. The "Send to Messenger" plugin can be used to trigger an authentication event. More details are available at the [reference docs](https://developers.facebook.com/docs/messenger-platform/plugin-reference).
 
-## License
+I honestly didn't touch it .. but You might find it helpful :) 
 
-See the LICENSE file in the root directory of this source tree. Feel free to use and modify the code.
+## Expected Problems and Solutions, Main points and Important links 
+
+You may find my personal experience in this app helpful. Follow the article below for more details.
+
+[MEMES CHATBOT IN A NUTSHELL](https://khaledbnmohamed.000webhostapp.com/2019/01/25/memes-chatbot-in-a-nutshell/)
+
+
