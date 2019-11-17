@@ -14,7 +14,10 @@ const
   bodyParser = require('body-parser'),
   config = require('config'),
   express = require('express'),
-  tools = require('./sendFunctions.js');
+  tools = require('./sendFunctions.js'),
+  cors = require('cors'),
+  { pool } = require('./config/config');
+  
 var app = express();
 
 app.set('port', process.env.PORT || 5000);
