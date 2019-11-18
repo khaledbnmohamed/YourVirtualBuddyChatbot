@@ -1,4 +1,13 @@
 'use strict';
+'use strict';
+require('./app/imgur_handler/api_consumer.js')();
+require('./app/imgur_handler/response_handler.js')();
+require('./app/dialogflow_handler/api_consumer.js')();
+require('./app/messages/receiver.js')();
+require('./app/quick_replies.js')();
+require('./app/resend_handler.js')();
+require('./app/messages/events.js')();
+require('./app/messages/payload.js')();
 
 const
   bodyParser = require('body-parser'),
