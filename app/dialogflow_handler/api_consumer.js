@@ -2,16 +2,13 @@
 
 const 
 sk = require('./../../config/SecretKeys.js'),
-tools = require('./../../sendFunctions.js'),
-fs = require('fs'),
-tokenFile = require('./../../JWTtoken.js'),
-util = require('util');
+tokenFile = require('./../../JWTtoken.js');
+// util = require('util');
 // PromisedSendtoDialogFlow = util.promisify(sendtoDialogFlow);
 
 
 //Secret Keys saved in different file for security 
 var google_project_id = sk.getGoogleProjectID(); 
-var DATABASE_URL = sk.getDatabaseURL();
 var google_access_token =tokenFile.sign();
 var returnedFromDialogFlow = false
 var returnedFromKnoweldge = false

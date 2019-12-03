@@ -9,15 +9,18 @@ require('./app/quick_replies.js')();
 require('./app/resend_handler.js')();
 require('./app/messages/events.js')();
 require('./app/messages/payload.js')();
+require('./app/users/users.js')();
 
 const
   bodyParser = require('body-parser'),
   config = require('config'),
   express = require('express'),
   tools = require('./sendFunctions.js'),
-  cors = require('cors'),
-  { pool } = require('./config/config');
-  
+  util = require('util'),
+  PromisedToDB = util.promisify(get_user),
+  PromisedSendtoDialogFlow = util.promisify(sendtoDialogFlow);
+
+
 var app = express();
 
 app.set('port', process.env.PORT || 5000);
@@ -120,8 +123,26 @@ app.get('/authorize', function (req, res) {
   });
 });
 
+// PromisedToDB("khal22ooood")
+// .then(data => {
+//   console.log("returned fresh data" , data);
+// }
+// )
+// .catch(err => console.error(`[Error]: ${err}`));
+
+
+// PromisedSendtoDialogFlow("kilme")
+// .then(data => {
+//   checkMessageContent(data, senderID);
+//   console.log(100*"==");
+//   console.log("data is " + data);
+
+// }
+// )
+// .catch(err => console.error(`[Error]: ${err}`));
+
 //Test Function
-// checkMessageContent("what is love", "Khaled")
+checkMessageContent("send memes", "Khaled")
 function receivedMessage(event) {
   var senderID = event.sender.id;
   var recipientID = event.recipient.id;

@@ -8,6 +8,7 @@ let counter = 0;
 const 
 functions = require('./../../helpingFunctions.js'),
 tools = require('./../../sendFunctions.js');
+require('./../../app/memes/memes.js')();
 
 module.exports  = function() {
     /* 
@@ -31,6 +32,7 @@ module.exports  = function() {
         */
         if (SortImagesbyPoints && !accountImages) {
             var Sorted = sortByPoints(parsed);
+            insert_to_gallery(Sorted)
             var Target = functions.getImageLink(Sorted, SortedByPointsCounter, -1);
             while (functions.checkIfSentBefore(Target)) {
                 //wait until you get a target image that was not sent before to the user
