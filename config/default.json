@@ -2,5 +2,9 @@
     "appSecret": "0dad53a020025ec4f9db58e63dee19b7",
     "pageAccessToken": "EAAERMTBy90ABAM8tDsIk1mAWnhWfmEDmHnhwOeNFrVzfqQ7BPUxcSStUyCqQIeSuQQiOljLsrf0QFN9qqZCxTGuNghfFof703xg4wzqEIGsbfpiRj2A6VTkZA4JJUycWFHTfLtymdEyN6432asT95m92Ygr9YyWlwDzUCSWonMQPj4VsZBw",
     "validationToken": "TOKEN",
-    "serverURL": "https://my-virtual-buddy1.herokuapp.com/"
+    "serverURL": "https://my-virtual-buddy1.herokuapp.com/",
+    "clientId": "8056e5db3f369d1",
+    "imgur_access_token": "2a8f6dacd57b657d8f9542b166724964c1ed8f8f",
+    "imgur_username": "khaledbnmohamed",
+    "google_project_id": "myvirtualbuddy-fab9e" // from google console
 }
