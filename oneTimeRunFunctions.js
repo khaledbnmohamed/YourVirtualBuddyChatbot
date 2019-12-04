@@ -1,5 +1,8 @@
 'use strict';
-'use strict';
+if( process.env.NODE_ENV != 'production' && process.env.NODE_ENV != 'staging'){
+  require('dotenv').config()
+}
+
 require('./app/imgur_handler/api_consumer.js')();
 require('./app/imgur_handler/response_handler.js')();
 require('./app/dialogflow_handler/api_consumer.js')();
@@ -181,7 +184,6 @@ const PAGE_ACCESS_TOKEN = (process.env.MESSENGER_PAGE_ACCESS_TOKEN) ?
 // var https = require('https');
 
 // const access_token = PAGE_ACCESS_TOKEN ;
-
 // const data = JSON.stringify({
 
 //   "persistent_menu":[
