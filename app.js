@@ -146,6 +146,7 @@ app.get('/authorize', function (req, res) {
 // )
 // .catch(err => console.error(`[Error]: ${err}`));
 
+console.log("Env variable",  process.env.PAGE_ACCESS_TOKEN,  process.env.GOOGLE_PROJET_ID)
 //Test Function
 // checkMessageContent("send memes", "Khaled")
 function receivedMessage(event) {
