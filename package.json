@@ -4,9 +4,9 @@
   "description": "Get started example for Messenger Platform",
   "main": "app.js",
   "scripts": {
-    "start": "node index.js",
-    "start:dev": "nodemon index.js",
-    "start:dev2": "node index.js",
+    "start": "node app.js",
+    "start:dev": "nodemon app.js",
+    "start:dev2": "node app.js",
     "lint": "jshint --exclude node_modules .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
