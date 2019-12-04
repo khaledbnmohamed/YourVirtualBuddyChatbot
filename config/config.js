@@ -10,5 +10,6 @@ const pool = new Pool({
   ssl: isProduction,
 })
 console.log("connection string is " + connectionString)
+console.log("connection string isProduction " + isProduction)
 
 module.exports = { pool }
