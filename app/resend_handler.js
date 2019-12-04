@@ -7,6 +7,7 @@ let counter = 0;
 require('./imgur_handler/api_consumer.js')();
 
 const
+  fs = require('fs'),
   tools = require('../sendFunctions.js'),
   fileObject = JSON.parse(fs.readFileSync('./inputMemory.json', 'utf8'));
 

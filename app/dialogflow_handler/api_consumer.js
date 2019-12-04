@@ -1,23 +1,19 @@
 
 
-const 
-sk = require('./../../config/SecretKeys.js'),
-tokenFile = require('./../../JWTtoken.js');
-// util = require('util');
-// PromisedSendtoDialogFlow = util.promisify(sendtoDialogFlow);
+const
+  tokenFile = require('./../../JWTtoken.js');
+
 
 
 //Secret Keys saved in different file for security 
-var google_project_id = sk.getGoogleProjectID(); 
-var google_access_token =tokenFile.sign();
-var returnedFromDialogFlow = false
-var returnedFromKnoweldge = false
-var DialogflowhasParameters = false
+var
+  config = require('config'),
+  google_project_id = config.get('google_project_id'),
+  google_access_token = tokenFile.sign();
 
-var google_access_token = tokenFile.sign();
-module.exports = function() {
-    
-    this.sendtoDialogFlow = function(MessagetoDialogFlow, callback) {
+module.exports = function () {
+
+  this.sendtoDialogFlow = function (MessagetoDialogFlow, callback) {
     var CallBackReturn;
     var https = require('https');
     var DFchunks = [];
@@ -34,17 +30,17 @@ module.exports = function() {
       host: 'dialogflow.googleapis.com',
       path: '/v2beta1/projects/' + google_project_id + '/agent/environments/draft/users/6542423/sessions/124567:detectIntent',
       headers: {
-  
+
         'Authorization': 'Bearer ' + google_access_token,
         'Content-Type': 'application/json',
         'Accept': 'application/json'
-  
+
       }
     }
     var req = https.request(options, (res) => {
       res.on('data', (d) => { process.stdout.write(d) })
-  
-  
+
+
       res.on("data", function (DF) {
         DFchunks.push(DF);
         res.on("end", function (DF) {
@@ -54,12 +50,12 @@ module.exports = function() {
             console.error(error);
             callback(error, "")
           });
-  
+
           if (JSON.stringify(parsed.queryResult.parameters) != "{}") {
             if (parsed.queryResult.parameters.sendmeme !== undefined) {
               DialogflowhasParameters = true
               CallBackReturn = parsed.queryResult.parameters.sendmeme;
-  
+
             }
             else {
               DialogflowhasParameters = false
@@ -88,6 +84,6 @@ module.exports = function() {
     req.on("error", (error) => { console.error(error) })
     req.write(data)
     req.end()
-  
+
   }
 };

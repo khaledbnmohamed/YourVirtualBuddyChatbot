@@ -12,6 +12,8 @@ require('./app/messages/payload.js')();
 require('./app/users/users.js')();
 
 const
+fs = require('fs'),
+
   bodyParser = require('body-parser'),
   config = require('config'),
   express = require('express'),

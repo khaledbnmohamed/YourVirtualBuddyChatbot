@@ -4,6 +4,7 @@ require('./resend_handler.js')();
 
 const 
 tools = require('./../sendFunctions.js'),
+fs = require('fs'),
 fileObject = JSON.parse(fs.readFileSync('./inputMemory.json', 'utf8'));
 
 module.exports  = function() {
