@@ -4,3 +4,5 @@ node_modules
 .vs
 .vscode
 .env
+config/staging.json
+config/default.json
