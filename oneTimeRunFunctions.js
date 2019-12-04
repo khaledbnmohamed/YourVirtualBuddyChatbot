@@ -28,7 +28,7 @@ app.use(express.static('public'));
 // Generate a page access token for your page from the App Dashboard
 const PAGE_ACCESS_TOKEN = (process.env.MESSENGER_PAGE_ACCESS_TOKEN) ?
   (process.env.MESSENGER_PAGE_ACCESS_TOKEN) :
-  config.get('pageAccessToken');
+  process.env.PAGE_ACCESS_TOKEN;
 
 
 /* DialogFlow API

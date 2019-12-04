@@ -28,15 +28,15 @@ this.checkMessageContent=function(messageText, senderID) {
         break;
   
       case 'image':
-        tools.requiresServerURL(tools.sendImageMessage, [senderID]);
+        tools.requiresSERVER_URL(tools.sendImageMessage, [senderID]);
         break;
   
       case 'gif':
-        tools.requiresServerURL(tools.sendGifMessage, [senderID]);
+        tools.requiresSERVER_URL(tools.sendGifMessage, [senderID]);
         break;
   
       case 'video':
-        tools.requiresServerURL(tools.sendVideoMessage, [senderID]);
+        tools.requiresSERVER_URL(tools.sendVideoMessage, [senderID]);
         break;
   
       case 'sort by points':
@@ -64,7 +64,7 @@ this.checkMessageContent=function(messageText, senderID) {
         break;
   
       case 'account linking':
-        tools.requiresServerURL(sendAccountLinking, [senderID]);
+        tools.requiresSERVER_URL(sendAccountLinking, [senderID]);
         break;
   
       case 'no':

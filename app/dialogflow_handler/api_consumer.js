@@ -8,7 +8,7 @@ const
 //Secret Keys saved in different file for security 
 var
   config = require('config'),
-  google_project_id = config.get('google_project_id'),
+  GOOGLE_PROJET_ID = process.env.GOOGLE_PROJET_ID
   google_access_token = tokenFile.sign();
 
 module.exports = function () {
@@ -28,7 +28,7 @@ module.exports = function () {
     const options = {
       method: 'POST',
       host: 'dialogflow.googleapis.com',
-      path: '/v2beta1/projects/' + google_project_id + '/agent/environments/draft/users/6542423/sessions/124567:detectIntent',
+      path: '/v2beta1/projects/' + GOOGLE_PROJET_ID + '/agent/environments/draft/users/6542423/sessions/124567:detectIntent',
       headers: {
 
         'Authorization': 'Bearer ' + google_access_token,

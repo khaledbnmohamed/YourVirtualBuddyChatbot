@@ -15,7 +15,7 @@ app.set('port', process.env.PORT || 5000);
 // Generate a page access token for your page from the App Dashboard
 const PAGE_ACCESS_TOKEN = (process.env.MESSENGER_PAGE_ACCESS_TOKEN) ?
   (process.env.MESSENGER_PAGE_ACCESS_TOKEN) :
-  config.get('pageAccessToken');
+  process.env.PAGE_ACCESS_TOKEN; 
 
 module.exports =
   {
@@ -24,7 +24,7 @@ module.exports =
    * get the message id in a response
    *
    */
-    requiresServerURL: function (next, [recipientId, ...args]) {
+    requiresSERVER_URL: function (next, [recipientId, ...args]) {
       if (SERVER_URL === "to_be_set_manually") {
         var messageData = {
           recipient: {
@@ -34,7 +34,7 @@ module.exports =
             text: `
 We have static resources like images and videos available to test, but you need to update the code you downloaded earlier to tell us your current server url.
 1. Stop your node server by typing ctrl-c
-2. Paste the result you got from running "lt —port 5000" into your config/default.json file as the "serverURL".
+2. Paste the result you got from running "lt —port 5000" into your config/default.json file as the "SERVER_URL".
 3. Re-run "node app.js"
 Once you've finished these steps, try typing “video” or “image”.
         `
@@ -127,7 +127,7 @@ I really hope one day, You'll find the right person to forward these memes to <3
           attachment: {
             type: "image",
             payload: {
-              url: SERVER_URL + "/assets/instagram_logo.gif"
+              url:SERVER_URL + "/assets/instagram_logo.gif"
             }
           }
         }
@@ -149,7 +149,7 @@ I really hope one day, You'll find the right person to forward these memes to <3
           attachment: {
             type: "audio",
             payload: {
-              url: SERVER_URL + "/assets/sample.mp3"
+              url:SERVER_URL + "/assets/sample.mp3"
             }
           }
         }
@@ -171,7 +171,7 @@ I really hope one day, You'll find the right person to forward these memes to <3
           attachment: {
             type: "video",
             payload: {
-              url: SERVER_URL + "/assets/allofus480.mov"
+              url:SERVER_URL + "/assets/allofus480.mov"
             }
           }
         }
@@ -193,7 +193,7 @@ I really hope one day, You'll find the right person to forward these memes to <3
           attachment: {
             type: "file",
             payload: {
-              url: SERVER_URL + "/assets/test.txt"
+              url:SERVER_URL + "/assets/test.txt"
             }
           }
         }
@@ -274,7 +274,7 @@ I really hope one day, You'll find the right person to forward these memes to <3
                 title: "rift",
                 subtitle: "Next-generation virtual reality",
                 item_url: "https://www.oculus.com/en-us/rift/",
-                image_url: SERVER_URL + "/assets/rift.png",
+                image_url:SERVER_URL + "/assets/rift.png",
                 buttons: [{
                   type: "web_url",
                   url: "https://www.oculus.com/en-us/rift/",
@@ -288,7 +288,7 @@ I really hope one day, You'll find the right person to forward these memes to <3
                 title: "touch",
                 subtitle: "Your Hands, Now in VR",
                 item_url: "https://www.oculus.com/en-us/touch/",
-                image_url: SERVER_URL + "/assets/touch.png",
+                image_url:SERVER_URL + "/assets/touch.png",
                 buttons: [{
                   type: "web_url",
                   url: "https://www.oculus.com/en-us/touch/",
@@ -335,14 +335,14 @@ I really hope one day, You'll find the right person to forward these memes to <3
                 quantity: 1,
                 price: 599.00,
                 currency: "USD",
-                image_url: SERVER_URL + "/assets/riftsq.png"
+                image_url:SERVER_URL + "/assets/riftsq.png"
               }, {
                 title: "Samsung Gear VR",
                 subtitle: "Frost White",
                 quantity: 1,
                 price: 99.99,
                 currency: "USD",
-                image_url: SERVER_URL + "/assets/gearvrsq.png"
+                image_url:SERVER_URL + "/assets/gearvrsq.png"
               }],
               address: {
                 street_1: "1 Hacker Way",
@@ -500,7 +500,7 @@ I really hope one day, You'll find the right person to forward these memes to <3
               text: "Welcome. Link your account.",
               buttons: [{
                 type: "account_link",
-                url: SERVER_URL + "/authorize"
+                url:SERVER_URL + "/authorize"
               }]
             }
           }

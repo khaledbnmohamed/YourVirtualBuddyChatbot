@@ -1,4 +1,3 @@
-require('dotenv').config()
 
 const { Pool } = require('pg')
 const isProduction = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging'

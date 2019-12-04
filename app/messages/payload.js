@@ -15,7 +15,7 @@ const
     // Generate a page access token for your page from the App Dashboard
 const PAGE_ACCESS_TOKEN = (process.env.MESSENGER_PAGE_ACCESS_TOKEN) ?
 (process.env.MESSENGER_PAGE_ACCESS_TOKEN) :
-config.get('pageAccessToken');
+process.env.PAGE_ACCESS_TOKEN 
 
 help_text = ["You can send me various messages:", "=================", " ",
 "* *Send meme* -> sends you a fresh meme", " ", "* *Sort by time* -> gets you latest memes without considering community's upvotes", " ", "* *Sort by points* -> sends you most upvoted memes in choosen category", " ",

@@ -4,8 +4,8 @@ var
     fs = require('fs'),
     fileObject = JSON.parse(fs.readFileSync('./inputMemory.json', 'utf8')),
     config = require('config'),
-    clientId = config.get('clientId'),
-    imgur_access_token = config.get('imgur_access_token');
+    CLIENT_ID = process.env.CLIENT_ID,
+    IMGUR_ACCESS_TOKEN = process.env.IMGUR_ACCESS_TOKEN;
 
 module.exports = function () {
 
@@ -29,7 +29,7 @@ module.exports = function () {
             'hostname': 'api.imgur.com',
             'path': '/3/gallery/search/top/{{window}}/{{page}}?q=' + Search_query,
             'headers': {
-                'Authorization': 'Client-ID ' + clientId
+                'Authorization': 'Client-ID ' + CLIENT_ID
             }
         };
         var req = https.request(options, function (res) {
@@ -68,7 +68,7 @@ module.exports = function () {
                 'hostname': 'api.imgur.com',
                 'path': '/3/account/khaledbnmohamed/images',
                 'headers': {
-                    'Authorization': 'Bearer ' + imgur_access_token
+                    'Authorization': 'Bearer ' + IMGUR_ACCESS_TOKEN
                 }
             };
             var req = https.request(options, function (res) {
@@ -99,7 +99,7 @@ module.exports = function () {
                 'hostname': 'api.imgur.com',
                 'path': '/3/image',
                 'headers': {
-                    'Authorization': 'Bearer ' + imgur_access_token
+                    'Authorization': 'Bearer ' + IMGUR_ACCESS_TOKEN
                 }
             };
 

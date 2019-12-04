@@ -1,6 +1,9 @@
 /////////TODO Apply memeory to all parts of sending process
 ////////TODO Add instruction at the begining 
 'use strict';
+if( process.env.NODE_ENV != 'production' && process.env.NODE_ENV != 'staging'){
+  require('dotenv').config()
+}
 require('./app/imgur_handler/api_consumer.js')();
 require('./app/imgur_handler/response_handler.js')();
 require('./app/dialogflow_handler/api_consumer.js')();
@@ -33,22 +36,22 @@ app.use(express.static('public'));
 // App Secret can be retrieved from the App Dashboard
 const APP_SECRET = (process.env.MESSENGER_APP_SECRET) ?
   process.env.MESSENGER_APP_SECRET :
-  config.get('appSecret');
+  process.env.APP_SECRET;
 // Arbitrary value used to validate a webhook
 const VALIDATION_TOKEN = (process.env.MESSENGER_VALIDATION_TOKEN) ?
   (process.env.MESSENGER_VALIDATION_TOKEN) :
-  config.get('validationToken');
+  process.env.VALIDATION_TOKEN;
 // Generate a page access token for your page from the App Dashboard
 const PAGE_ACCESS_TOKEN = (process.env.MESSENGER_PAGE_ACCESS_TOKEN) ?
   (process.env.MESSENGER_PAGE_ACCESS_TOKEN) :
-  config.get('pageAccessToken');
+  process.env.PAGE_ACCESS_TOKEN;
 // tools.PAGE_ACCESS_TOKEN= PAGE_ACCESS_TOKEN; //to use it in CallSendAPI
 // URL where the app is running (include protocol). Used to point to scripts and
 // assets located at this address.
 const SERVER_URL = (process.env.SERVER_URL) ?
   (process.env.SERVER_URL) :
-  config.get('serverURL');
-if (!(APP_SECRET && VALIDATION_TOKEN && PAGE_ACCESS_TOKEN && SERVER_URL)) {
+  process.env.SERVER_URL 
+if (!(APP_SECRET && VALIDATION_TOKEN && PAGE_ACCESS_TOKEN &&SERVER_URL)) {
   console.error("Missing config values");
   process.exit(1);
 }
