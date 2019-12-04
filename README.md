@@ -55,4 +55,6 @@ You may find my personal experience in this app helpful. Follow the article belo
 
 [MEMES CHATBOT IN A NUTSHELL](https://khaledbnmohamed.000webhostapp.com/2019/01/25/memes-chatbot-in-a-nutshell/)
 
+[PostgreSQL REST API to Heroku]https://www.taniarascia.com/node-express-postgresql-heroku/
+
 
