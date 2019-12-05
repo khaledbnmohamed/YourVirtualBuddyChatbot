@@ -3,18 +3,17 @@ if( process.env.NODE_ENV != 'production' && process.env.NODE_ENV != 'staging'){
   require('dotenv').config()
 }
 
-require('./app/imgur_handler/api_consumer.js')();
-require('./app/imgur_handler/response_handler.js')();
-require('./app/dialogflow_handler/api_consumer.js')();
-require('./app/messages/receiver.js')();
-require('./app/quick_replies.js')();
-require('./app/resend_handler.js')();
-require('./app/messages/events.js')();
-require('./app/messages/payload.js')();
+require('../imgur_handler/api_consumer.js')();
+require('../imgur_handler/response_handler.js')();
+require('../dialogflow_handler/api_consumer.js')();
+require('../messages/receiver.js')();
+require('../quick_replies.js')();
+require('../resend_handler.js')();
+require('../messages/events.js')();
+require('../messages/payload.js')();
 
 const
   bodyParser = require('body-parser'),
-  config = require('config'),
   crypto = require('crypto'),
   express = require('express'),
   https = require('https'),

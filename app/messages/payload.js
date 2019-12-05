@@ -10,9 +10,8 @@ require('./../quick_replies.js')();
 require('./../resend_handler.js')();
 
 const
-  tools = require('../../sendFunctions.js'),
-  config = require('config');
-    // Generate a page access token for your page from the App Dashboard
+  tools = require('./../helpers/sendFunctions.js');
+      // Generate a page access token for your page from the App Dashboard
 const PAGE_ACCESS_TOKEN = (process.env.MESSENGER_PAGE_ACCESS_TOKEN) ?
 (process.env.MESSENGER_PAGE_ACCESS_TOKEN) :
 process.env.PAGE_ACCESS_TOKEN 

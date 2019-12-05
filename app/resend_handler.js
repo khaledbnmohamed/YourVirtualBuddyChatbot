@@ -8,7 +8,7 @@ require('./imgur_handler/api_consumer.js')();
 
 const
   fs = require('fs'),
-  tools = require('../sendFunctions.js'),
+  tools = require('./helpers/sendFunctions.js'),
   fileObject = JSON.parse(fs.readFileSync('./inputMemory.json', 'utf8'));
 
 module.exports = function () {

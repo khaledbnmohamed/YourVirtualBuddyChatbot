@@ -18,9 +18,8 @@ const
 fs = require('fs'),
 
   bodyParser = require('body-parser'),
-  config = require('config'),
   express = require('express'),
-  tools = require('./sendFunctions.js'),
+  tools = require('./app/helpers/sendFunctions.js'),
   util = require('util'),
   PromisedToDB = util.promisify(get_user),
   PromisedSendtoDialogFlow = util.promisify(sendtoDialogFlow);

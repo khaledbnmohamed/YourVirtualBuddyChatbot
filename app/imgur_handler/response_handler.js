@@ -6,8 +6,8 @@ var SortedByPointsCounter = 0; // initlize the i globally for easer access so do
 var FirstQuery = true;
 let counter = 0;
 const 
-functions = require('./../../helpingFunctions.js'),
-tools = require('./../../sendFunctions.js');
+functions = require('./../helpers/helpingFunctions.js'),
+tools = require('./../helpers/sendFunctions.js');
 require('./../../app/memes/memes.js')();
 
 module.exports  = function() {

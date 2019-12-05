@@ -1,13 +1,12 @@
 
 
 const
-  tokenFile = require('./../../JWTtoken.js');
+  tokenFile = require('./../helpers/JWTtoken.js');
 
 
 
 //Secret Keys saved in different file for security 
 var
-  config = require('config'),
   GOOGLE_PROJET_ID = process.env.GOOGLE_PROJET_ID
   google_access_token = tokenFile.sign();
 

@@ -1,9 +1,8 @@
-const tools = require('./../../sendFunctions.js');
+const tools = require('./../helpers/sendFunctions.js');
 
 var
     fs = require('fs'),
     fileObject = JSON.parse(fs.readFileSync('./inputMemory.json', 'utf8')),
-    config = require('config'),
     CLIENT_ID = process.env.CLIENT_ID,
     IMGUR_ACCESS_TOKEN = process.env.IMGUR_ACCESS_TOKEN;
 

@@ -3,7 +3,6 @@
 //Holding ALL send functions in the bots for easier use
 
 const
-  config = require('config'),
   express = require('express'),
   request = require('request'),
   fs = require('fs');
