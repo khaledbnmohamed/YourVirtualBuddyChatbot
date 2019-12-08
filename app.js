@@ -126,13 +126,14 @@ app.get('/authorize', function (req, res) {
     redirectURISuccess: redirectURISuccess
   });
 });
-
-// PromisedToDB("khal22ooood")
-// .then(data => {
-//   console.log("returned fresh data" , data);
-// }
-// )
-// .catch(err => console.error(`[Error]: ${err}`));
+// console.log(get_user("khal22ooood"))
+PromisedToDB("33333324ds32423sdfafadas")
+.then(data => {
+  console.log("=============================================")
+  console.log("returned fresh data" , data);
+}
+)
+.catch(err => console.error(`[Error]: ${err}`));
 
 
 // PromisedSendtoDialogFlow("kilme")
