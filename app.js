@@ -146,7 +146,7 @@ app.get('/authorize', function (req, res) {
 // .catch(err => console.error(`[Error]: ${err}`));
 
 //Test Function
-checkMessageContent("send memes", "Khaled")
+// checkMessageContent("send memes", "Khaled")
 function receivedMessage(event) {
   var senderID = event.sender.id;
   var recipientID = event.recipient.id;
