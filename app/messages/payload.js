@@ -11,7 +11,7 @@ require('./../resend_handler.js')();
 
 const
   util = require('util'),
-  Prom_user_id = util.promisify(get_user),
+  prom_user_id = util.promisify(get_user),
   tools = require('./../helpers/sendFunctions.js');
 // Generate a page access token for your page from the App Dashboard
 const PAGE_ACCESS_TOKEN = (process.env.MESSENGER_PAGE_ACCESS_TOKEN) ?
@@ -49,7 +49,7 @@ module.exports = function () {
 
       case 'get_started':
         var user_first_name = ''
-        Prom_user_id(senderID).then(data => {
+        prom_user_id(senderID).then(data => {
             console.log("returned fresh data" , data);
           })
         getFirstName(senderID, function (err, data) {

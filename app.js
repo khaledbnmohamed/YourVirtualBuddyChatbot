@@ -199,6 +199,13 @@ function receivedMessage(event) {
     }, 2000); //added timeout to make sure it comes later
   }
 }
+var now = new Date();
+var millisTill10 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 10, 0, 0, 0) - now;
+if (millisTill10 < 0) {
+     millisTill10 += 86400000; // it's after 10am, try 10am tomorrow.
+}
+setTimeout(function(){alert("It's 10am!")}, millisTill10);
+
 // Start server
 // Webhooks must be available via SSL with a certificate signed by a valid
 // certificate authority.
