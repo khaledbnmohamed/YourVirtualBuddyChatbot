@@ -1,13 +1,11 @@
 
-const { Pool } = require('pg')
-const isProduction = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging'
+const Sequelize = require('sequelize');
+const User = require('./../database/models/user');
+const GMemes = require('./../database/models/gallery_meme');
+const AMemes = require('./../database/models/account_memes');
 
 
-const connectionString = `postgresql://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_DATABASE}`
+const pool = new Sequelize(process.env.DATABASE_URL);
 
-const pool = new Pool({
-  connectionString: isProduction ? process.env.DATABASE_URL : connectionString,
-  ssl: isProduction,
-})
+module.exports = { pool,GMemes,AMemes,User }
 
-module.exports = { pool }

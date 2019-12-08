@@ -8,7 +8,7 @@
     "start:dev": "nodemon app.js",
     "start:dev2": "node app.js",
     "lint": "jshint --exclude node_modules .",
-    "migrate local": "node-pg-migrate",
+    "migrate-local": "node-pg-migrate",
     "migrate": "ts-node node_modules/.bin/node-pg-migrate -j ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -33,8 +33,11 @@
     "firebase-functions": "^2.2.0",
     "node-pg-migrate": "^4.0.0-rc1",
     "pg": "^7.14.0",
+    "pg-hstore": "^2.3.3",
     "pg-types": "^3.0.0",
     "request": "^2.72.0",
+    "sequelize": "^5.21.2",
+    "sequelize-cli": "^5.5.1",
     "ts-node": "^8.5.4",
     "typescript": "^3.7.3"
   },

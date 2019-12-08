@@ -57,4 +57,4 @@ You may find my personal experience in this app helpful. Follow the article belo
 
 [PostgreSQL REST API to Heroku]https://www.taniarascia.com/node-express-postgresql-heroku/
 
-
+[getting-started-with-sequelize-and-postgres-emp]https://dev.to/nedsoft/getting-started-with-sequelize-and-postgres-emp

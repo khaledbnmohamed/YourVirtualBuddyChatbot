@@ -2,7 +2,7 @@ const
     express = require('express'),
     bodyParser = require('body-parser'),
     cors = require('cors'),
-    { pool } = require('./../../config/config'),
+    { pool } = require('../../config/config'),
     app = express();
 
 

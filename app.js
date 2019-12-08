@@ -12,7 +12,7 @@ require('./app/quick_replies.js')();
 require('./app/resend_handler.js')();
 require('./app/messages/events.js')();
 require('./app/messages/payload.js')();
-require('./app/users/users.js')();
+require('./app/controllers/users.js')();
 
 const
 fs = require('fs'),
@@ -146,7 +146,7 @@ app.get('/authorize', function (req, res) {
 // .catch(err => console.error(`[Error]: ${err}`));
 
 //Test Function
-// checkMessageContent("send memes", "Khaled")
+checkMessageContent("send memes", "Khaled")
 function receivedMessage(event) {
   var senderID = event.sender.id;
   var recipientID = event.recipient.id;

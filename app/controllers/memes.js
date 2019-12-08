@@ -1,8 +1,9 @@
+const models = require('./../../database/models');
+
 const
     express = require('express'),
     bodyParser = require('body-parser'),
     cors = require('cors'),
-    { pool } = require('../../config/config'),
     app = express();
 
 
@@ -26,9 +27,18 @@ module.exports = function () {
                 score = data[i].score;
 
             }
-            pool.query('INSERT INTO gallery_memes (imgur_id,score,created_at) VALUES ($1, $2, $3) RETURNING id', [link,score, new Date()], (error) => {
-                if (error) throw (error)
-            })
+            try {
+                 models.Gallery_Meme.create({ imgur_id: link, score: score });
+                console.log("Added New record")
+            } catch (error) {
+                return ({ error: error.message })
+            }
         }
+        // pool.query('INSERT INTO gallery_memes (imgur_id,score,created_at) VALUES ($1, $2, $3) RETURNING id', [link,score, new Date()], (error) => {
+        //     if (error) throw (error)
+        // })
     }
 }
+
+
+  

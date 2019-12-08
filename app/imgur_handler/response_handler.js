@@ -8,7 +8,7 @@ let counter = 0;
 const 
 functions = require('./../helpers/helpingFunctions.js'),
 tools = require('./../helpers/sendFunctions.js');
-require('./../../app/memes/memes.js')();
+require('../controllers/memes.js')();
 
 module.exports  = function() {
     /* 
