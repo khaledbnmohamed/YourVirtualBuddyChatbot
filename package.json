@@ -1,6 +1,6 @@
 {
-  "name": "messenger-get-started",
-  "version": "1.0.0",
+  "name": "your-virtual-buddy",
+  "version": "2.0.0",
   "description": "Get started example for Messenger Platform",
   "main": "app.js",
   "scripts": {
@@ -16,7 +16,7 @@
     "type": "git",
     "url": "git+https://github.com/fbsamples/messenger-platform-samples.git"
   },
-  "author": "Facebook",
+  "author": "Khaled_Awad",
   "license": "ISC",
   "dependencies": {
     "actions-on-google": "^2.5.0",
@@ -39,8 +39,7 @@
     "typescript": "^3.7.3"
   },
   "engines": {
-    "node": "12.10.0",
-    "npm": "6.10.3"
+    "node": "12.10.0"
   },
   "bugs": {
     "url": "https://github.com/fbsamples/messenger-platform-samples/issues"
