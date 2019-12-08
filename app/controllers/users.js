@@ -23,8 +23,11 @@ module.exports = function () {
                 transaction: t
             })
                 .then(function (userResult, created) {
+                    if(created){
+                        Console.log("Created New User")
+                    }
                     callback && callback(null, userResult[0].id, created);
-                    
+
                 },
                     function (error) {
                         callback && callback(error);

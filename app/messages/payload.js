@@ -49,7 +49,9 @@ module.exports = function () {
 
       case 'get_started':
         var user_first_name = ''
-        Prom_user_id(senderID)
+        Prom_user_id(senderID).then(data => {
+            console.log("returned fresh data" , data);
+          })
         getFirstName(senderID, function (err, data) {
           if (err) return console.error(err);
           user_first_name = data
