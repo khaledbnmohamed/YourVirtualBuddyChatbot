@@ -13,6 +13,7 @@ require('./app/resend_handler.js')();
 require('./app/messages/events.js')();
 require('./app/messages/payload.js')();
 require('./app/controllers/users.js')();
+require('./app/controllers/sent_memes.js')();
 
 const
 fs = require('fs'),
@@ -126,6 +127,9 @@ app.get('/authorize', function (req, res) {
     redirectURISuccess: redirectURISuccess
   });
 });
+
+// public_images_consumer("kaka","memes")
+send_meme_to_user("33333324ds32423sdfafadas")
 // console.log(get_user("khal22ooood"))
 // PromisedToDB("33333324ds32423sdfafadas")
 // .then(data => {
