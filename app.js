@@ -21,6 +21,8 @@ fs = require('fs'),
   bodyParser = require('body-parser'),
   express = require('express'),
   tools = require('./app/helpers/sendFunctions.js'),
+  helpers =require('./app/helpers/helpingFunctions.js'),
+
   util = require('util'),
   PromisedToDB = util.promisify(get_user),
   PromisedSendtoDialogFlow = util.promisify(sendtoDialogFlow);
@@ -129,7 +131,8 @@ app.get('/authorize', function (req, res) {
 });
 
 // public_images_consumer("kaka","memes")
-send_meme_to_user("33333324ds32423sdfafadas")
+// send_meme_to_user("33333324ds32423sdfafadas")
+// helpers.sendImageToNewUser("fuckme","33333324ds32423sdfafadas")
 // console.log(get_user("khal22ooood"))
 // PromisedToDB("33333324ds32423sdfafadas")
 // .then(data => {

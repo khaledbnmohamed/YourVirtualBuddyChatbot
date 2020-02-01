@@ -63,6 +63,9 @@ module.exports = function () {
                             ],
                             attributes: ['id', 'imgur_id', 'score']
                         }).then(memes => {
+                            console.log("Memes fetched are ", memes[0].score)
+                            console.log("Memes fetched are ", memes[1].score)
+
                             memes.all({
                                 include: {
                                     model : models.Sent_Memes,
