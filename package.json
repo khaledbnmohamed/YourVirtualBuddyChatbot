@@ -4,10 +4,10 @@
   "description": "Get started example for Messenger Platform",
   "main": "app.js",
   "scripts": {
+    "lint": "jshint --exclude node_modules .",
     "start": "node app.js",
     "start:dev": "nodemon app.js",
     "start:dev2": "node app.js",
-    "lint": "jshint --exclude node_modules .",
     "migrate-local": "node-pg-migrate",
     "migrate": "ts-node node_modules/.bin/node-pg-migrate -j ts",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -49,7 +49,9 @@
   },
   "homepage": "https://github.com/fbsamples/messenger-platform-samples#readme",
   "devDependencies": {
-    "eslint": "^6.6.0",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.1.0",
+    "eslint-plugin-import": "^2.20.2",
     "nodemon": "^1.19.4"
   },
   "keywords": []
