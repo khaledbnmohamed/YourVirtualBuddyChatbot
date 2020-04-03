@@ -1,0 +1,6 @@
+{
+  "appSecret": "APP_SECRET",
+  "pageAccessToken": "PAGE_ACCESS_TOKEN",
+  "validationToken": "VALIDATION_TOKEN",
+  "serverURL": "HEROKU_SERVER_URL"
+}
