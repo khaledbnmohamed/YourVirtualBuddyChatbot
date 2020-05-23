@@ -9,7 +9,7 @@ const
 
 var ImageLink = 'https://i.imgur.com/KZC2CW9.jpg'
 var app = express();
-app.set('port', process.env.PORT || 5000);
+app.set('port', process.env.PORT || 5001);
 
 // Generate a page access token for your page from the App Dashboard
 const PAGE_ACCESS_TOKEN = (process.env.MESSENGER_PAGE_ACCESS_TOKEN) ?
@@ -33,7 +33,7 @@ module.exports =
             text: `
 We have static resources like images and videos available to test, but you need to update the code you downloaded earlier to tell us your current server url.
 1. Stop your node server by typing ctrl-c
-2. Paste the result you got from running "lt —port 5000" into your config/default.json file as the "SERVER_URL".
+2. Paste the result you got from running "lt —port 5001" into your config/default.json file as the "SERVER_URL".
 3. Re-run "node app.js"
 Once you've finished these steps, try typing “video” or “image”.
         `

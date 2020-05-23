@@ -115,7 +115,7 @@ this.checkMessageContent=function(messageText, senderID) {
   }
   this.checkToSendMore = function(senderID) {
     if (fileObject.want_more) {
-      setTimeout(function () { tools.SendMore(senderID) }, 5000); //must be called like that   why ? https://stackoverflow.com/a/5520159/5627553
+      setTimeout(function () { tools.SendMore(senderID) }, 5001); //must be called like that   why ? https://stackoverflow.com/a/5520159/5627553
     }
   }
   
