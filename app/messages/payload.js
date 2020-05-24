@@ -11,7 +11,7 @@ require('./../resend_handler.js')();
 
 const
   util = require('util'),
-  prom_user_id = util.promisify(get_user),
+  prom_user_id = util.promisify(getUser),
   tools = require('./../helpers/sendFunctions.js');
 // Generate a page access token for your page from the App Dashboard
 const PAGE_ACCESS_TOKEN = (process.env.MESSENGER_PAGE_ACCESS_TOKEN) ?
@@ -31,7 +31,7 @@ module.exports = function () {
 
   this.handlePayload = function (payload, senderID) {
     switch (payload) {
-      case 'personal_account_memes':
+      case 'personal_AccountMemes':
         specialMemesFromMyAccount(senderID, payload)
         break;
 

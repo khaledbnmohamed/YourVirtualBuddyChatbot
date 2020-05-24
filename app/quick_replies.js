@@ -24,14 +24,14 @@ module.exports = function () {
   };
   /* quick reply personal accunt memes */
   this.specialMemesFromMyAccount = function (senderID, quickReplyPayload) {
-    personal_images_consumer(senderID, quickReplyPayload);
+    ImgurImagesConsumer(senderID, 'account', quickReplyPayload);
     saveToFile(1, quickReplyPayload, true);
     checkToSendMore(senderID);
   };
 
   /* quick reply gallery memes */
   this.manyCategoriesSearch = function (senderID, quickReplyPayload) {
-    public_images_consumer(senderID, quickReplyPayload);
+    ImgurImagesConsumer(senderID, 'gallery', quickReplyPayload);
     saveToFile(2, quickReplyPayload, true);
     checkToSendMore(senderID);
   };

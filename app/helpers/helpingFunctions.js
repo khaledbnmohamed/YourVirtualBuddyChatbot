@@ -27,7 +27,7 @@ module.exports = {
   },
 
   checkIfSentBefore(imageId, senderID) {
-    models.Memes_Sent.findOne({ where: { fb_id: senderID } }).then((record) => {
+    models.SentMemes.findOne({ where: { fb_id: senderID } }).then((record) => {
       if (record) {
         console.log('=============================');
         // JSON.stringify(object)
@@ -43,7 +43,7 @@ module.exports = {
     console.log(imgurIds);
 
     // tools.sendImageMessage(senderID, imageId);
-    models.Memes_Sent.create({
+    models.SentMemes.create({
       fb_id: senderID,
       imgur_id_gallery: JSON.stringify(imgurIds),
     }).then((record) => {
@@ -55,10 +55,10 @@ module.exports = {
   },
 
   sendImageToExistingUser(imageId, senderID, imageType) {
-    models.Memes_Sent.findOne({ where: { fb_id: senderID } }).then((record) => {
+    models.SentMemes.findOne({ where: { fb_id: senderID } }).then((record) => {
       if (record) {
         imgurIds = imageType === 'gallery' ? jsonAppender(record.imgur_id_gallery, imageId) : jsonAppender(record.imgur_id_account, imageId);
-        models.Memes_Sent.update({
+        models.SentMemes.update({
           imgur_id_gallery: imgurIds,
         }).then((record) => {
           if (record) {

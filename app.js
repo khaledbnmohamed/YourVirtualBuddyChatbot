@@ -2,31 +2,27 @@
 // //////TODO Add instruction at the begining
 
 
+import { getUser } from './app/controllers/users';
+import { sendtoDialogFlow } from './app/dialogflow_handler/api_consumer';
+import {
+  verifyRequestSignature, receivedDeliveryConfirmation, receivedPostback,
+  receivedAccountLink, receivedAuthentication, receivedMessageRead,
+} from './app/messages/events';
+
 if (process.env.NODE_ENV !== 'production' && process.env.NODE_ENV !== 'staging') {
   require('dotenv').config();
 }
-require('./app/imgur_handler/api_consumer.js')();
-require('./app/imgur_handler/response_handler.js')();
-require('./app/dialogflow_handler/api_consumer.js')();
-require('./app/messages/receiver.js')();
-require('./app/quick_replies.js')();
-require('./app/resend_handler.js')();
-require('./app/messages/events.js')();
-require('./app/messages/payload.js')();
-require('./app/controllers/users.js')();
-require('./app/controllers/sent_memes.js')();
 
-const
-  fs = require('fs');
-
+const fs = require('fs');
 const bodyParser = require('body-parser');
 const express = require('express');
 const util = require('util');
+const { ImgurImagesConsumer } = require('./app/imgur_handler/api_consumer.js');
 const tools = require('./app/helpers/sendFunctions.js');
 const helpers = require('./app/helpers/helpingFunctions.js');
 
 
-const PromisedToDB = util.promisify(get_user);
+const PromisedToDB = util.promisify(getUser);
 const PromisedSendtoDialogFlow = util.promisify(sendtoDialogFlow);
 
 
@@ -132,11 +128,11 @@ app.get('/authorize', (req, res) => {
   });
 });
 
-// public_images_consumer('kaka', 'memes');
-send_meme_to_user('33333324ds32423sdfafadas');
+ImgurImagesConsumer('kaka', 'account', 'memes');
+// send_meme_to_user('Khalod1');
 // helpers.sendImageToNewUser('fuckme', '33333324ds32423sdfafadas');
-// console.log(get_user('khal22ooood'));
-// PromisedToDB('33333324ds32423sdfafadas')
+// console.log(getUser('khal22ooood'));
+// PromisedToDB('Khalod1')
 //   .then((data) => {
 //     console.log('=============================================');
 //     console.log('returned fresh data', data);

@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "lint": "jshint --exclude node_modules .",
-    "start": "node app.js",
+    "start": "node -r esm index.js",
     "start:dev": "nodemon app.js",
     "start:dev2": "node app.js",
     "migrate-local": "node-pg-migrate",
@@ -27,13 +27,14 @@
     "dialogflow-fulfillment": "^0.6.1",
     "dotenv": "^8.2.0",
     "ejs": "^2.4.2",
+    "esm": "^3.2.25",
     "express": "^4.13.4",
     "firebase": "^5.8.2",
     "firebase-admin": "^7.0.0",
     "firebase-functions": "^2.2.0",
     "jsonwebtoken": "^8.5.1",
     "node-pg-migrate": "^4.0.0-rc1",
-    "pg": "^7.14.0",
+    "pg": "^7.18.2",
     "pg-hstore": "^2.3.3",
     "pg-types": "^3.0.0",
     "request": "^2.72.0",
@@ -43,7 +44,7 @@
     "typescript": "^3.7.3"
   },
   "engines": {
-    "node": "8.0"
+    "node": "=14.3.0"
   },
   "bugs": {
     "url": "https://github.com/fbsamples/messenger-platform-samples/issues"

@@ -1,11 +1,12 @@
 
-const Sequelize = require('sequelize');
-const User = require('./../database/models/user');
-const GMemes = require('./../database/models/gallery_meme');
-const AMemes = require('./../database/models/account_memes');
+import Sequelize from 'sequelize';
+import User from '../database/models/user';
+import GMemes from '../database/models/gallery_meme';
+import AMemes from '../database/models/account_memes';
 
 
 const pool = new Sequelize(process.env.DATABASE_URL);
 
-module.exports = { pool,GMemes,AMemes,User }
-
+export default {
+  pool, GMemes, AMemes, User,
+};
