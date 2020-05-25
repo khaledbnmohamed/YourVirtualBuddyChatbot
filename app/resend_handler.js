@@ -1,10 +1,11 @@
+import { ImgurImagesConsumer } from './imgur_handler/api_consumer';
+
 const SortImagesbyPoints = true;
 const uniqueRandoms = [];
 const SortedByPointsCounter = 0; // initlize the i globally for easer access so don't have to write extra code to determine if first query to set i =0 or not
 
 const FirstQuery = true;
 const counter = 0;
-import { ImgurImagesConsumer } from "./imgur_handler/api_consumer";
 
 const
   fs = require('fs');
@@ -29,9 +30,9 @@ module.exports = function () {
       console.log(`last_input_search_word ${last_input_search_word}`);
     }
     if (function_number === 1) {
-      ImgurImagesConsumer(senderID,'account', last_input_search_word);
+      ImgurImagesConsumer(senderID, 'account', last_input_search_word);
     } else if (function_number === 2) {
-      ImgurImagesConsumer(senderID, last_input_search_word);
+      ImgurImagesConsumer(senderID, 'gallery', last_input_search_word);
     }
   };
 };

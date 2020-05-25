@@ -1,19 +1,21 @@
 
 require('../imgur_handler/api_consumer.js')();
-require('../dialogflow_handler/response_handler.js')();
-require('../resend_handler.js')();
 
 let
   returnedFromDialogFlow = false;
 let returnedFromKnoweldge = false;
 const DialogflowhasParameters = false;
 
+const fs = require('fs');
+const util = require('util');
 const
   tools = require('../helpers/sendFunctions.js');
-const fs = require('fs');
+
+const chooseCaller = require('../resend_handler.js');
+const saveToFile = require('../resend_handler.js');
+const sendtoDialogFlow = require('../dialogflow_handler/response_handler');
 
 const fileObject = JSON.parse(fs.readFileSync('./inputMemory.json', 'utf8'));
-const util = require('util');
 
 const PromisedSendtoDialogFlow = util.promisify(sendtoDialogFlow);
 
@@ -72,11 +74,16 @@ module.exports = function () {
         doNothing(senderID);
         break;
 
+      case 'test':
+        chooseCaller(1, null, senderID);
+
+        break;
+
       case 'send meme':
         // tools.sendTypingOn(senderID); //typing on till fetching
         saveToFile(2, 'memes', true);
         chooseCaller(2, null, senderID);
-        checkToSendMore(senderID);
+        this.checkToSendMore(senderID);
         break;
       // //////Debugging Cases Just to check Input Values
       default:
