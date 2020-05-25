@@ -26,6 +26,7 @@ module.exports = function () {
         .trim()
         .toLowerCase()
     ) {
+      console.log("messss", messageText)
       case 'hello':
       case 'hi':
         tools.sendHiMessage(senderID);
