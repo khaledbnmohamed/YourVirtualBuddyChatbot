@@ -27,6 +27,10 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('AccountMemes');
+     queryInterface.dropTable('AccountMemes');
+     queryInterface.dropTable('Account_Memes');
+     queryInterface.dropTable('Gallery_Memes');
+     return queryInterface.dropTable('Memes_Sents');
+
   }
 };
