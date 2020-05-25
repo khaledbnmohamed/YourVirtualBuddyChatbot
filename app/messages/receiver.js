@@ -85,6 +85,7 @@ module.exports = function () {
         break;
 
       case 'test':
+        console.log("its a fucking test")
         chooseCaller(1, null, senderID);
 
         break;
