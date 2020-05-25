@@ -1,33 +1,40 @@
-
-require('../imgur_handler/api_consumer.js')();
-
-let
-  returnedFromDialogFlow = false;
-let returnedFromKnoweldge = false;
-const DialogflowhasParameters = false;
-
 const fs = require('fs');
 const util = require('util');
-const
-  tools = require('../helpers/sendFunctions.js');
-
+const tools = require('../helpers/sendFunctions.js');
 const chooseCaller = require('../resend_handler.js');
 const saveToFile = require('../resend_handler.js');
 const sendtoDialogFlow = require('../dialogflow_handler/response_handler');
+const DialogFlowParameteresHandler = require('../dialogflow_handler/api_consumer');
+const doNothing = require('../quick_replies');
 
 const fileObject = JSON.parse(fs.readFileSync('./inputMemory.json', 'utf8'));
-
 const PromisedSendtoDialogFlow = util.promisify(sendtoDialogFlow);
 
+let {
+  returnedFromDialogFlow,
+  returnedFromKnoweldge,
+  DialogflowhasParameters,
+} = false;
+
 module.exports = function () {
-/* Check for message content */
+  /* Check for message content */
   this.checkMessageContent = function (messageText, senderID) {
     tools.sendReadReceipt(senderID);
-    switch (messageText.replace(/[^\w\s]/gi, '').trim().toLowerCase()) {
+    switch (
+      messageText
+        .replace(/[^\w\s]/gi, '')
+        .trim()
+        .toLowerCase()
+    ) {
       case 'hello':
       case 'hi':
         tools.sendHiMessage(senderID);
-        setTimeout(() => { tools.sendTextMessage(senderID, 'You can also send me a meme as an attachment to save it'); }, 1000);
+        setTimeout(() => {
+          tools.sendTextMessage(
+            senderID,
+            'You can also send me a meme as an attachment to save it',
+          );
+        }, 1000);
         break;
 
       case 'image':
@@ -44,7 +51,10 @@ module.exports = function () {
 
       case 'sort by points':
         SortImagesbyPoints = true;
-        tools.sendTextMessage(senderID, 'Next memes will be upvote/points based');
+        tools.sendTextMessage(
+          senderID,
+          'Next memes will be upvote/points based',
+        );
         break;
 
       case 'sort by time':
@@ -115,7 +125,9 @@ module.exports = function () {
   };
   this.checkToSendMore = function (senderID) {
     if (fileObject.want_more) {
-      setTimeout(() => { tools.SendMore(senderID); }, 5001); // must be called like that   why ? https://stackoverflow.com/a/5520159/5627553
+      setTimeout(() => {
+        tools.SendMore(senderID);
+      }, 5001); // must be called like that   why ? https://stackoverflow.com/a/5520159/5627553
     }
   };
 };

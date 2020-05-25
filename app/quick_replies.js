@@ -1,7 +1,8 @@
-import { ImgurImagesConsumer } from "./imgur_handler/api_consumer";
-const resend = require('./resend_handler.js');
+import { ImgurImagesConsumer } from './imgur_handler/api_consumer';
 
 const fs = require('fs');
+const resend = require('./resend_handler.js');
+
 const
   tools = require('./helpers/sendFunctions.js');
 
