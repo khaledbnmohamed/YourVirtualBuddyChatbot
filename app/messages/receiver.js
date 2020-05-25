@@ -19,6 +19,8 @@ let {
 module.exports = function () {
   /* Check for message content */
   this.checkMessageContent = function (messageText, senderID) {
+    console.log("fuck yeah")
+
     tools.sendReadReceipt(senderID);
     switch (
       messageText

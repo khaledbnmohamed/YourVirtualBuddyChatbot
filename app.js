@@ -100,8 +100,6 @@ function receivedMessage(event) {
     return;
   }
   if (messageText) {
-    console.log("fuck yeah")
-
     // If we receive a text message, check to see if it matches any special
     // keywords and send back the corresponding example. Otherwise, just echo
     // the text we received.
