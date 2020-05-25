@@ -15,17 +15,7 @@
         "ecmaVersion": 2018
     },
     "rules": {
-        "import/extensions": [
-            "error",
-            "always",
-            {"ignorePackages": true},
-            {
-              "js": "never",
-              "jsx": "never",
-              "ts": "never",
-              "tsx": "never"
-            }
-         ]
+
     }
 
 }

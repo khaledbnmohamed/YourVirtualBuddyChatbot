@@ -18,10 +18,10 @@ module.exports = function () {
   this.insert_to_sent_memes = function (SenderID, imageId, isGallery, callback) {
     try {
       if (isGallery === 'gallery') {
-        models.SentMemes.create({ fb_id: SenderID, imgur_id_gallery: imageId });
+        models.SentMeme.create({ fb_id: SenderID, imgur_id_gallery: imageId });
         console.log('Added New record');
       } else {
-        models.SentMemes.create({ fb_id: SenderID, imgur_id_account: imageId });
+        models.SentMeme.create({ fb_id: SenderID, imgur_id_account: imageId });
         console.log('Added New record');
       }
     } catch (error) {
@@ -32,7 +32,7 @@ module.exports = function () {
     models.User.findOne({
       where: { fb_id: SenderID },
       include: [{
-        model: models.SentMemes, as: 'smemes',
+        model: models.SentMeme, as: 'smemes',
       }],
     })
       .then((user) => {

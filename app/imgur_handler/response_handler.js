@@ -61,7 +61,7 @@ export function formingElements(result, type, senderID, accountImages) {
       insertToGallery(Sorted);
     } else { insertToAccount(Sorted); }
     let Target = functions.getImageLink(Sorted, SortedByPointsCounter, -1);
-    while (functions.checkIfSentBefore(Target)) {
+    while (functions.checkIfSentBefore(Target, senderID)) {
       // wait until you get a target image that was not sent before to the user
       SortedByPointsCounter += 1;
       Target = functions.getImageLink(Sorted, SortedByPointsCounter, -1);

@@ -1,6 +1,6 @@
 const fs = require('fs');
 const https = require('https');
-const tools = require('../helpers/sendFunctions.js');
+const tools = require('../helpers/sendFunctions');
 const { formingElements } = require('./response_handler');
 
 const fileObject = JSON.parse(fs.readFileSync('./inputMemory.json', 'utf8'));

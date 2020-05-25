@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
     choosen_type: DataTypes.TEXT,
   }, {});
   User.associate = function (models) {
-    User.hasMany(models.SentMemes, {
+    User.hasMany(models.SentMeme, {
       foreignKey: 'id',
       as: 'smemes',
       onDelete: 'CASCADE',

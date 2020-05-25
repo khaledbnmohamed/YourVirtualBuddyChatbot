@@ -1,6 +1,5 @@
-require('./imgur_handler/api_consumer.js')();
-require('./resend_handler.js')();
-
+import { ImgurImagesConsumer } from "./imgur_handler/api_consumer";
+const resend = require('./resend_handler.js');
 
 const fs = require('fs');
 const
@@ -12,21 +11,21 @@ module.exports = function () {
 /* quick reply send like */
   this.sendLike = function (senderID) {
     fileObject.want_more = true;
-    chooseCaller(fileObject.function_number, fileObject.seach_word, senderID);
+    resend.chooseCaller(fileObject.function_number, fileObject.seach_word, senderID);
     checkToSendMore(senderID);
     // console.log(last_input_function_name + last_input_search_word)
   };
   /* quick reply  do nothing* */
   this.doNothing = function (senderID) {
     tools.sendTypingOff(senderID);
-    saveToFile(null, null, false);
+    resend.saveToFile(null, null, false);
     tools.sendTextMessage(senderID, 'Whatever you want <3 ');
   };
   /* quick reply personal accunt memes */
   this.specialMemesFromMyAccount = function (senderID, quickReplyPayload) {
     ImgurImagesConsumer(senderID, 'account', quickReplyPayload);
-    saveToFile(1, quickReplyPayload, true);
-    checkToSendMore(senderID);
+    resend.saveToFile(1, quickReplyPayload, true);
+    resend.checkToSendMore(senderID);
   };
 
   /* quick reply gallery memes */

@@ -1,10 +1,10 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  const AccountMemes = sequelize.define('AccountMemes', {
+  const AccountMeme = sequelize.define('AccountMeme', {
     imgur_id: DataTypes.STRING,
     score: DataTypes.INTEGER
   }, {});
-  AccountMemes.associate = function(models) {
+  AccountMeme.associate = function(models) {
   };
-  return AccountMemes;
+  return AccountMeme;
 };

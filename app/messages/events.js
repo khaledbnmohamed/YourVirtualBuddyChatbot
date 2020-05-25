@@ -1,12 +1,7 @@
-require('../imgur_handler/api_consumer.js')();
-require('../imgur_handler/api_consumer.js')();
-require('../quick_replies.js')();
-require('../resend_handler.js')();
-require('./payload.js')();
-
 const crypto = require('crypto');
-const
-  tools = require('../helpers/sendFunctions.js');
+const handlePayload = require('./payload');
+
+const tools = require('../helpers/sendFunctions');
 
 // App Secret can be retrieved from the App Dashboard
 const APP_SECRET = (process.env.MESSENGER_APP_SECRET)

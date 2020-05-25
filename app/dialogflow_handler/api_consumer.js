@@ -1,13 +1,6 @@
-
-const
-  tokenFile = require('../helpers/JWTtoken.js');
-
-
-// Secret Keys saved in different file for security
-const
-  { GOOGLE_PROJET_ID } = process.env;
-google_access_token = tokenFile.sign();
-
+const tokenFile = require('../helpers/JWTtoken');
+const { GOOGLE_PROJET_ID } = process.env;
+let google_access_token = tokenFile.sign();
 
 export function sendtoDialogFlow(MessagetoDialogFlow, callback) {
   let CallBackReturn;

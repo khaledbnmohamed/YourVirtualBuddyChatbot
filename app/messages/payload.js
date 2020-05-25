@@ -3,12 +3,12 @@ var
   returnedFromKnoweldge = false,
   DialogflowhasParameters = false;
 
-require('./../controllers/users.js')();
-require('../imgur_handler/api_consumer.js')();
-require('./../imgur_handler/api_consumer.js')();
-require('./../quick_replies.js')();
-require('./../resend_handler.js')();
-
+  // require('../imgur_handler/api_consumer.js')();
+  // require('./../imgur_handler/api_consumer.js')();
+  // require('./../resend_handler.js')();
+  
+const {getUser} = require('./../controllers/users.js');
+const { doNothing, sendLike, specialMemesFromMyAccount, manyCategoriesSearch } = require('./../quick_replies');
 const
   util = require('util'),
   prom_user_id = util.promisify(getUser),
