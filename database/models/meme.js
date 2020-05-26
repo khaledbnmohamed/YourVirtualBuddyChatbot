@@ -9,8 +9,7 @@ export default (sequelize, DataTypes) => {
     type: DataTypes.STRING,
   }, {});
   Meme.associate = function (models) {
-
-
+    Meme.hasMany(models.SentMeme, { foreignKey: 'meme_id' });
   };
   return Meme;
 };

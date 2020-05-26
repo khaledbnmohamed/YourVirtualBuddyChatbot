@@ -70,7 +70,8 @@ app.get('/webhook', (req, res) => {
 });
 
 function receivedMessage(event) {
-  const senderID = event.sender.id;
+  let senderID = event.sender.id;
+  senderID = senderID.toString();
   const user = PromisedgetUser(senderID);
   const recipientID = event.recipient.id;
   const timeOfMessage = event.timestamp;
