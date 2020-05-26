@@ -10,6 +10,13 @@ module.exports = {
     fb_id: {
       type: Sequelize.STRING,
     },
+    first_name: {
+      type: Sequelize.STRING,
+    },
+    last_name: {
+      type: Sequelize.STRING,
+      defaultValue: 'null',
+    },
     rec_images: {
       type: Sequelize.INTEGER,
     },
@@ -21,6 +28,11 @@ module.exports = {
       type: Sequelize.STRING,
       defaultValue: 'account',
 
+    },
+    want_more:
+    {
+      type: Sequelize.BOOLEAN,
+      defaultValue: false,
     },
     createdAt: {
       allowNull: false,

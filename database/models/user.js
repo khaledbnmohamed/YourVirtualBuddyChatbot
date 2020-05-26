@@ -2,6 +2,7 @@
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define('User', {
     fb_id: DataTypes.STRING,
+    first_name: DataTypes.STRING,
     rec_images: DataTypes.INTEGER,
     search_word: DataTypes.TEXT,
     choosen_type: DataTypes.TEXT,

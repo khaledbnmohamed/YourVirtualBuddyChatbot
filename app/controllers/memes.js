@@ -12,7 +12,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 
-export function insertToGallery(data, callback) {
+// eslint-disable-next-line import/prefer-default-export
+export function bulkInsertToGallery(data, type, callback) {
   const dailyNumber = 50;
   let link;
   let score;
@@ -26,38 +27,11 @@ export function insertToGallery(data, callback) {
     }
     if (!score) score = 0;
     try {
-      models.GalleryMeme.create({ imgur_id: link, score });
+      models.Meme.create({ imgur_id: link, score, type });
       console.log('Added New record');
     } catch (error) {
       throw error.message;
     }
   }
   return true;
-// pool.query('INSERT INTO GalleryMemes (imgur_id,score,created_at) VALUES ($1, $2, $3) RETURNING id', [link,score, new Date()], (error) => {
-  //     if (error) throw (error)
-  // })
-}
-export function insertToAccount(data, callback) {
-  const dailyNumber = 50;
-  let link;
-  let score;
-  for (let i = 0; i < dailyNumber; i += 1) {
-    if (data[i].is_album === true) {
-      link = data[i].images[0].link;
-      score = data[i].images[0].score;
-    } else {
-      link = data[i].link;
-      score = data[i].score;
-    }
-    try {
-      models.AccountMeme.create({ imgur_id: link, score });
-      console.log('Added New record');
-    } catch (error) {
-      throw error.message;
-    }
-  }
-  return true;
-  // pool.query('INSERT INTO GalleryMemes (imgur_id,score,created_at) VALUES ($1, $2, $3) RETURNING id', [link,score, new Date()], (error) => {
-  //     if (error) throw (error)
-  // })
 }

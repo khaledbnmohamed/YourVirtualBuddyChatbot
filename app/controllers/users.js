@@ -1,6 +1,8 @@
 
 import express from 'express';
 import bodyParser from 'body-parser';
+import { getFirstName } from '../messages/payload';
+
 const cors = require('cors');
 const models = require('../../database/models');
 
@@ -17,12 +19,15 @@ export function getUser(senderID, callback) {
     where: {
       fb_id: senderID,
     },
-    defaults: { rec_images: 0 },
+    defaults: {
+      rec_images: 0,
+      first_name: getFirstName(senderID, (err, data) => data),
+    },
     transaction: t,
   })
     .then((userResult, created) => {
       if (created) {
-        Console.log('Created New User');
+        console.log('Created New User');
       }
       callback && callback(null, userResult[0].id, created);
     },
@@ -30,3 +35,4 @@ export function getUser(senderID, callback) {
       callback && callback(error);
     }));
 }
+

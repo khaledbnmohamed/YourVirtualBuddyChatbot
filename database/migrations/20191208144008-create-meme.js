@@ -1,6 +1,6 @@
 
 module.exports = {
-  up: (queryInterface, Sequelize) => queryInterface.createTable('GalleryMemes', {
+  up: (queryInterface, Sequelize) => queryInterface.createTable('Memes', {
     id: {
       allowNull: false,
       autoIncrement: true,
@@ -15,6 +15,11 @@ module.exports = {
       defaultValue: 0,
       allowNull: false,
     },
+    type: {
+      type: Sequelize.STRING,
+      defaultValue: 0,
+      allowNull: false,
+    },
     createdAt: {
       allowNull: false,
       type: Sequelize.DATE,
@@ -24,5 +29,5 @@ module.exports = {
       type: Sequelize.DATE,
     },
   }),
-  down: (queryInterface, Sequelize) => queryInterface.dropTable('GalleryMemes'),
+  down: (queryInterface, Sequelize) => queryInterface.dropTable('Memes'),
 };

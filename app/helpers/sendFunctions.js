@@ -15,7 +15,7 @@ app.set('port', process.env.PORT || 5001);
 const PAGE_ACCESS_TOKEN = (process.env.MESSENGER_PAGE_ACCESS_TOKEN)
   ? (process.env.MESSENGER_PAGE_ACCESS_TOKEN)
   : process.env.PAGE_ACCESS_TOKEN;
-
+const { SERVER_URL } = process.env;
 module.exports = {
   /*
    * Call the Send API. The message data goes in the body. If successful, we'll
@@ -332,7 +332,7 @@ I really hope one day, You'll find the right person to forward these memes to <3
               quantity: 1,
               price: 599.00,
               currency: 'USD',
-              image_url: `${SERVER_URL}/assets/riftsq.png`,
+              image_url: `${process.env.SERVER_URL}/assets/riftsq.png`,
             }, {
               title: 'Samsung Gear VR',
               subtitle: 'Frost White',
@@ -485,6 +485,7 @@ I really hope one day, You'll find the right person to forward these memes to <3
      *
      */
   sendAccountLinking(recipientId) {
+    console.log("sendAccountLinkingsendAccountLinkingsendAccountLinkingsendAccountLinkingsendAccountLinkingsendAccountLinkingsendAccountLinkingsendAccountLinking")
     const messageData = {
       recipient: {
         id: recipientId,

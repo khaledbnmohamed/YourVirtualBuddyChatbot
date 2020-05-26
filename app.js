@@ -8,6 +8,9 @@ import {
   verifyRequestSignature, receivedDeliveryConfirmation, receivedPostback,
   receivedAccountLink, receivedAuthentication, receivedMessageRead,
 } from './app/messages/events';
+import { getFirstName } from './app/helpers/facebook_apis';
+import { checkMessageContent } from './app/messages/receiver';
+import { handlePayload } from './app/messages/payload';
 
 if (process.env.NODE_ENV !== 'production' && process.env.NODE_ENV !== 'staging') {
   require('dotenv').config();
@@ -17,20 +20,18 @@ const fs = require('fs');
 const bodyParser = require('body-parser');
 const express = require('express');
 const util = require('util');
-const handlePayload = require('./app/messages/payload');
 const { ImgurImagesConsumer } = require('./app/imgur_handler/api_consumer');
 const tools = require('./app/helpers/sendFunctions');
 const helpers = require('./app/helpers/helpingFunctions');
-const checkMessageContent = require('./app/messages/receiver');
 const { uploadToAccount } = require('./app/imgur_handler/api_consumer');
 
-const PromisedToDB = util.promisify(getUser);
+const PromisedgetUser = util.promisify(getUser);
 const PromisedSendtoDialogFlow = util.promisify(sendtoDialogFlow);
 
 
 const app = express();
 
-app.set('port', process.env.PORT || 5001);
+app.set('port', process.env.PORT || 1245);
 app.set('view engine', 'ejs');
 app.use(bodyParser.json({ verify: verifyRequestSignature }));
 app.use(express.static('public'));
@@ -70,6 +71,7 @@ app.get('/webhook', (req, res) => {
 
 function receivedMessage(event) {
   const senderID = event.sender.id;
+  const user = PromisedgetUser(senderID);
   const recipientID = event.recipient.id;
   const timeOfMessage = event.timestamp;
   const { message } = event;
@@ -99,6 +101,7 @@ function receivedMessage(event) {
     // setTimeout(SendMore(senderID), 3000);
     return;
   }
+
   if (messageText) {
     // If we receive a text message, check to see if it matches any special
     // keywords and send back the corresponding example. Otherwise, just echo
@@ -179,10 +182,19 @@ app.get('/authorize', (req, res) => {
     redirectURI,
     redirectURISuccess,
   });
+  console.log("accountLinkingToken",accountLinkingToken)
+  getFirstName(accountLinkingToken, (err, data) => {
+    if (err) return console.error(err);
+    const user_first_name = data;
+    console.log("First NAMMMME",user_first_name)
+    const message_first_time = [`Hi ${user_first_name},`, "Try me by sending 'Send meme' or 'memes' "].join('\n');
+    // present user with some greeting or call to action
+    // tools.sendTextMessage(senderID, message_first_time);
+  });
 });
 
 // ImgurImagesConsumer('kaka', 'gallery', 'memes');
-// send_meme_to_user('Khalod1');
+// sendMemeToUser('Khalod1');
 // helpers.sendImageToNewUser('fuckme', '33333324ds32423sdfafadas');
 // console.log(getUser('khal22ooood'));
 // PromisedToDB('Khalod1')

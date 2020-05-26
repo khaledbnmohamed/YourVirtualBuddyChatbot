@@ -13,7 +13,7 @@ module.exports = {
     imgur_id_gallery: {
       type: Sequelize.STRING,
     },
-    imgur_id_account: {
+    meme_type: {
       type: Sequelize.STRING,
     },
     createdAt: {

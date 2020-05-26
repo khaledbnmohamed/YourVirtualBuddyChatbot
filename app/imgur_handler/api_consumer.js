@@ -49,14 +49,7 @@ export function ImgurImagesConsumer(senderID, type, SearchQuery) {
       const body = Buffer.concat(chunks);
       // console.log(JSON.parse(body).data[0])
       console.log(options.path);
-      let imageLink = formingElements(body, type, senderID, false);
-      if (!imageLink) {
-        imageLink = formingElements(body, type, senderID, false);
-      } else {
-        // Handling empty image responses
-        tools.sendTypingOff(senderID);
-        tools.sendImageMessage(senderID, imageLink);
-      }
+      formingElements(body, type, senderID);
     });
     res.on('error', (error) => {
       console.error(error);
