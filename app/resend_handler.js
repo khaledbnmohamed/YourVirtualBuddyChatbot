@@ -1,5 +1,5 @@
 import { ImgurImagesConsumer } from './imgur_handler/api_consumer';
-import { sendMemeToUser } from '../app/controllers/sent_memes';
+import { sendMemeToUser } from './controllers/sent_memes';
 
 const SortImagesbyPoints = true;
 const uniqueRandoms = [];
@@ -11,7 +11,7 @@ const counter = 0;
 const
   fs = require('fs');
 const tools = require('./helpers/sendFunctions.js');
-const models = require('./../database/models');
+const models = require('../database/models');
 
 const fileObject = JSON.parse(fs.readFileSync('./inputMemory.json', 'utf8'));
 
@@ -22,17 +22,18 @@ export function saveToFile(number, word, wantMore) {
   fs.writeFileSync('./inputMemory.json', JSON.stringify(fileObject, null, 2), 'utf-8');
 }
 export function chooseCaller(type, lastSearchWord, senderID) {
-    models.SyncDate.findAll({
-      limit: 1,
-      order: [ [ 'createdAt', 'DESC' ]]
-    }).then((lastUpdate) => {
-      if(lastUpdate[0] && lastUpdate[0].sync_date.setHours(0, 0, 0, 0) === new Date().setHours(0, 0, 0, 0)){
-        sendMemeToUser(senderID);
-      }
-      else{
+  models.SyncDate.findAll({
+    limit: 1,
+    order: [['createdAt', 'DESC']],
+  }).then((lastUpdate) => {
+    if (lastUpdate[0]
+      && lastUpdate[0].sync_date.setHours(0, 0, 0, 0) === new Date().setHours(0, 0, 0, 0)
+      && lastUpdate[0].type === type) {
+      sendMemeToUser(senderID);
+    } else {
       ImgurImagesConsumer(type, lastSearchWord, senderID);
     }
-  })
+  });
 
   if (lastSearchWord == null) {
     lastSearchWord = 'memes'; // special case for send meme
