@@ -1,6 +1,6 @@
+import { insertToSyncDate } from './sync_dates';
 
-const
-  express = require('express');
+const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const models = require('../../database/models');
@@ -13,7 +13,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 
 // eslint-disable-next-line import/prefer-default-export
-export function bulkInsertToGallery(data, type, callback) {
+export function bulkInsertToGallery(data, type, senderID, callback) {
   const dailyNumber = 50;
   let link;
   let score;
@@ -27,11 +27,11 @@ export function bulkInsertToGallery(data, type, callback) {
     }
     if (!score) score = 0;
     try {
-      models.Meme.create({ imgur_id: link, score, type }).then(()=>
-      console.log('Added New record'))
+      models.Meme.create({ imgur_id: link, score, type }).then(() => console.log('Added New record'));
     } catch (error) {
       throw error.message;
     }
   }
+  insertToSyncDate(senderID, type);
   return true;
 }

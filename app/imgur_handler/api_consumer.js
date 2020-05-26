@@ -7,7 +7,7 @@ const fileObject = JSON.parse(fs.readFileSync('./inputMemory.json', 'utf8'));
 const { CLIENT_ID } = process.env;
 const { IMGUR_ACCESS_TOKEN } = process.env;
 
-export function ImgurImagesConsumer(type, SearchQuery) {
+export function ImgurImagesConsumer(type, SearchQuery, senderID) {
   let options = {
     method: 'GET',
     hostname: 'api.imgur.com',
@@ -47,7 +47,7 @@ export function ImgurImagesConsumer(type, SearchQuery) {
     });
     res.on('end', (chunk) => {
       const body = Buffer.concat(chunks);
-      formingElements(body, type);
+      formingElements(body, type, senderID);
     });
     res.on('error', (error) => {
       console.error(error);
@@ -55,6 +55,7 @@ export function ImgurImagesConsumer(type, SearchQuery) {
     });
   });
   req.end();
+  
   // console.log(body);
 }
 

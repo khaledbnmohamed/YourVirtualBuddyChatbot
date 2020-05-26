@@ -28,12 +28,17 @@ export function insertToSentMemes(SenderID, imageId, type, memeId, callback) {
   }
 }
 export function sendMemeToUser(SenderID, callback) {
-  FirstNewMemeToBeSentToUser(SenderID).then((memeTobeSent) => {
-    insertToSentMemes(SenderID, memeTobeSent.imgur_id, user.choosen_type, memeTobeSent.id);
-    tools.sendImageMessage(SenderID, memeTobeSent.imgur_id);
-    tools.sendTypingOff(SenderID);
+  models.User.findOne({
+    where: { fb_id: SenderID },
+  }).then((user) => {
+    if (user) {
+      FirstNewMemeToBeSentToUser(SenderID).then((memeTobeSent) => {
+        insertToSentMemes(SenderID, memeTobeSent.imgur_id, user.choosen_type, memeTobeSent.id);
+        tools.sendImageMessage(SenderID, memeTobeSent.imgur_id);
+        tools.sendTypingOff(SenderID);
+      });
+    }
   });
-
 }
 
 export function FirstNewMemeToBeSentToUser(SenderID, callback) {

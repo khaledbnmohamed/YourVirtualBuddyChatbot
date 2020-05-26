@@ -1,12 +1,13 @@
 
 module.exports = (sequelize, DataTypes) => {
-  const SyncMeta = sequelize.define('SyncMeta', {
+  const SyncDate = sequelize.define('SyncDate', {
     type: DataTypes.STRING,
-    user: DataTypes.INTEGER,
+    user: DataTypes.STRING,
     sync_date: DataTypes.DATE,
-  }, {});
-  SyncMeta.associate = function (models) {
+  }, {
+  });
+  SyncDate.associate = function (models) {
     // associations can be defined here
   };
-  return SyncMeta;
+  return SyncDate;
 };

@@ -1,6 +1,6 @@
 
 module.exports = {
-  up: (queryInterface, Sequelize) => queryInterface.createTable('SyncMetas', {
+  up: (queryInterface, Sequelize) => queryInterface.createTable('SyncDates', {
     id: {
       allowNull: false,
       autoIncrement: true,
@@ -11,7 +11,7 @@ module.exports = {
       type: Sequelize.STRING,
     },
     user: {
-      type: Sequelize.INTEGER,
+      type: Sequelize.STRING,
     },
     sync_date: {
       type: Sequelize.DATE,
@@ -24,6 +24,6 @@ module.exports = {
       allowNull: false,
       type: Sequelize.DATE,
     },
-  }).then(() => queryInterface.addIndex('SyncMetas', ['sync_date', 'type'])),
-  down: (queryInterface, Sequelize) => queryInterface.dropTable('SyncMetas'),
+  }).then(() => queryInterface.addIndex('SyncDates', ['sync_date', 'type'])),
+  down: (queryInterface, Sequelize) => queryInterface.dropTable('SyncDates'),
 };

@@ -1,5 +1,5 @@
 import { ImgurImagesConsumer } from './imgur_handler/api_consumer';
-import { sendMemeToUser } from '../controllers/sent_memes';
+import { sendMemeToUser } from '../app/controllers/sent_memes';
 
 const SortImagesbyPoints = true;
 const uniqueRandoms = [];
@@ -22,14 +22,17 @@ export function saveToFile(number, word, wantMore) {
   fs.writeFileSync('./inputMemory.json', JSON.stringify(fileObject, null, 2), 'utf-8');
 }
 export function chooseCaller(type, lastSearchWord, senderID) {
-    models.SyncMeta.findAll({
+    models.SyncDate.findAll({
       limit: 1,
       order: [ [ 'createdAt', 'DESC' ]]
     }).then((lastUpdate) => {
-      if(lastUpdate.sync_date < new Date())
-      ImgurImagesConsumer(type, lastSearchWord);
-    })
-    sendMemeToUser(senderID);
+      if(lastUpdate[0] && lastUpdate[0].sync_date.setHours(0, 0, 0, 0) === new Date().setHours(0, 0, 0, 0)){
+        sendMemeToUser(senderID);
+      }
+      else{
+      ImgurImagesConsumer(type, lastSearchWord, senderID);
+    }
+  })
 
   if (lastSearchWord == null) {
     lastSearchWord = 'memes'; // special case for send meme
