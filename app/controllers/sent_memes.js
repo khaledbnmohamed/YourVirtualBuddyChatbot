@@ -34,6 +34,8 @@ export function sendMemeToUser(SenderID, callback) {
     if (user) {
       FirstNewMemeToBeSentToUser(SenderID).then((memeTobeSent) => {
         insertToSentMemes(SenderID, memeTobeSent.imgur_id, user.choosen_type, memeTobeSent.id);
+        tools.sendImageMessage(SenderID, memeTobeSent.imgur_id);
+        tools.sendTypingOff(SenderID);
       });
     }
   });
