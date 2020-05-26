@@ -16,21 +16,21 @@ app.use(cors());
 
 export function insertToSentMemes(SenderID, imageId, type, callback) {
   try {
-    models.SentMeme.create({ fb_id: SenderID, imgur_id: imageId, meme_type: type });
-    console.log('Added New record');
+    models.SentMeme.create({ fb_id: SenderID, imgur_id: imageId, meme_type: type })
+      .then(() => console.log('Added New record'));
     return true;
   } catch (error) {
     return ({ error: error.message });
   }
 }
 export function sendMemeToUser(SenderID, callback) {
+  console.log('##########################################');
   models.User.findOne({
     where: { fb_id: SenderID },
-    include: [{
-      model: models.SentMeme, as: 'smemes',
-    }],
   }).then((user) => {
     if (user) {
+      console.log(user.fb_id);
+
       models.Meme.findAll({
         where: { type: user.choosen_type },
 
@@ -47,6 +47,7 @@ export function sendMemeToUser(SenderID, callback) {
         tools.sendTypingOff(SenderID);
       });
 
+      console.log('##########################################');
 
       // let image_link = formingElements(body, senderID, true)
       // if (image_link) {

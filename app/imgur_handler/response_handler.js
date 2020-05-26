@@ -41,11 +41,6 @@ export function makeUniqueRandom(numRandoms) {
   return val;
 }
 
-/*
-    formingElements is the function responsible for parsing the  JSON response,choose which image to fetch its link,
-    handles albums and solo images issue and check for duplicated images to make sure not to send to the user the same image twice
-    in a counter of 100 images saved in a SentImages in inputMemory.json file
-    */
 export function formingElements(result, type, senderID) {
   const parsed = JSON.parse(result);
   const Sorted = sortByPoints(parsed);

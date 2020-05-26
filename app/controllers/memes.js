@@ -27,8 +27,8 @@ export function bulkInsertToGallery(data, type, callback) {
     }
     if (!score) score = 0;
     try {
-      models.Meme.create({ imgur_id: link, score, type });
-      console.log('Added New record');
+      models.Meme.create({ imgur_id: link, score, type }).then(()=>
+      console.log('Added New record'))
     } catch (error) {
       throw error.message;
     }

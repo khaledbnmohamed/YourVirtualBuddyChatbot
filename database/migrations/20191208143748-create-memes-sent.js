@@ -10,7 +10,7 @@ module.exports = {
     fb_id: {
       type: Sequelize.STRING,
     },
-    imgur_id_gallery: {
+    imgur_id: {
       type: Sequelize.STRING,
     },
     meme_type: {
