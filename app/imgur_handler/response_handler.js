@@ -1,5 +1,4 @@
 
-import { sendMemeToUser } from '../controllers/sent_memes';
 
 const SortImagesbyPoints = true;
 const uniqueRandoms = [];
@@ -41,9 +40,8 @@ export function makeUniqueRandom(numRandoms) {
   return val;
 }
 
-export function formingElements(result, type, senderID) {
+export function formingElements(result, type) {
   const parsed = JSON.parse(result);
   const Sorted = sortByPoints(parsed);
   bulkInsertToGallery(Sorted, type);
-  sendMemeToUser(senderID);
 }

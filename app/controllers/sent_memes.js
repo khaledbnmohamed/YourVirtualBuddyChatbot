@@ -28,36 +28,25 @@ export function insertToSentMemes(SenderID, imageId, type, memeId, callback) {
   }
 }
 export function sendMemeToUser(SenderID, callback) {
-  models.User.findOne({
-    where: { fb_id: SenderID },
-  }).then((user) => {
-    if (user) {
-      FirstNewMemeToBeSentToUser(SenderID).then((memeTobeSent) => {
-        insertToSentMemes(SenderID, memeTobeSent.imgur_id, user.choosen_type, memeTobeSent.id);
-        tools.sendImageMessage(SenderID, memeTobeSent.imgur_id);
-        tools.sendTypingOff(SenderID);
-      });
-    }
+  FirstNewMemeToBeSentToUser(SenderID).then((memeTobeSent) => {
+    insertToSentMemes(SenderID, memeTobeSent.imgur_id, user.choosen_type, memeTobeSent.id);
+    tools.sendImageMessage(SenderID, memeTobeSent.imgur_id);
+    tools.sendTypingOff(SenderID);
   });
+
 }
 
 export function FirstNewMemeToBeSentToUser(SenderID, callback) {
-  return models.User.findOne({
-    where: { fb_id: SenderID },
-  }).then((user) => {
-    if (user) {
-      return models.Meme.findAll({
-        attributes: ['id', 'imgur_id'],
-        where: { '$SentMemes.meme_id$': null },
-        include: [{
-          required: false,
-          where: { '$SentMemes.fb_id$': SenderID },
-          model: models.SentMeme,
-          attributes: [],
-        }],
-      }).then((meme) => {
-        return meme[0]
-      });
-    }
+  return models.Meme.findAll({
+    attributes: ['id', 'imgur_id'],
+    where: { '$SentMemes.meme_id$': null },
+    include: [{
+      required: false,
+      where: { '$SentMemes.fb_id$': SenderID },
+      model: models.SentMeme,
+      attributes: [],
+    }],
+  }).then((meme) => {
+    return meme[0]
   });
 }

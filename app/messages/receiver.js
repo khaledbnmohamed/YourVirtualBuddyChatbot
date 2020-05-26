@@ -85,7 +85,6 @@ export function checkMessageContent(messageText, senderID) {
 
     case 'test':
       chooseCaller('account', null, senderID);
-
       break;
 
     case 'send meme':
@@ -94,10 +93,8 @@ export function checkMessageContent(messageText, senderID) {
       chooseCaller(2, null, senderID);
       this.checkToSendMore(senderID);
       break;
-      // //////Debugging Cases Just to check Input Values
-    default:
-      console.log('fuck yeah', messageText);
 
+    default:
       tools.sendTypingOn(senderID);
 
       if (returnedFromDialogFlow) {

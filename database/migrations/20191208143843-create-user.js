@@ -27,7 +27,6 @@ module.exports = {
     {
       type: Sequelize.STRING,
       defaultValue: 'account',
-
     },
     want_more:
     {

@@ -9,6 +9,7 @@ module.exports = {
     },
     imgur_id: {
       type: Sequelize.STRING,
+      unique: true
     },
     score: {
       type: Sequelize.INTEGER,
