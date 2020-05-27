@@ -21,7 +21,7 @@ const bodyParser = require('body-parser');
 const express = require('express');
 const util = require('util');
 const { ImgurImagesConsumer } = require('./app/imgur_handler/api_consumer');
-const tools = require('./app/helpers/sendFunctions');
+const tools = require('./app/helpers/send_functions');
 const helpers = require('./app/helpers/helpingFunctions');
 const { uploadToAccount } = require('./app/imgur_handler/api_consumer');
 
@@ -72,7 +72,6 @@ app.get('/webhook', (req, res) => {
 function receivedMessage(event) {
   let senderID = event.sender.id;
   senderID = senderID.toString();
-  const user = PromisedgetUser(senderID);
   const recipientID = event.recipient.id;
   const timeOfMessage = event.timestamp;
   const { message } = event;
@@ -93,33 +92,33 @@ function receivedMessage(event) {
     // console.log("Received echo for message %s and app %d with metadata %s",
     // messageId, appId, metadata);
     return;
-  } if (quickReply) {
-    const quickReplyPayload = quickReply.payload;
-    console.log('Quick reply for message %s with payload %s',
-      messageId, quickReplyPayload);
-    tools.sendTypingOn(senderID); // typing on till fetching
-    handlePayload(quickReplyPayload, senderID);
-    // setTimeout(SendMore(senderID), 3000);
-    return;
   }
 
-  if (messageText) {
-    // If we receive a text message, check to see if it matches any special
-    // keywords and send back the corresponding example. Otherwise, just echo
-    // the text we received.
-    checkMessageContent(messageText, senderID);
-  } else if (messageAttachments) {
-    for (let i = 0; i < messageAttachments.length; i += 1) {
-      if (messageAttachments[i].type === 'image') {
-        const imageURL = messageAttachments[i].payload.url;
-        uploadToAccount(senderID, imageURL);
-      }
+  getUser(senderID, () => {
+    if (quickReply) {
+      const quickReplyPayload = quickReply.payload;
+      console.log('Quick reply for message %s with payload %s',
+        messageId, quickReplyPayload);
+      tools.sendTypingOn(senderID); // typing on till fetching
+      handlePayload(quickReplyPayload, senderID);
+      return;
     }
-    tools.sendTextMessage(senderID, 'Uploaded your meme/s for later happiness');
-    setTimeout(() => {
-      tools.sendTextMessage(senderID, "You can access this meme and other selected memes by typing 'my memes'");
-    }, 2000); // added timeout to make sure it comes later
-  }
+
+    if (messageText) {
+      checkMessageContent(messageText, senderID);
+    } else if (messageAttachments) {
+      for (let i = 0; i < messageAttachments.length; i += 1) {
+        if (messageAttachments[i].type === 'image') {
+          const imageURL = messageAttachments[i].payload.url;
+          uploadToAccount(senderID, imageURL);
+        }
+      }
+      tools.sendTextMessage(senderID, 'Uploaded your meme/s for later happiness');
+      setTimeout(() => {
+        tools.sendTextMessage(senderID, "You can access this meme and other selected memes by typing 'my memes'");
+      }, 2000); // added timeout to make sure it comes later
+    }
+  });
 }
 
 /*
@@ -183,11 +182,11 @@ app.get('/authorize', (req, res) => {
     redirectURI,
     redirectURISuccess,
   });
-  console.log("accountLinkingToken",accountLinkingToken)
+  console.log('accountLinkingToken', accountLinkingToken);
   getFirstName(accountLinkingToken, (err, data) => {
     if (err) return console.error(err);
     const user_first_name = data;
-    console.log("First NAMMMME",user_first_name)
+    console.log('First NAMMMME', user_first_name);
     const message_first_time = [`Hi ${user_first_name},`, "Try me by sending 'Send meme' or 'memes' "].join('\n');
     // present user with some greeting or call to action
     // tools.sendTextMessage(senderID, message_first_time);

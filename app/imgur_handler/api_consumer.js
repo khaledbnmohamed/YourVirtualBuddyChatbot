@@ -7,6 +7,9 @@ const { CLIENT_ID } = process.env;
 const { IMGUR_ACCESS_TOKEN } = process.env;
 
 export function ImgurImagesConsumer(type, SearchQuery, senderID) {
+  // eslint-disable-next-line no-param-reassign
+  SearchQuery = encodeURIComponent(SearchQuery);
+
   let options = {
     method: 'GET',
     hostname: 'api.imgur.com',

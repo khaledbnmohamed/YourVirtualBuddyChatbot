@@ -15,7 +15,6 @@ module.exports = {
     },
     meme_imgur_id: {
       type: Sequelize.STRING,
-      unique: true
     },
     meme_type: {
       type: Sequelize.STRING,

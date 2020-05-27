@@ -1,18 +1,9 @@
 import { addSortPrefToUser } from '../controllers/users';
+import { doNothing, sendLike } from '../quick_replies';
+import { chooseCaller } from '../resend_handler';
+import { getFirstName } from '../helpers/facebook_apis';
 
-const
-  util = require('util');
-const { sendAccountLinking } = require('../helpers/sendFunctions');
-// require('./../imgur_handler/api_consumer.js')();
-// require('./../resend_handler.js')();
-
-const { getUser } = require('../controllers/users.js');
-const {
-  doNothing, sendLike, specialMemesFromMyAccount, manyCategoriesSearch,
-} = require('../quick_replies');
-
-const PromisedUser = util.promisify(getUser);
-const tools = require('../helpers/sendFunctions.js');
+const tools = require('../helpers/send_functions.js');
 
 const helpText = ['You can send me various messages:', '=================', ' ',
   '* *Send meme* -> sends you a fresh meme', ' ', "* *Sort by time* -> gets you latest memes without considering community's upvotes", ' ', '* *Sort by points* -> sends you most upvoted memes in choosen category', ' ',
@@ -27,7 +18,7 @@ const helpText = ['You can send me various messages:', '=================', ' ',
 export function handlePayload(payload, senderID) {
   switch (payload) {
     case 'personal_AccountMemes':
-      specialMemesFromMyAccount(senderID, payload);
+      chooseCaller('account', null, senderID);
       break;
 
     case 'send_alike':
@@ -43,18 +34,11 @@ export function handlePayload(payload, senderID) {
       break;
 
     case 'get_started':
-      // sendAccountLinking(senderID);
-      const user_first_name = '';
-      PromisedUser(senderID).then((data) => {
-        console.log('returned fresh data', data);
+      getFirstName(senderID, (error, firstName) => {
+        const firstTimeGreeting = [`Hi ${firstName},`, "Try me by sending 'Send meme' or 'memes' "].join('\n');
+        tools.sendTextMessage(senderID, firstTimeGreeting);
       });
-      // getFirstName(senderID, (err, data) => {
-      //   if (err) return console.error(err);
-      //   user_first_name = data;
-      //   const message_first_time = [`Hi ${user_first_name},`, "Try me by sending 'Send meme' or 'memes' "].join('\n');
-      //   // present user with some greeting or call to action
-      //   tools.sendTextMessage(senderID, message_first_time);
-      // });
+
       break;
 
     case 'sort by points':
@@ -85,12 +69,7 @@ export function handlePayload(payload, senderID) {
       }
       break;
 
-
-    case 'surprise me':
-      specialMemesFromMyAccount(senderID, payload);
-      break;
-
     default:
-      manyCategoriesSearch(senderID, payload);
+      chooseCaller('account', payload, senderID);
   }
 }

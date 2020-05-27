@@ -14,7 +14,7 @@ app.use(cors());
 
 // eslint-disable-next-line import/prefer-default-export
 export function bulkInsertToGallery(data, type, senderID, callback) {
-  const dailyNumber = 50;
+  const dailyNumber = 3;
   let link;
   let score;
   for (let i = 0; i < dailyNumber; i += 1) {

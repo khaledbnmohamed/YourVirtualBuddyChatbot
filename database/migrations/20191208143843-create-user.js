@@ -12,6 +12,8 @@ module.exports = {
     },
     first_name: {
       type: Sequelize.STRING,
+      defaultValue: 'Buddy',
+
     },
     last_name: {
       type: Sequelize.STRING,
@@ -26,6 +28,8 @@ module.exports = {
     },
     search_word: {
       type: Sequelize.TEXT,
+      defaultValue: 'memes',
+
     },
     choosen_type:
     {

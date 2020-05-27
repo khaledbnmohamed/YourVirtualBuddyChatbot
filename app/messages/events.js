@@ -2,7 +2,7 @@ import { handlePayload } from './payload';
 
 const crypto = require('crypto');
 
-const tools = require('../helpers/sendFunctions');
+const tools = require('../helpers/send_functions');
 
 // App Secret can be retrieved from the App Dashboard
 const APP_SECRET = (process.env.MESSENGER_APP_SECRET)

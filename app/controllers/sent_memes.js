@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const Promise = require('bluebird');
-const tools = require('../helpers/sendFunctions.js');
+const tools = require('../helpers/send_functions.js');
 const models = require('../../database/models');
 
 const app = express();
@@ -24,10 +24,10 @@ export function insertToSentMemes(SenderID, imageId, type, memeId, callback) {
     return ({ error: error.message });
   }
 }
-export function FirstNewMemeToBeSentToUser(SenderID, callback) {
+export function FirstNewMemeToBeSentToUser(SenderID, type, callback) {
   return models.Meme.findAll({
     attributes: ['id', 'imgur_id'],
-    where: { '$SentMemes.meme_id$': null },
+    where: { '$SentMemes.meme_id$': null, type },
     include: [{
       required: false,
       where: { '$SentMemes.fb_id$': SenderID },
@@ -44,8 +44,8 @@ export function sendMemeToUser(SenderID, callback) {
     where: { fb_id: SenderID },
   }).then((user) => {
     if (user) {
-      FirstNewMemeToBeSentToUser(SenderID).then((memeTobeSent) => {
-        insertToSentMemes(SenderID, memeTobeSent.imgur_id, user.choosen_type, memeTobeSent.id);
+      FirstNewMemeToBeSentToUser(SenderID, user.choosen_type).then((memeTobeSent) => {
+        insertToSentMemes(SenderID, memeTobeSent.imgur_id, memeTobeSent.type, memeTobeSent.id);
         tools.sendImageMessage(SenderID, memeTobeSent.imgur_id);
         tools.sendTypingOff(SenderID);
       });

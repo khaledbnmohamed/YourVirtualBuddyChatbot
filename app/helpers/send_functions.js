@@ -1,11 +1,10 @@
-// 'module.exports' is a node.JS specific feature, it does not work with regular JavaScript
-
 // Holding ALL send functions in the bots for easier use
 
 const
   express = require('express');
 const request = require('request');
 const fs = require('fs');
+// const { checkToSendMore } = require('../messages/receiver');
 
 const ImageLink = 'https://i.imgur.com/KZC2CW9.jpg';
 const app = express();
@@ -86,6 +85,7 @@ I really hope one day, You'll find the right person to forward these memes to <3
     };
 
     callSendAPI(messageData);
+    // checkToSendMore(recipientId);
     this.sendTypingOff(recipientId);
   },
 

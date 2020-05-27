@@ -3,7 +3,7 @@ import { addSortPrefToUser } from '../controllers/users';
 
 const fs = require('fs');
 const util = require('util');
-const tools = require('../helpers/sendFunctions.js');
+const tools = require('../helpers/send_functions.js');
 const sendtoDialogFlow = require('../dialogflow_handler/response_handler');
 const DialogFlowParameteresHandler = require('../dialogflow_handler/api_consumer');
 const doNothing = require('../quick_replies');
@@ -20,7 +20,7 @@ let {
 export function checkToSendMore(senderID) {
   setTimeout(() => {
     tools.SendMore(senderID);
-  }, 5001); // must be called like that   why ? https://stackoverflow.com/a/5520159/5627553
+  }, 10001); // must be called like that   why ? https://stackoverflow.com/a/5520159/5627553
 }
 
 /* Check for message content */
@@ -85,12 +85,10 @@ export function checkMessageContent(messageText, senderID) {
 
     case 'memes':
       tools.sendQuickReply(senderID);
-      // checkToSendMore(senderID);
       break;
 
     case 'another category':
       tools.sendQuickReply(senderID);
-      // checkToSendMore(senderID);
       break;
 
     case 'read receipt':
@@ -110,8 +108,7 @@ export function checkMessageContent(messageText, senderID) {
       break;
 
     case 'send meme':
-      chooseCaller(2, null, senderID);
-      checkToSendMore(senderID);
+      chooseCaller('account', null, senderID);
       break;
 
     default:
@@ -137,7 +134,6 @@ export function checkMessageContent(messageText, senderID) {
           .catch((err) => console.error(`[Error]: ${err}`));
       }
       tools.sendTypingOff(senderID);
-      // setTimeout(function(){tools.sendQuickReply(senderID)},3000); //added timeout to make sure it comes later
       break;
   }
 }
