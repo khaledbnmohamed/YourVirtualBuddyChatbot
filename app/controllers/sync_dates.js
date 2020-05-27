@@ -2,6 +2,7 @@
 const models = require('../../database/models');
 
 
+// eslint-disable-next-line import/prefer-default-export
 export function insertToSyncDate(SenderID, type) {
   try {
     models.SyncDate.create({

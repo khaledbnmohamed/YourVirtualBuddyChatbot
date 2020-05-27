@@ -5,6 +5,7 @@ module.exports = (sequelize, DataTypes) => {
     first_name: DataTypes.STRING,
     rec_images: DataTypes.INTEGER,
     search_word: DataTypes.TEXT,
+    sort_by_latest: DataTypes.BOOLEAN,
     choosen_type: DataTypes.TEXT,
   }, {});
   User.associate = function (models) {

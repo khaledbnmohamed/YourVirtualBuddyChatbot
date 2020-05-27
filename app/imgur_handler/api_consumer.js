@@ -1,9 +1,8 @@
-const fs = require('fs');
+import { addSearchWord } from '../controllers/users';
+
 const https = require('https');
-const tools = require('../helpers/sendFunctions');
 const { formingElements } = require('./response_handler');
 
-const fileObject = JSON.parse(fs.readFileSync('./inputMemory.json', 'utf8'));
 const { CLIENT_ID } = process.env;
 const { IMGUR_ACCESS_TOKEN } = process.env;
 
@@ -26,19 +25,8 @@ export function ImgurImagesConsumer(type, SearchQuery, senderID) {
       },
     };
   } else {
-    fileObject.want_more = true;
-    let searchWord = SearchQuery;
-    if (!searchWord) {
-      searchWord = 'memes';
-      fileObject.search_word = searchWord;
-      fs.writeFileSync('./inputMemory.json', JSON.stringify(fileObject, null, 2), 'utf-8');
-    } else {
-      searchWord = encodeURIComponent(searchWord);
-    }
+    addSearchWord(senderID, SearchQuery);
   }
-  // Imgur API Gallery Search Request
-  // console.log(SearchQuery);
-
 
   const req = https.request(options, (res) => {
     const chunks = [];
@@ -55,8 +43,6 @@ export function ImgurImagesConsumer(type, SearchQuery, senderID) {
     });
   });
   req.end();
-  
-  // console.log(body);
 }
 
 export function uploadToAccount(senderID, image) {

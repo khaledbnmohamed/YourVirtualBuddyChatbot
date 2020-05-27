@@ -20,6 +20,10 @@ module.exports = {
     rec_images: {
       type: Sequelize.INTEGER,
     },
+    sort_by_latest: {
+      type: Sequelize.BOOLEAN,
+      defaultValue: false,
+    },
     search_word: {
       type: Sequelize.TEXT,
     },

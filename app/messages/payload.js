@@ -1,7 +1,4 @@
-const
-  returnedFromDialogFlow = false;
-const returnedFromKnoweldge = false;
-const DialogflowhasParameters = false;
+import { addSortPrefToUser } from '../controllers/users';
 
 const
   util = require('util');
@@ -14,14 +11,10 @@ const {
   doNothing, sendLike, specialMemesFromMyAccount, manyCategoriesSearch,
 } = require('../quick_replies');
 
-const prom_user_id = util.promisify(getUser);
+const PromisedUser = util.promisify(getUser);
 const tools = require('../helpers/sendFunctions.js');
-// Generate a page access token for your page from the App Dashboard
-const PAGE_ACCESS_TOKEN = (process.env.MESSENGER_PAGE_ACCESS_TOKEN)
-  ? (process.env.MESSENGER_PAGE_ACCESS_TOKEN)
-  : process.env.PAGE_ACCESS_TOKEN;
 
-const help_text = ['You can send me various messages:', '=================', ' ',
+const helpText = ['You can send me various messages:', '=================', ' ',
   '* *Send meme* -> sends you a fresh meme', ' ', "* *Sort by time* -> gets you latest memes without considering community's upvotes", ' ', '* *Sort by points* -> sends you most upvoted memes in choosen category', ' ',
   '* *Memes* -> Quick categories selection', ' ', '* *Surprise me* -> sends you a meme uploaded by our community', ' ', '* You can send an image to be uploaded to the community section where you can access it anytime',
 ].join('\n');
@@ -30,6 +23,7 @@ const help_text = ['You can send me various messages:', '=================', ' '
    * in default.json before they can access local resources likes images/videos.
    */
 
+// eslint-disable-next-line import/prefer-default-export
 export function handlePayload(payload, senderID) {
   switch (payload) {
     case 'personal_AccountMemes':
@@ -45,13 +39,13 @@ export function handlePayload(payload, senderID) {
       break;
 
     case 'help':
-      tools.sendTextMessage(senderID, help_text);
+      tools.sendTextMessage(senderID, helpText);
       break;
 
     case 'get_started':
       // sendAccountLinking(senderID);
-      var user_first_name = '';
-      prom_user_id(senderID).then((data) => {
+      const user_first_name = '';
+      PromisedUser(senderID).then((data) => {
         console.log('returned fresh data', data);
       });
       // getFirstName(senderID, (err, data) => {
@@ -64,14 +58,33 @@ export function handlePayload(payload, senderID) {
       break;
 
     case 'sort by points':
-      SortImagesbyPoints = true;
-      tools.sendTextMessage(senderID, 'Next memes will be upvote/points based');
+      if (addSortPrefToUser(senderID, true)) {
+        tools.sendTextMessage(
+          senderID,
+          'Next memes will be upvote/points based',
+        );
+      } else {
+        tools.sendTextMessage(
+          senderID,
+          'Something went wrong !',
+        );
+      }
       break;
 
     case 'sort by time':
-      SortImagesbyPoints = false;
-      tools.sendTextMessage(senderID, 'Next memes will be the most recent');
+      if (addSortPrefToUser(senderID, false)) {
+        tools.sendTextMessage(
+          senderID,
+          'Next memes will be the most recent',
+        );
+      } else {
+        tools.sendTextMessage(
+          senderID,
+          'Something went wrong !',
+        );
+      }
       break;
+
 
     case 'surprise me':
       specialMemesFromMyAccount(senderID, payload);
@@ -80,35 +93,4 @@ export function handlePayload(payload, senderID) {
     default:
       manyCategoriesSearch(senderID, payload);
   }
-}
-
-export function getFirstName(senderID, callback) {
-  const https = require('https');
-  const access_token = PAGE_ACCESS_TOKEN;
-
-  let first_name = '';
-  const options = {
-    method: 'GET',
-    hostname: 'graph.facebook.com',
-    path: `/v7.0/${senderID}?fields=first_name&access_token=${access_token}`,
-  };
-  const req = https.request(options, (res) => {
-    const chunks = [];
-    res.on('data', (chunk) => {
-      chunks.push(chunk);
-    });
-
-    res.on('end', (chunk) => {
-      const body = Buffer.concat(chunks);
-      first_name = JSON.parse(body).first_name;
-      callback('', first_name);
-    });
-
-    res.on('error', (error) => {
-      console.error(error);
-      callback(error, '');
-    });
-  });
-
-  req.end();
 }

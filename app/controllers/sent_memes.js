@@ -1,15 +1,12 @@
-const sequelize = require('sequelize');
-
-const
-  express = require('express');
+const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const util = require('util');
 const Promise = require('bluebird');
 const tools = require('../helpers/sendFunctions.js');
 const models = require('../../database/models');
 
 const app = express();
+// eslint-disable-next-line no-use-before-define
 Promise.promisifyAll(FirstNewMemeToBeSentToUser);
 
 app.use(bodyParser.json());
@@ -27,6 +24,21 @@ export function insertToSentMemes(SenderID, imageId, type, memeId, callback) {
     return ({ error: error.message });
   }
 }
+export function FirstNewMemeToBeSentToUser(SenderID, callback) {
+  return models.Meme.findAll({
+    attributes: ['id', 'imgur_id'],
+    where: { '$SentMemes.meme_id$': null },
+    include: [{
+      required: false,
+      where: { '$SentMemes.fb_id$': SenderID },
+      model: models.SentMeme,
+      attributes: [],
+    }],
+  // eslint-disable-next-line arrow-body-style
+  }).then((meme) => {
+    return meme[0];
+  });
+}
 export function sendMemeToUser(SenderID, callback) {
   models.User.findOne({
     where: { fb_id: SenderID },
@@ -38,20 +50,5 @@ export function sendMemeToUser(SenderID, callback) {
         tools.sendTypingOff(SenderID);
       });
     }
-  });
-}
-
-export function FirstNewMemeToBeSentToUser(SenderID, callback) {
-  return models.Meme.findAll({
-    attributes: ['id', 'imgur_id'],
-    where: { '$SentMemes.meme_id$': null },
-    include: [{
-      required: false,
-      where: { '$SentMemes.fb_id$': SenderID },
-      model: models.SentMeme,
-      attributes: [],
-    }],
-  }).then((meme) => {
-    return meme[0]
   });
 }

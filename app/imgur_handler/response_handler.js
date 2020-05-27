@@ -1,14 +1,8 @@
 
 import { sendMemeToUser } from '../controllers/sent_memes';
 
-const SortImagesbyPoints = true;
 const uniqueRandoms = [];
-const SortedByPointsCounter = 0; // initlize the i globally for easer access so don't have to write extra code to determine if first query to set i =0 or not
-
-let FirstQuery = true;
 const { bulkInsertToGallery } = require('../controllers/memes.js');
-const functions = require('../helpers/helpingFunctions.js');
-const tools = require('../helpers/sendFunctions.js');
 
 export function predicateBy(prop) {
   return function value(a, b) {

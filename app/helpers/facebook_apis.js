@@ -1,4 +1,3 @@
-
 // export function getFirstName(senderID, callback) {
 //   const https = require('https');
 //   const access_token = PAGE_ACCESS_TOKEN;
@@ -29,7 +28,6 @@
 
 //   req.end();
 // }
-
 
 export function getFirstName(account_linking_token, callback ) {
   const https = require('https');

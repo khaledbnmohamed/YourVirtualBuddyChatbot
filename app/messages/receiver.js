@@ -1,4 +1,5 @@
-import { chooseCaller, saveToFile } from '../resend_handler';
+import { chooseCaller } from '../resend_handler';
+import { addSortPrefToUser } from '../controllers/users';
 
 const fs = require('fs');
 const util = require('util');
@@ -15,6 +16,12 @@ let {
   returnedFromKnoweldge,
   DialogflowhasParameters,
 } = false;
+
+export function checkToSendMore(senderID) {
+  setTimeout(() => {
+    tools.SendMore(senderID);
+  }, 5001); // must be called like that   why ? https://stackoverflow.com/a/5520159/5627553
+}
 
 /* Check for message content */
 export function checkMessageContent(messageText, senderID) {
@@ -49,16 +56,31 @@ export function checkMessageContent(messageText, senderID) {
       break;
 
     case 'sort by points':
-      SortImagesbyPoints = true;
-      tools.sendTextMessage(
-        senderID,
-        'Next memes will be upvote/points based',
-      );
+      if (addSortPrefToUser(senderID, true)) {
+        tools.sendTextMessage(
+          senderID,
+          'Next memes will be upvote/points based',
+        );
+      } else {
+        tools.sendTextMessage(
+          senderID,
+          'Something went wrong !',
+        );
+      }
       break;
 
     case 'sort by time':
-      SortImagesbyPoints = false;
-      tools.sendTextMessage(senderID, 'Next memes will be the most recent');
+      if (addSortPrefToUser(senderID, false)) {
+        tools.sendTextMessage(
+          senderID,
+          'Next memes will be the most recent',
+        );
+      } else {
+        tools.sendTextMessage(
+          senderID,
+          'Something went wrong !',
+        );
+      }
       break;
 
     case 'memes':
@@ -88,10 +110,8 @@ export function checkMessageContent(messageText, senderID) {
       break;
 
     case 'send meme':
-      // tools.sendTypingOn(senderID); //typing on till fetching
-      saveToFile(2, 'memes', true);
       chooseCaller(2, null, senderID);
-      this.checkToSendMore(senderID);
+      checkToSendMore(senderID);
       break;
 
     default:
@@ -119,12 +139,5 @@ export function checkMessageContent(messageText, senderID) {
       tools.sendTypingOff(senderID);
       // setTimeout(function(){tools.sendQuickReply(senderID)},3000); //added timeout to make sure it comes later
       break;
-  }
-}
-export function checkToSendMore(senderID) {
-  if (fileObject.want_more) {
-    setTimeout(() => {
-      tools.SendMore(senderID);
-    }, 5001); // must be called like that   why ? https://stackoverflow.com/a/5520159/5627553
   }
 }

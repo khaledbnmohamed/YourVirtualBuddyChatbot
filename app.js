@@ -216,15 +216,6 @@ app.get('/authorize', (req, res) => {
 // )
 // .catch(err => console.error(`[Error]: ${err}`));
 
-// Test Function
-// checkMessageContent("send memes", "Khaled")
-
-const now = new Date();
-let millisTill10 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 10, 0, 0, 0) - now;
-if (millisTill10 < 0) {
-  millisTill10 += 86400000; // it's after 10am, try 10am tomorrow.
-}
-setTimeout(() => { alert("It's 10am!"); }, millisTill10);
 
 // Start server
 // Webhooks must be available via SSL with a certificate signed by a valid

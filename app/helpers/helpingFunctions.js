@@ -6,18 +6,6 @@ const models = require('../../database/models');
 const MemoryArray = JSON.parse(fs.readFileSync('./inputMemory.json', 'utf8'));
 const UniqueMemesNumber = 20;
 
-function jsonAppender(jsonStr, imageId) {
-  console.log('=============================');
-  const obj = JSON.parse(jsonStr);
-  console.log(obj.imageId);
-  console.log('=============================');
-
-  obj.imageId.push({ imageId });
-  console.log(obj);
-  jsonStr = JSON.stringify(obj);
-  return jsonStr;
-}
-
 module.exports = {
   getArraySize() {
     return MemoryArray.sentImages.length;

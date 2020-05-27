@@ -69,6 +69,8 @@ I really hope one day, You'll find the right person to forward these memes to <3
      *
      */
   sendImageMessage(recipientId, image_message_url) {
+    this.sendTypingOn(recipientId);
+
     const messageData = {
       recipient: {
         id: recipientId,
@@ -84,6 +86,7 @@ I really hope one day, You'll find the right person to forward these memes to <3
     };
 
     callSendAPI(messageData);
+    this.sendTypingOff(recipientId);
   },
 
 
@@ -94,6 +97,7 @@ I really hope one day, You'll find the right person to forward these memes to <3
   sendMemeMessage(recipientId) {
     // var SearchQuery = messageText;
     // ImageLink= ImgurImagesConsumer(senderID);
+    this.sendTypingOn(recipientId);
 
     const messageData = {
       recipient: {
@@ -110,6 +114,7 @@ I really hope one day, You'll find the right person to forward these memes to <3
     };
 
     callSendAPI(messageData);
+    this.sendTypingOff(recipientId);
   },
   /*
      * Send a Gif using the Send API.
@@ -204,6 +209,8 @@ I really hope one day, You'll find the right person to forward these memes to <3
      *
      */
   sendTextMessage(recipientId, messageText) {
+    this.sendTypingOn(recipientId);
+
     const messageData = {
       recipient: {
         id: recipientId,
@@ -215,6 +222,7 @@ I really hope one day, You'll find the right person to forward these memes to <3
     };
 
     callSendAPI(messageData);
+    this.sendTypingOff(recipientId);
   },
 
   /*
@@ -222,6 +230,8 @@ I really hope one day, You'll find the right person to forward these memes to <3
      *
      */
   sendButtonMessage(recipientId) {
+    this.sendTypingOn(recipientId);
+
     const messageData = {
       recipient: {
         id: recipientId,
@@ -251,6 +261,7 @@ I really hope one day, You'll find the right person to forward these memes to <3
     };
 
     callSendAPI(messageData);
+    this.sendTypingOff(recipientId);
   },
 
   /*
@@ -485,7 +496,7 @@ I really hope one day, You'll find the right person to forward these memes to <3
      *
      */
   sendAccountLinking(recipientId) {
-    console.log("sendAccountLinkingsendAccountLinkingsendAccountLinkingsendAccountLinkingsendAccountLinkingsendAccountLinkingsendAccountLinkingsendAccountLinking")
+    console.log('sendAccountLinkingsendAccountLinkingsendAccountLinkingsendAccountLinkingsendAccountLinkingsendAccountLinkingsendAccountLinkingsendAccountLinking');
     const messageData = {
       recipient: {
         id: recipientId,

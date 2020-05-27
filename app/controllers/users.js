@@ -1,7 +1,7 @@
 
 import express from 'express';
 import bodyParser from 'body-parser';
-import { getFirstName } from '../messages/payload';
+import { getFirstName } from '../helpers/facebook_apis';
 
 const cors = require('cors');
 const models = require('../../database/models');
@@ -35,4 +35,26 @@ export function getUser(senderID, callback) {
       callback && callback(error);
     }));
 }
-
+export function addSortPrefToUser(senderID, sortByLatest, callback) {
+  return models.User.findOne({ where: { fb_id: senderID } }).then((record) => {
+    if (record) {
+      record.update({
+        sort_by_latest: sortByLatest,
+      }).then(() => (true));
+    } else {
+      return false;
+    }
+  });
+}
+export function addSearchWord(senderID, searchQuery, callback) {
+  const searchWord = searchQuery || 'memes';
+  return models.User.findOne({ where: { fb_id: senderID } }).then((record) => {
+    if (record) {
+      record.update({
+        search_word: searchWord,
+      }).then(() => (true));
+    } else {
+      return false;
+    }
+  });
+}
