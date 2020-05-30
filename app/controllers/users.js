@@ -64,6 +64,18 @@ export function addSearchWord(senderID, searchQuery, callback) {
     }
   });
 }
+
+export function updateRecievedCounter(senderID, callback) {
+  return models.User.findOne({ where: { fb_id: senderID } }).then((record) => {
+    if (record) {
+      record.update({
+        rec_images: record.rec_images + 1,
+      }).then(() => (true));
+    } else {
+      return false;
+    }
+  });
+}
 export function changeChoosenType(senderID, choosen_type, callback) {
   return models.User.findOne({ where: { fb_id: senderID } }).then((record) => {
     if (record) {

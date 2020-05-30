@@ -2,6 +2,7 @@
 module.exports = (sequelize, DataTypes) => {
   const SyncDate = sequelize.define('SyncDate', {
     type: DataTypes.STRING,
+    search_word: DataTypes.STRING,
     user: DataTypes.STRING,
     sync_date: DataTypes.DATE,
   }, {

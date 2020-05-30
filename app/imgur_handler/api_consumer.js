@@ -9,7 +9,6 @@ const { IMGUR_ACCESS_TOKEN } = process.env;
 export function ImgurImagesConsumer(type, SearchQuery, senderID) {
   // eslint-disable-next-line no-param-reassign
   SearchQuery = encodeURIComponent(SearchQuery);
-
   let options = {
     method: 'GET',
     hostname: 'api.imgur.com',
@@ -38,7 +37,7 @@ export function ImgurImagesConsumer(type, SearchQuery, senderID) {
     });
     res.on('end', (chunk) => {
       const body = Buffer.concat(chunks);
-      formingElements(body, type, senderID);
+      formingElements(body, type, senderID, SearchQuery);
     });
     res.on('error', (error) => {
       console.error(error);

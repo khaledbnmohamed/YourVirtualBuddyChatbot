@@ -35,9 +35,10 @@ export function makeUniqueRandom(numRandoms) {
   return val;
 }
 
-export function formingElements(result, type, senderID) {
+export function formingElements(result, type, senderID, SearchQuery) {
   const parsed = JSON.parse(result);
   const Sorted = sortByPoints(parsed);
-  bulkInsertToGallery(Sorted, type, senderID);
-  sendMemeToUser(senderID); // send to user after bulk add first time
+  bulkInsertToGallery(Sorted, type, senderID, SearchQuery, () => {
+    sendMemeToUser(senderID); // send to user after bulk add first time
+  });
 }

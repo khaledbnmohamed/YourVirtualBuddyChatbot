@@ -1,3 +1,5 @@
+import { updateRecievedCounter } from './users';
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -18,7 +20,7 @@ export function insertToSentMemes(SenderID, imageId, type, memeId, callback) {
     models.SentMeme.create({
       fb_id: SenderID, meme_imgur_id: imageId, meme_type: type, meme_id: memeId,
     })
-      .then(() => console.log('Added New record'));
+      .then(() => updateRecievedCounter(SenderID));
     return true;
   } catch (error) {
     return ({ error: error.message });
@@ -26,7 +28,7 @@ export function insertToSentMemes(SenderID, imageId, type, memeId, callback) {
 }
 export function FirstNewMemeToBeSentToUser(SenderID, type, callback) {
   return models.Meme.findAll({
-    attributes: ['id', 'imgur_id'],
+    attributes: ['id', 'imgur_id', 'type'],
     where: { '$SentMemes.meme_id$': null, type },
     include: [{
       required: false,

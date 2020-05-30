@@ -4,18 +4,10 @@ import { addSortPrefToUser } from '../controllers/users';
 const fs = require('fs');
 const util = require('util');
 const tools = require('../helpers/send_functions.js');
-const sendtoDialogFlow = require('../dialogflow_handler/response_handler');
-const DialogFlowParameteresHandler = require('../dialogflow_handler/api_consumer');
+const { sendtoDialogFlow } = require('../dialogflow_handler/api_consumer');
 const doNothing = require('../quick_replies');
 
-const fileObject = JSON.parse(fs.readFileSync('./inputMemory.json', 'utf8'));
-const PromisedSendtoDialogFlow = util.promisify(sendtoDialogFlow);
 
-let {
-  returnedFromDialogFlow,
-  returnedFromKnoweldge,
-  DialogflowhasParameters,
-} = false;
 
 export function checkToSendMore(senderID) {
   setTimeout(() => {
@@ -56,7 +48,7 @@ export function checkMessageContent(messageText, senderID) {
       break;
 
     case 'sort by points':
-      if (addSortPrefToUser(senderID, true)) {
+      if (addSortPrefToUser(senderID, false)) {
         tools.sendTextMessage(
           senderID,
           'Next memes will be upvote/points based',
@@ -70,7 +62,7 @@ export function checkMessageContent(messageText, senderID) {
       break;
 
     case 'sort by time':
-      if (addSortPrefToUser(senderID, false)) {
+      if (addSortPrefToUser(senderID, true)) {
         tools.sendTextMessage(
           senderID,
           'Next memes will be the most recent',
@@ -108,32 +100,12 @@ export function checkMessageContent(messageText, senderID) {
       break;
 
     case 'send meme':
-      chooseCaller('account', null, senderID);
+      chooseCaller('account', 'memes', senderID);
       break;
 
     default:
       tools.sendTypingOn(senderID);
-
-      if (returnedFromDialogFlow) {
-        if (returnedFromKnoweldge) {
-          tools.sendTextMessage(senderID, messageText);
-          returnedFromKnoweldge = false;
-        } else if (DialogflowhasParameters) {
-          DialogFlowParameteresHandler(senderID, messageText);
-        } else {
-          tools.sendTextMessage(senderID, messageText);
-          returnedFromDialogFlow = false;
-        }
-        returnedFromDialogFlow = false;
-      } else if (returnedFromDialogFlow == false) {
-        PromisedSendtoDialogFlow(messageText)
-          .then((data) => {
-            returnedFromDialogFlow = true;
-            checkMessageContent(data, senderID);
-          })
-          .catch((err) => console.error(`[Error]: ${err}`));
-      }
-      tools.sendTypingOff(senderID);
+      sendtoDialogFlow(messageText, senderID);
       break;
   }
 }

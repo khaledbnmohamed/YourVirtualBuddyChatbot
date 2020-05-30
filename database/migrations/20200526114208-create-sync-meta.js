@@ -10,6 +10,9 @@ module.exports = {
     type: {
       type: Sequelize.STRING,
     },
+    search_word: {
+      type: Sequelize.STRING,
+    },
     user: {
       type: Sequelize.STRING,
     },

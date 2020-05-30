@@ -17,7 +17,7 @@ const helpText = ['You can send me various messages:', '=================', ' ',
 // eslint-disable-next-line import/prefer-default-export
 export function handlePayload(payload, senderID) {
   switch (payload) {
-    case 'personal_AccountMemes':
+    case 'account_memes':
       chooseCaller('account', null, senderID);
       break;
 
@@ -70,6 +70,6 @@ export function handlePayload(payload, senderID) {
       break;
 
     default:
-      chooseCaller('account', payload, senderID);
+      chooseCaller('gallery', payload, senderID);
   }
 }

@@ -15,12 +15,15 @@ const PAGE_ACCESS_TOKEN = (process.env.MESSENGER_PAGE_ACCESS_TOKEN)
   ? (process.env.MESSENGER_PAGE_ACCESS_TOKEN)
   : process.env.PAGE_ACCESS_TOKEN;
 const { SERVER_URL } = process.env;
+
+
 module.exports = {
   /*
    * Call the Send API. The message data goes in the body. If successful, we'll
    * get the message id in a response
    *
    */
+
   requiresSERVER_URL(next, [recipientId, ...args]) {
     if (SERVER_URL === 'to_be_set_manually') {
       const messageData = {
@@ -43,7 +46,11 @@ Once you've finished these steps, try typing “video” or “image”.
       next.apply(this, [recipientId, ...args]);
     }
   },
-
+  checkToSendMore(senderID) {
+    setTimeout(() => {
+      this.SendMore(senderID);
+    }, 10001); // must be called like that   why ? https://stackoverflow.com/a/5520159/5627553
+  },
   sendHiMessage(recipientId) {
     const messageData = {
       recipient: {
@@ -85,7 +92,7 @@ I really hope one day, You'll find the right person to forward these memes to <3
     };
 
     callSendAPI(messageData);
-    // checkToSendMore(recipientId);
+    this.checkToSendMore(recipientId);
     this.sendTypingOff(recipientId);
   },
 
@@ -406,7 +413,7 @@ I really hope one day, You'll find the right person to forward these memes to <3
           {
             content_type: 'text',
             title: 'Surprise Me !',
-            payload: 'personal_AccountMemes',
+            payload: 'account_memes',
           },
         ],
       },
