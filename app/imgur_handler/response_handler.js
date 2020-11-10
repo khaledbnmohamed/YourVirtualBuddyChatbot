@@ -38,6 +38,7 @@ export function makeUniqueRandom(numRandoms) {
 export function formingElements(result, type, senderID, SearchQuery) {
   const parsed = JSON.parse(result);
   const Sorted = sortByPoints(parsed);
+
   bulkInsertToGallery(Sorted, type, senderID, SearchQuery, () => {
     sendMemeToUser(senderID); // send to user after bulk add first time
   });
