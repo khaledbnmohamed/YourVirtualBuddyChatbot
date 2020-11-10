@@ -1,6 +1,6 @@
 
 module.exports = {
-  up: (queryInterface, Sequelize) => queryInterface.createTable('GalleryMemes', {
+  up: (queryInterface, Sequelize) => queryInterface.createTable('Memes', {
     id: {
       allowNull: false,
       autoIncrement: true,
@@ -9,9 +9,15 @@ module.exports = {
     },
     imgur_id: {
       type: Sequelize.STRING,
+      unique: true
     },
     score: {
       type: Sequelize.INTEGER,
+      defaultValue: 0,
+      allowNull: false,
+    },
+    type: {
+      type: Sequelize.STRING,
       defaultValue: 0,
       allowNull: false,
     },
@@ -24,5 +30,5 @@ module.exports = {
       type: Sequelize.DATE,
     },
   }),
-  down: (queryInterface, Sequelize) => queryInterface.dropTable('GalleryMemes'),
+  down: (queryInterface, Sequelize) => queryInterface.dropTable('Memes'),
 };

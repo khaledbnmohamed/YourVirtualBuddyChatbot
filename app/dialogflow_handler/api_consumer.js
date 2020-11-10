@@ -1,16 +1,15 @@
+import { chooseCaller } from '../resend_handler';
 
-const
-  tokenFile = require('../helpers/JWTtoken.js');
+const https = require('https');
+const tokenFile = require('../helpers/JWTtoken');
 
+const tools = require('../helpers/send_functions.js');
 
-// Secret Keys saved in different file for security
 const { GOOGLE_PROJET_ID } = process.env;
-const google_access_token = tokenFile.sign();
+const googleAccessToken = tokenFile.sign();
 
-
-export function sendtoDialogFlow(MessagetoDialogFlow, callback) {
-  let CallBackReturn;
-  const https = require('https');
+// eslint-disable-next-line import/prefer-default-export
+export function sendtoDialogFlow(MessagetoDialogFlow, senderID, callback) {
   const DFchunks = [];
   const data = JSON.stringify({
     queryInput: {
@@ -26,52 +25,57 @@ export function sendtoDialogFlow(MessagetoDialogFlow, callback) {
     path: `/v2beta1/projects/${GOOGLE_PROJET_ID}/agent/environments/draft/users/6542423/sessions/124567:detectIntent`,
     headers: {
 
-      Authorization: `Bearer ${google_access_token}`,
+      Authorization: `Bearer ${googleAccessToken}`,
       'Content-Type': 'application/json',
       Accept: 'application/json',
 
     },
   };
   const req = https.request(options, (res) => {
-    res.on('data', (d) => { process.stdout.write(d); });
-
-
     res.on('data', (DF) => {
       DFchunks.push(DF);
-      res.on('end', (DF) => {
+      res.on('end', () => {
         const body = Buffer.concat(DFchunks);
         const parsed = JSON.parse(body);
+        console.log('##############################3');
+        console.log('##############################3');
+        console.log('##############################3');
+        console.log('##############################3');
+        console.log('##############################3');
+        handleResponse(parsed, senderID);
         res.on('error', (error) => {
           console.error(error);
           callback(error, '');
         });
-
-        if (JSON.stringify(parsed.queryResult.parameters) != '{}') {
-          if (parsed.queryResult.parameters.sendmeme !== undefined) {
-            DialogflowhasParameters = true;
-            CallBackReturn = parsed.queryResult.parameters.sendmeme;
-          } else {
-            DialogflowhasParameters = false;
-            CallBackReturn = parsed.queryResult.fulfillmentText;
-          }
-        } else {
-          DialogflowhasParameters = false;
-          try {
-            if (parsed.queryResult.action == 'repeat' && parsed.alternativeQueryResults[0].knowledgeAnswers.answers[0].matchConfidence > 0.41) {
-              CallBackReturn = parsed.alternativeQueryResults[0].knowledgeAnswers.answers[0].answer;
-              returnedFromKnoweldge = true;
-            } else {
-              CallBackReturn = parsed.queryResult.fulfillmentText;
-            }
-          } catch (err) {
-            CallBackReturn = parsed.queryResult.fulfillmentText;
-          }
-        }
-        callback('', CallBackReturn);
       });
     });
   });
   req.on('error', (error) => { console.error(error); });
   req.write(data);
   req.end();
+}
+
+export function handleResponse(resp, senderID) {
+
+  if (JSON.stringify(resp.queryResult.parameters) !== '{}') {
+    if (resp.queryResult.parameters.sendmeme !== undefined) {
+      const message = resp.queryResult.parameters.sendmeme;
+
+      console.log(JSON.stringify(resp.queryResult.parameters));
+      chooseCaller('gallery', message, senderID);
+    } else {
+      tools.sendTextMessage(senderID, resp.queryResult.fulfillmentText);
+    }
+  } else {
+    try {
+      if (resp.queryResult.action === 'repeat' && resp.alternativeQueryResults[0].knowledgeAnswers.answers[0].matchConfidence > 0.41) {
+        const message = resp.alternativeQueryResults[0].knowledgeAnswers.answers[0].answer;
+        tools.sendTextMessage(senderID, message);
+      } else {
+        tools.sendTextMessage(senderID, resp.queryResult.fulfillmentText);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }
 }

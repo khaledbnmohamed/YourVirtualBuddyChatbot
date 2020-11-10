@@ -1,119 +1,75 @@
-var
-  returnedFromDialogFlow = false,
-  returnedFromKnoweldge = false,
-  DialogflowhasParameters = false;
+import { addSortPrefToUser } from '../controllers/users';
+import { doNothing, sendLike } from '../quick_replies';
+import { chooseCaller } from '../resend_handler';
+import { getFirstName } from '../helpers/facebook_apis';
 
-const {getUser} = require('./../controllers/users.js');
-require('../imgur_handler/api_consumer.js');
-require('./../imgur_handler/api_consumer.js');
-require('./../quick_replies.js');
-require('./../resend_handler.js');
+const tools = require('../helpers/send_functions.js');
 
-const
-  util = require('util'),
-  prom_user_id = util.promisify(getUser),
-  tools = require('./../helpers/sendFunctions.js');
-// Generate a page access token for your page from the App Dashboard
-const PAGE_ACCESS_TOKEN = (process.env.MESSENGER_PAGE_ACCESS_TOKEN) ?
-  (process.env.MESSENGER_PAGE_ACCESS_TOKEN) :
-  process.env.PAGE_ACCESS_TOKEN
-
-help_text = ["You can send me various messages:", "=================", " ",
-  "* *Send meme* -> sends you a fresh meme", " ", "* *Sort by time* -> gets you latest memes without considering community's upvotes", " ", "* *Sort by points* -> sends you most upvoted memes in choosen category", " ",
-  "* *Memes* -> Quick categories selection", " ", "* *Surprise me* -> sends you a meme uploaded by our community", " ", "* You can send an image to be uploaded to the community section where you can access it anytime"
+const helpText = ['You can send me various messages:', '=================', ' ',
+  '* *Send meme* -> sends you a fresh meme', ' ', "* *Sort by time* -> gets you latest memes without considering community's upvotes", ' ', '* *Sort by points* -> sends you most upvoted memes in choosen category', ' ',
+  '* *Memes* -> Quick categories selection', ' ', '* *Surprise me* -> sends you a meme uploaded by our community', ' ', '* You can send an image to be uploaded to the community section where you can access it anytime',
 ].join('\n');
-module.exports = function () {
-
-  /*
+/*
    * If users came here through testdrive, they need to configure the server URL
    * in default.json before they can access local resources likes images/videos.
    */
 
-  this.handlePayload = function (payload, senderID) {
-    switch (payload) {
-      case 'personal_AccountMemes':
-        specialMemesFromMyAccount(senderID, payload)
-        break;
+// eslint-disable-next-line import/prefer-default-export
+export function handlePayload(payload, senderID) {
+  switch (payload) {
+    case 'account_memes':
+      chooseCaller('account', null, senderID);
+      break;
 
-      case 'send_alike':
-        sendLike(senderID);
-        break;
+    case 'send_alike':
+      sendLike(senderID);
+      break;
 
-      case 'do nothing':
-        doNothing(senderID);
-        break;
+    case 'do nothing':
+      doNothing(senderID);
+      break;
 
-      case 'help':
-        tools.sendTextMessage(senderID, help_text);
-        break;
+    case 'help':
+      tools.sendTextMessage(senderID, helpText);
+      break;
 
-      case 'get_started':
-        var user_first_name = ''
-        prom_user_id(senderID).then(data => {
-            console.log("returned fresh data" , data);
-          })
-        getFirstName(senderID, function (err, data) {
-          if (err) return console.error(err);
-          user_first_name = data
-          var message_first_time = ["Hi " + user_first_name + ",", "Try me by sending 'Send meme' or 'memes' "].join('\n');
-          //present user with some greeting or call to action
-          tools.sendTextMessage(senderID, message_first_time);
-        });
-        break;
+    case 'get_started':
+      getFirstName(senderID, (error, firstName) => {
+        const firstTimeGreeting = [`Hi ${firstName},`, "Try me by sending 'Send meme' or 'memes' "].join('\n');
+        tools.sendTextMessage(senderID, firstTimeGreeting);
+      });
 
-      case 'sort by points':
-        SortImagesbyPoints = true;
-        tools.sendTextMessage(senderID, "Next memes will be upvote/points based");
-        break;
+      break;
 
-      case 'sort by time':
-        SortImagesbyPoints = false;
-        tools.sendTextMessage(senderID, "Next memes will be the most recent");
-        break;
+    case 'sort by points':
+      if (addSortPrefToUser(senderID, true)) {
+        tools.sendTextMessage(
+          senderID,
+          'Next memes will be upvote/points based',
+        );
+      } else {
+        tools.sendTextMessage(
+          senderID,
+          'Something went wrong !',
+        );
+      }
+      break;
 
-      case 'surprise me':
-        specialMemesFromMyAccount(senderID, payload);
-        break;
+    case 'sort by time':
+      if (addSortPrefToUser(senderID, false)) {
+        tools.sendTextMessage(
+          senderID,
+          'Next memes will be the most recent',
+        );
+      } else {
+        tools.sendTextMessage(
+          senderID,
+          'Something went wrong !',
+        );
+      }
+      break;
 
-      default:
-        manyCategoriesSearch(senderID, payload);
-    }
-
+    default:
+      chooseCaller('gallery', payload, senderID);
   }
-
-  function getFirstName(senderID, callback) {
-    var https = require('https');
-    const access_token = PAGE_ACCESS_TOKEN;
-    var first_name = ''
-    const options = {
-      method: 'GET',
-      hostname: 'graph.facebook.com',
-      port: 443,
-      path: '/' + senderID + '?fields=first_name&access_token=' + access_token,
-    }
-    var req = https.request(options, function (res) {
-      var chunks = [];
-      res.on("data", function (chunk) {
-        chunks.push(chunk);
-      });
-      res.on("end", function (chunk) {
-        var body = Buffer.concat(chunks);
-        first_name = JSON.parse(body).first_name;
-        callback("", first_name);
-      });
-
-      res.on("error", function (error) {
-        console.error(error);
-        callback(error, "")
-      });
-
-    });
-
-    req.end();
-
-  }
-
-
-
-
 }

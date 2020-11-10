@@ -1,11 +1,10 @@
-// 'module.exports' is a node.JS specific feature, it does not work with regular JavaScript
-
 // Holding ALL send functions in the bots for easier use
 
 const
   express = require('express');
 const request = require('request');
 const fs = require('fs');
+// const { checkToSendMore } = require('../messages/receiver');
 
 const ImageLink = 'https://i.imgur.com/KZC2CW9.jpg';
 const app = express();
@@ -15,6 +14,8 @@ app.set('port', process.env.PORT || 5001);
 const PAGE_ACCESS_TOKEN = (process.env.MESSENGER_PAGE_ACCESS_TOKEN)
   ? (process.env.MESSENGER_PAGE_ACCESS_TOKEN)
   : process.env.PAGE_ACCESS_TOKEN;
+const { SERVER_URL } = process.env;
+
 
 module.exports = {
   /*
@@ -22,6 +23,7 @@ module.exports = {
    * get the message id in a response
    *
    */
+
   requiresSERVER_URL(next, [recipientId, ...args]) {
     if (SERVER_URL === 'to_be_set_manually') {
       const messageData = {
@@ -44,7 +46,11 @@ Once you've finished these steps, try typing “video” or “image”.
       next.apply(this, [recipientId, ...args]);
     }
   },
-
+  checkToSendMore(senderID) {
+    setTimeout(() => {
+      this.SendMore(senderID);
+    }, 10001); // must be called like that   why ? https://stackoverflow.com/a/5520159/5627553
+  },
   sendHiMessage(recipientId) {
     const messageData = {
       recipient: {
@@ -69,6 +75,8 @@ I really hope one day, You'll find the right person to forward these memes to <3
      *
      */
   sendImageMessage(recipientId, image_message_url) {
+    this.sendTypingOn(recipientId);
+
     const messageData = {
       recipient: {
         id: recipientId,
@@ -84,6 +92,8 @@ I really hope one day, You'll find the right person to forward these memes to <3
     };
 
     callSendAPI(messageData);
+    this.checkToSendMore(recipientId);
+    this.sendTypingOff(recipientId);
   },
 
 
@@ -94,6 +104,7 @@ I really hope one day, You'll find the right person to forward these memes to <3
   sendMemeMessage(recipientId) {
     // var SearchQuery = messageText;
     // ImageLink= ImgurImagesConsumer(senderID);
+    this.sendTypingOn(recipientId);
 
     const messageData = {
       recipient: {
@@ -110,6 +121,7 @@ I really hope one day, You'll find the right person to forward these memes to <3
     };
 
     callSendAPI(messageData);
+    this.sendTypingOff(recipientId);
   },
   /*
      * Send a Gif using the Send API.
@@ -204,6 +216,8 @@ I really hope one day, You'll find the right person to forward these memes to <3
      *
      */
   sendTextMessage(recipientId, messageText) {
+    this.sendTypingOn(recipientId);
+
     const messageData = {
       recipient: {
         id: recipientId,
@@ -215,6 +229,7 @@ I really hope one day, You'll find the right person to forward these memes to <3
     };
 
     callSendAPI(messageData);
+    this.sendTypingOff(recipientId);
   },
 
   /*
@@ -222,6 +237,8 @@ I really hope one day, You'll find the right person to forward these memes to <3
      *
      */
   sendButtonMessage(recipientId) {
+    this.sendTypingOn(recipientId);
+
     const messageData = {
       recipient: {
         id: recipientId,
@@ -251,6 +268,7 @@ I really hope one day, You'll find the right person to forward these memes to <3
     };
 
     callSendAPI(messageData);
+    this.sendTypingOff(recipientId);
   },
 
   /*
@@ -332,7 +350,7 @@ I really hope one day, You'll find the right person to forward these memes to <3
               quantity: 1,
               price: 599.00,
               currency: 'USD',
-              image_url: `${SERVER_URL}/assets/riftsq.png`,
+              image_url: `${process.env.SERVER_URL}/assets/riftsq.png`,
             }, {
               title: 'Samsung Gear VR',
               subtitle: 'Frost White',
@@ -395,7 +413,7 @@ I really hope one day, You'll find the right person to forward these memes to <3
           {
             content_type: 'text',
             title: 'Surprise Me !',
-            payload: 'personal_AccountMemes',
+            payload: 'account_memes',
           },
         ],
       },
@@ -485,6 +503,7 @@ I really hope one day, You'll find the right person to forward these memes to <3
      *
      */
   sendAccountLinking(recipientId) {
+    console.log('sendAccountLinkingsendAccountLinkingsendAccountLinkingsendAccountLinkingsendAccountLinkingsendAccountLinkingsendAccountLinkingsendAccountLinking');
     const messageData = {
       recipient: {
         id: recipientId,

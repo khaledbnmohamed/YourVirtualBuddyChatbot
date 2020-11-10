@@ -1,23 +1,23 @@
 
 module.exports = {
-  up: (queryInterface, Sequelize) => queryInterface.createTable('SentMemes', {
+  up: (queryInterface, Sequelize) => queryInterface.createTable('SyncDates', {
     id: {
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
       type: Sequelize.INTEGER,
     },
-    fb_id: {
+    type: {
       type: Sequelize.STRING,
     },
-    meme_id: {
-      type: Sequelize.INTEGER,
-    },
-    meme_imgur_id: {
+    search_word: {
       type: Sequelize.STRING,
     },
-    meme_type: {
+    user: {
       type: Sequelize.STRING,
+    },
+    sync_date: {
+      type: Sequelize.DATE,
     },
     createdAt: {
       allowNull: false,
@@ -27,6 +27,6 @@ module.exports = {
       allowNull: false,
       type: Sequelize.DATE,
     },
-  }),
-  down: (queryInterface, Sequelize) => queryInterface.dropTable('SentMemes'),
+  }).then(() => queryInterface.addIndex('SyncDates', ['sync_date', 'type'])),
+  down: (queryInterface, Sequelize) => queryInterface.dropTable('SyncDates'),
 };

@@ -1,37 +1,27 @@
-const SortImagesbyPoints = true;
-const uniqueRandoms = [];
-const SortedByPointsCounter = 0; // initlize the i globally for easer access so don't have to write extra code to determine if first query to set i =0 or not
+import { ImgurImagesConsumer } from './imgur_handler/api_consumer';
+import { sendMemeToUser } from './controllers/sent_memes';
+import { changeChoosenType } from './controllers/users';
 
-const FirstQuery = true;
-const counter = 0;
-require('./imgur_handler/api_consumer.js');
+const models = require('../database/models');
 
-const
-  fs = require('fs');
-const tools = require('./helpers/sendFunctions.js');
+// eslint-disable-next-line import/prefer-default-export
+export function chooseCaller(type, lastSearchWord, senderID) {
+  // eslint-disable-next-line no-param-reassign
+  lastSearchWord = encodeURIComponent(lastSearchWord);
 
-const fileObject = JSON.parse(fs.readFileSync('./inputMemory.json', 'utf8'));
-
-module.exports = function () {
-  this.saveToFile = function (number, word, want_more) {
-    fileObject.function_number = number;
-    fileObject.seach_word = word;
-    fileObject.want_more = want_more;
-    fs.writeFileSync('./inputMemory.json', JSON.stringify(fileObject, null, 2), 'utf-8');
-  };
-  this.chooseCaller = function (function_number, last_input_search_word, senderID) {
-    /*
-    1== for personal account api
-    2== gallery
-     */
-    if (last_input_search_word == null) {
-      last_input_search_word = 'memes'; // special case for send meme
-      console.log(`last_input_search_word ${last_input_search_word}`);
-    }
-    if (function_number === 1) {
-      ImgurImagesConsumer(senderID,'account', last_input_search_word);
-    } else if (function_number === 2) {
-      ImgurImagesConsumer(senderID, last_input_search_word);
-    }
-  };
-};
+  changeChoosenType(senderID, type, () => {
+    models.SyncDate.findAll({
+      limit: 1,
+      order: [['createdAt', 'DESC']],
+    }).then((lastUpdate) => {
+      if (lastUpdate[0]
+      && lastUpdate[0].sync_date.setHours(0, 0, 0, 0) === new Date().setHours(0, 0, 0, 0)
+      && lastUpdate[0].type === type
+      && lastUpdate[0].seach_word === lastSearchWord) {
+        sendMemeToUser(senderID);
+      } else {
+        ImgurImagesConsumer(type, lastSearchWord, senderID);
+      }
+    });
+  });
+}

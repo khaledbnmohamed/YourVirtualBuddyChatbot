@@ -1,3 +1,4 @@
+import { insertToSyncDate } from './sync_dates';
 
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -11,11 +12,13 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 
-export function insertToGallery(data, callback) {
-  const dailyNumber = 50;
+// eslint-disable-next-line import/prefer-default-export
+export function bulkInsertToGallery(data, type, senderID, SearchQuery, callback) {
+  const dailyNumber = 20;
   let link;
   let score;
-  for (let i = 0; i < dailyNumber; i += 1) {
+  // Need to handle out of array errors 
+  for (let i = 0; i <= dailyNumber; i += 1) {
     if (data[i].is_album === true) {
       link = data[i].images[0].link;
       score = data[i].images[0].score;
@@ -25,8 +28,12 @@ export function insertToGallery(data, callback) {
     }
     if (!score) score = 0;
     try {
-      models.GalleryMeme.create({ imgur_id: link, score });
-      console.log('Added New record');
+      models.Meme.create({ imgur_id: link, score, type }).then(() => {
+        if (i === dailyNumber) {
+          insertToSyncDate(senderID, type, SearchQuery);
+          callback();
+        } console.log('Added New record');
+      });
     } catch (error) {
       throw error.message;
     }

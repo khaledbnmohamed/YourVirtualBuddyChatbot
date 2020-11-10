@@ -1,13 +1,14 @@
-const fs = require('fs');
+import { addSearchWord } from '../controllers/users';
+
 const https = require('https');
-const tools = require('../helpers/sendFunctions.js');
 const { formingElements } = require('./response_handler');
 
-const fileObject = JSON.parse(fs.readFileSync('./inputMemory.json', 'utf8'));
 const { CLIENT_ID } = process.env;
 const { IMGUR_ACCESS_TOKEN } = process.env;
 
-export function ImgurImagesConsumer(senderID, type, SearchQuery) {
+export function ImgurImagesConsumer(type, SearchQuery, senderID) {
+  // eslint-disable-next-line no-param-reassign
+  SearchQuery = encodeURIComponent(SearchQuery);
   let options = {
     method: 'GET',
     hostname: 'api.imgur.com',
@@ -26,19 +27,8 @@ export function ImgurImagesConsumer(senderID, type, SearchQuery) {
       },
     };
   } else {
-    fileObject.want_more = true;
-    let searchWord = SearchQuery;
-    if (!searchWord) {
-      searchWord = 'memes';
-      fileObject.search_word = searchWord;
-      fs.writeFileSync('./inputMemory.json', JSON.stringify(fileObject, null, 2), 'utf-8');
-    } else {
-      searchWord = encodeURIComponent(searchWord);
-    }
+    addSearchWord(senderID, SearchQuery);
   }
-  // Imgur API Gallery Search Request
-  // console.log(SearchQuery);
-
 
   const req = https.request(options, (res) => {
     const chunks = [];
@@ -47,16 +37,7 @@ export function ImgurImagesConsumer(senderID, type, SearchQuery) {
     });
     res.on('end', (chunk) => {
       const body = Buffer.concat(chunks);
-      // console.log(JSON.parse(body).data[0])
-      console.log(options.path);
-      let imageLink = formingElements(body, type, senderID, false);
-      if (!imageLink) {
-        imageLink = formingElements(body, type, senderID, false);
-      } else {
-        // Handling empty image responses
-        tools.sendTypingOff(senderID);
-        tools.sendImageMessage(senderID, imageLink);
-      }
+      formingElements(body, type, senderID, SearchQuery);
     });
     res.on('error', (error) => {
       console.error(error);
@@ -64,7 +45,6 @@ export function ImgurImagesConsumer(senderID, type, SearchQuery) {
     });
   });
   req.end();
-  // console.log(body);
 }
 
 export function uploadToAccount(senderID, image) {

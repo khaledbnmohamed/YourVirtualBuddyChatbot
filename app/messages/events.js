@@ -1,11 +1,8 @@
-require('../imgur_handler/api_consumer.js');
-require('../imgur_handler/api_consumer.js');
-require('../quick_replies.js');
-require('../resend_handler.js');
-require('./payload.js');
+import { handlePayload } from './payload';
 
 const crypto = require('crypto');
-const tools = require('../helpers/sendFunctions.js');
+
+const tools = require('../helpers/send_functions');
 
 // App Secret can be retrieved from the App Dashboard
 const APP_SECRET = (process.env.MESSENGER_APP_SECRET)
@@ -39,7 +36,7 @@ export function receivedAuthentication(event) {
   // When an authentication is received, we'll send a message back to the sender
   // to let them know it was successful.
   tools.sendTextMessage(senderID, 'Authentication successful');
-};
+}
 
 /*
  * Verify that the callback came from Facebook. Using the App Secret from
@@ -94,7 +91,7 @@ export function receivedPostback(event) {
 
   // When a postback is called, we'll send a message back to the sender to
   // let them know it was successful
-};
+}
 /*
  * Message Read Event
  *
@@ -111,7 +108,7 @@ export function receivedMessageRead(event) {
 
   console.log('Received message read event for watermark %d and sequence '
       + 'number %d', watermark, sequenceNumber);
-};
+}
 
 /*
  * Account Link Event
@@ -129,7 +126,7 @@ export function receivedAccountLink(event) {
 
   console.log('Received account link event with for user %d with status %s '
       + 'and auth code %s ', senderID, status, authCode);
-};
+}
 
 export function receivedDeliveryConfirmation(event) {
   const senderID = event.sender.id;
@@ -146,4 +143,4 @@ export function receivedDeliveryConfirmation(event) {
     });
   }
   console.log('All message before %d were delivered.', watermark);
-};
+}

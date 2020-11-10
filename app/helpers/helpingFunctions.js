@@ -6,18 +6,6 @@ const models = require('../../database/models');
 const MemoryArray = JSON.parse(fs.readFileSync('./inputMemory.json', 'utf8'));
 const UniqueMemesNumber = 20;
 
-function jsonAppender(jsonStr, imageId) {
-  console.log('=============================');
-  const obj = JSON.parse(jsonStr);
-  console.log(obj.imageId);
-  console.log('=============================');
-
-  obj.imageId.push({ imageId });
-  console.log(obj);
-  jsonStr = JSON.stringify(obj);
-  return jsonStr;
-}
-
 module.exports = {
   getArraySize() {
     return MemoryArray.sentImages.length;
@@ -27,7 +15,7 @@ module.exports = {
   },
 
   checkIfSentBefore(imageId, senderID) {
-    models.SentMemes.findOne({ where: { fb_id: senderID } }).then((record) => {
+    models.SentMeme.findOne({ where: { fb_id: senderID } }).then((record) => {
       if (record) {
         console.log('=============================');
         // JSON.stringify(object)
@@ -43,7 +31,7 @@ module.exports = {
     console.log(imgurIds);
 
     // tools.sendImageMessage(senderID, imageId);
-    models.SentMemes.create({
+    models.SentMeme.create({
       fb_id: senderID,
       imgur_id_gallery: JSON.stringify(imgurIds),
     }).then((record) => {
@@ -55,10 +43,10 @@ module.exports = {
   },
 
   sendImageToExistingUser(imageId, senderID, imageType) {
-    models.SentMemes.findOne({ where: { fb_id: senderID } }).then((record) => {
+    models.SentMeme.findOne({ where: { fb_id: senderID } }).then((record) => {
       if (record) {
         imgurIds = imageType === 'gallery' ? jsonAppender(record.imgur_id_gallery, imageId) : jsonAppender(record.imgur_id_account, imageId);
-        models.SentMemes.update({
+        models.SentMeme.update({
           imgur_id_gallery: imgurIds,
         }).then((record) => {
           if (record) {
