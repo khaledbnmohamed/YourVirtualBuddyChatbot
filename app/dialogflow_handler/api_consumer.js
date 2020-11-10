@@ -4,9 +4,8 @@ const
 
 
 // Secret Keys saved in different file for security
-const
-  { GOOGLE_PROJET_ID } = process.env;
-google_access_token = tokenFile.sign();
+const { GOOGLE_PROJET_ID } = process.env;
+const google_access_token = tokenFile.sign();
 
 
 export function sendtoDialogFlow(MessagetoDialogFlow, callback) {

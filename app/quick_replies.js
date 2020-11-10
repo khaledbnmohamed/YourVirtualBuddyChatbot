@@ -1,10 +1,9 @@
-require('./imgur_handler/api_consumer.js')();
-require('./resend_handler.js')();
+require('./imgur_handler/api_consumer.js');
+require('./resend_handler.js');
 
 
 const fs = require('fs');
-const
-  tools = require('./helpers/sendFunctions.js');
+const tools = require('./helpers/sendFunctions.js');
 
 const fileObject = JSON.parse(fs.readFileSync('./inputMemory.json', 'utf8'));
 

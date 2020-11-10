@@ -1,6 +1,5 @@
 
-const
-  express = require('express');
+const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const models = require('../../database/models');
@@ -50,7 +49,8 @@ export function insertToAccount(data, callback) {
       score = data[i].score;
     }
     try {
-      models.AccountMeme.create({ imgur_id: link, score });
+      debugger;
+      models.AccountMemes.create({ imgur_id: link, score });
       console.log('Added New record');
     } catch (error) {
       throw error.message;

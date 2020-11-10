@@ -4,7 +4,7 @@ const SortedByPointsCounter = 0; // initlize the i globally for easer access so 
 
 const FirstQuery = true;
 const counter = 0;
-require('./imgur_handler/api_consumer.js')();
+require('./imgur_handler/api_consumer.js');
 
 const
   fs = require('fs');

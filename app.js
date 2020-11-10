@@ -1,14 +1,15 @@
 // ///////TODO Apply memeory to all parts of sending process
 // //////TODO Add instruction at the begining
-
-
 import { getUser } from './app/controllers/users';
 import { sendtoDialogFlow } from './app/dialogflow_handler/api_consumer';
+import { uploadToAccount } from './app/imgur_handler/api_consumer';
+
 import {
   verifyRequestSignature, receivedDeliveryConfirmation, receivedPostback,
   receivedAccountLink, receivedAuthentication, receivedMessageRead,
 } from './app/messages/events';
 
+import { checkMessageContent } from './app/messages/receiver';
 if (process.env.NODE_ENV !== 'production' && process.env.NODE_ENV !== 'staging') {
   require('dotenv').config();
 }
@@ -128,7 +129,7 @@ app.get('/authorize', (req, res) => {
   });
 });
 
-ImgurImagesConsumer('kaka', 'account', 'memes');
+// ImgurImagesConsumer('kaka', 'account', 'memes');
 // send_meme_to_user('Khalod1');
 // helpers.sendImageToNewUser('fuckme', '33333324ds32423sdfafadas');
 // console.log(getUser('khal22ooood'));

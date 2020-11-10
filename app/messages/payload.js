@@ -3,11 +3,11 @@ var
   returnedFromKnoweldge = false,
   DialogflowhasParameters = false;
 
-require('./../controllers/users.js')();
-require('../imgur_handler/api_consumer.js')();
-require('./../imgur_handler/api_consumer.js')();
-require('./../quick_replies.js')();
-require('./../resend_handler.js')();
+const {getUser} = require('./../controllers/users.js');
+require('../imgur_handler/api_consumer.js');
+require('./../imgur_handler/api_consumer.js');
+require('./../quick_replies.js');
+require('./../resend_handler.js');
 
 const
   util = require('util'),

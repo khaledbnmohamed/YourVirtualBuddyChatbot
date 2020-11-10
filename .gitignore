@@ -5,3 +5,4 @@ node_modules
 config/staging.json
 config/default.json
 config/PrivateKey.key
+others.env

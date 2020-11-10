@@ -1,7 +1,7 @@
 
-require('../imgur_handler/api_consumer.js')();
-require('./../dialogflow_handler/response_handler.js')();
-require('./../resend_handler.js')();
+const { sendtoDialogFlow } =require ('../dialogflow_handler/api_consumer');
+require('./../dialogflow_handler/response_handler.js');
+require('./../resend_handler.js');
 
 var
   returnedFromDialogFlow = false,
@@ -15,10 +15,7 @@ const
   util = require('util'),
   PromisedSendtoDialogFlow = util.promisify(sendtoDialogFlow);
 
-module.exports = function () {
-/* Check for message content*/
-this.checkMessageContent=function(messageText, senderID) {
-
+export function checkMessageContent(messageText, senderID) {
     tools.sendReadReceipt(senderID);
     switch (messageText.replace(/[^\w\s]/gi, '').trim().toLowerCase()) {
       case 'hello':
@@ -113,10 +110,9 @@ this.checkMessageContent=function(messageText, senderID) {
         break;
     }
   }
-  this.checkToSendMore = function(senderID) {
+  export function checkToSendMore(senderID) {
     if (fileObject.want_more) {
       setTimeout(function () { tools.SendMore(senderID) }, 5001); //must be called like that   why ? https://stackoverflow.com/a/5520159/5627553
     }
   }
   
-}
