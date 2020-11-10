@@ -6,8 +6,6 @@ const models = require('../database/models');
 
 // eslint-disable-next-line import/prefer-default-export
 export function chooseCaller(type, lastSearchWord, senderID) {
-  // eslint-disable-next-line no-param-reassign
-  lastSearchWord = encodeURIComponent(lastSearchWord);
 
   changeChoosenType(senderID, type, () => {
     models.SyncDate.findAll({
