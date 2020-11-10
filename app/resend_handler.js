@@ -17,7 +17,7 @@ export function chooseCaller(type, lastSearchWord, senderID) {
       if (lastUpdate[0]
       && lastUpdate[0].sync_date.setHours(0, 0, 0, 0) === new Date().setHours(0, 0, 0, 0)
       && lastUpdate[0].type === type
-      && lastUpdate[0].seach_word === lastSearchWord) {
+      && lastUpdate[0].search_word === lastSearchWord) {
         sendMemeToUser(senderID);
       } else {
         ImgurImagesConsumer(type, lastSearchWord, senderID);

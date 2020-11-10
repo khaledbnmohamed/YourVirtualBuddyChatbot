@@ -8,7 +8,7 @@ const tools = require('./helpers/send_functions.js');
 /* quick reply send like */
 export function sendLike(senderID) {
   getUser(senderID, (user) => {
-    resend.chooseCaller(user.choosen_type, user.seach_word, senderID);
+    resend.chooseCaller(user.choosen_type, user.search_word, senderID);
   });
 }
 /* quick reply  do nothing* */

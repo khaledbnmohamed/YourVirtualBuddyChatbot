@@ -23,7 +23,6 @@ const util = require('util');
 const { ImgurImagesConsumer } = require('./app/imgur_handler/api_consumer');
 const tools = require('./app/helpers/send_functions');
 const helpers = require('./app/helpers/helpingFunctions');
-const { uploadToAccount } = require('./app/imgur_handler/api_consumer');
 
 const PromisedgetUser = util.promisify(getUser);
 const PromisedSendtoDialogFlow = util.promisify(sendtoDialogFlow);
