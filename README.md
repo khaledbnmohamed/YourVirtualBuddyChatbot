@@ -53,7 +53,7 @@ I honestly didn't touch it .. but You might find it helpful :)
 
 You may find my personal experience in this app helpful. Follow the article below for more details.
 
-[MEMES CHATBOT IN A NUTSHELL](https://khaledbnmohamed.000webhostapp.com/2019/01/25/memes-chatbot-in-a-nutshell/)
+[MEMES CHATBOT IN A NUTSHELL](https://medium.com/@khaledbnmohamed/facebook-memes-chatbot-in-a-nutshell-ceeeb423ab1b?fbclid=IwAR1Qd5YPOmQgY9Q3buZRAWzOX-rvHeGvg0kCbCej96YBEQOdt2f4QNLBfDs)
 
 [PostgreSQL REST API to Heroku]https://www.taniarascia.com/node-express-postgresql-heroku/
 

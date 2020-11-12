@@ -60,7 +60,7 @@ const PAGE_ACCESS_TOKEN = (process.env.MESSENGER_PAGE_ACCESS_TOKEN) ?
 
 /*Dialogflow response API */
 
-// sendtoDialogFlow("How old are you",function (err, data) {
+// sendToDialogflow("How old are you",function (err, data) {
 // if (err) return console.error(err);
 // return data; }) 
 
