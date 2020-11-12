@@ -1,9 +1,7 @@
 // ///////TODO Apply memeory to all parts of sending process
 // //////TODO Add instruction at the begining
 import { getUser } from './app/controllers/users';
-import { sendtoDialogFlow } from './app/dialogflow_handler/api_consumer';
 import { uploadToAccount } from './app/imgur_handler/api_consumer';
-
 import {
   verifyRequestSignature, receivedDeliveryConfirmation, receivedPostback,
   receivedAccountLink, receivedAuthentication, receivedMessageRead,
@@ -16,17 +14,9 @@ if (process.env.NODE_ENV !== 'production' && process.env.NODE_ENV !== 'staging')
   require('dotenv').config();
 }
 
-const fs = require('fs');
 const bodyParser = require('body-parser');
 const express = require('express');
-const util = require('util');
-const { ImgurImagesConsumer } = require('./app/imgur_handler/api_consumer');
 const tools = require('./app/helpers/send_functions');
-const helpers = require('./app/helpers/helpingFunctions');
-
-const PromisedgetUser = util.promisify(getUser);
-const PromisedSendtoDialogFlow = util.promisify(sendtoDialogFlow);
-
 
 const app = express();
 
@@ -204,7 +194,7 @@ app.get('/authorize', (req, res) => {
 //   .catch((err) => console.error(`[Error]: ${err}`));
 
 
-// PromisedSendtoDialogFlow("kilme")
+// PromisedsendToDialogflow("kilme")
 // .then(data => {
 //   checkMessageContent(data, senderID);
 //   console.log(100*"==");
