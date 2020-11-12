@@ -5,8 +5,7 @@ import { changeChoosenType } from './controllers/users';
 const models = require('../database/models');
 
 // eslint-disable-next-line import/prefer-default-export
-export function chooseCaller(type, lastSearchWord, senderID) {
-
+export function chooseCaller(type, lastSearchWord = 'memes', senderID) {
   changeChoosenType(senderID, type, () => {
     models.SyncDate.findAll({
       limit: 1,

@@ -7,9 +7,34 @@ const tools = require('../helpers/send_functions.js');
 
 const { GOOGLE_PROJET_ID } = process.env;
 const googleAccessToken = tokenFile.sign();
+const fallbackMessages = require('../../heplers/fallback.json');
 
-// eslint-disable-next-line import/prefer-default-export
-export function sendtoDialogFlow(MessagetoDialogFlow, senderID, callback) {
+export function ProcessDialogflowResponse(resp, senderID) {
+  if (JSON.stringify(resp.queryResult.parameters) !== '{}') {
+    if (resp.queryResult.parameters.sendmeme !== undefined) {
+      const message = resp.queryResult.parameters.sendmeme;
+
+      chooseCaller(message ? 'gallery' : 'account', message, senderID);
+    } else {
+      tools.sendTextMessage(senderID, resp.queryResult.fulfillmentText);
+    }
+  } else {
+    try {
+      if (resp.queryResult.knowledgeAnswers
+        && resp.queryResult.knowledgeAnswers.answers[0].matchConfidence > 0.41) {
+        const message = resp.queryResult.knowledgeAnswers.answers[0].answer;
+        tools.sendTextMessage(senderID, message);
+      } else {
+        tools.sendTextMessage(senderID, resp.queryResult.fulfillmentText);
+      }
+    } catch (err) {
+      tools.sendTextMessage(senderID, fallbackMessages[0]);
+      console.error(err);
+    }
+  }
+}
+
+export function sendToDialogflow(MessagetoDialogFlow, senderID, callback) {
   const DFchunks = [];
   const data = JSON.stringify({
     queryInput: {
@@ -34,48 +59,18 @@ export function sendtoDialogFlow(MessagetoDialogFlow, senderID, callback) {
   const req = https.request(options, (res) => {
     res.on('data', (DF) => {
       DFchunks.push(DF);
-      res.on('end', () => {
-        const body = Buffer.concat(DFchunks);
-        const parsed = JSON.parse(body);
-        console.log('##############################3');
-        console.log('##############################3');
-        console.log('##############################3');
-        console.log('##############################3');
-        console.log('##############################3');
-        handleResponse(parsed, senderID);
-        res.on('error', (error) => {
-          console.error(error);
-          callback(error, '');
-        });
+    });
+    res.on('end', () => {
+      const body = Buffer.concat(DFchunks);
+      const parsed = JSON.parse(body);
+      ProcessDialogflowResponse(parsed, senderID);
+      res.on('error', (error) => {
+        console.error(error);
+        callback(error, '');
       });
     });
   });
   req.on('error', (error) => { console.error(error); });
   req.write(data);
   req.end();
-}
-
-export function handleResponse(resp, senderID) {
-
-  if (JSON.stringify(resp.queryResult.parameters) !== '{}') {
-    if (resp.queryResult.parameters.sendmeme !== undefined) {
-      const message = resp.queryResult.parameters.sendmeme;
-
-      console.log(JSON.stringify(resp.queryResult.parameters));
-      chooseCaller('gallery', message, senderID);
-    } else {
-      tools.sendTextMessage(senderID, resp.queryResult.fulfillmentText);
-    }
-  } else {
-    try {
-      if (resp.queryResult.action === 'repeat' && resp.alternativeQueryResults[0].knowledgeAnswers.answers[0].matchConfidence > 0.41) {
-        const message = resp.alternativeQueryResults[0].knowledgeAnswers.answers[0].answer;
-        tools.sendTextMessage(senderID, message);
-      } else {
-        tools.sendTextMessage(senderID, resp.queryResult.fulfillmentText);
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  }
 }
