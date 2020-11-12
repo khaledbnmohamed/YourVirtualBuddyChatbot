@@ -4,8 +4,8 @@ import { addSortPrefToUser } from '../controllers/users';
 // const fs = require('fs');
 // const util = require('util');
 const tools = require('../helpers/send_functions.js');
-const { sendtoDialogFlow } = require('../dialogflow_handler/api_consumer');
-const doNothing = require('../quick_replies');
+const { sendToDialogflow } = require('../dialogflow_handler/api_consumer');
+const { doNothing } = require('../quick_replies');
 
 export function checkToSendMore(senderID) {
   setTimeout(() => {
@@ -103,7 +103,7 @@ export function checkMessageContent(messageText, senderID) {
 
     default:
       tools.sendTypingOn(senderID);
-      sendtoDialogFlow(messageText, senderID);
+      sendToDialogflow(messageText, senderID);
       break;
   }
 }
