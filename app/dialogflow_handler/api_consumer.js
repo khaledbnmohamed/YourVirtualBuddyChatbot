@@ -14,16 +14,15 @@ export function ProcessDialogflowResponse(resp, senderID) {
     if (resp.queryResult.parameters.sendmeme !== undefined) {
       const message = resp.queryResult.parameters.sendmeme;
 
-      console.log(JSON.stringify(resp.queryResult.parameters));
-      chooseCaller('gallery', message, senderID);
+      chooseCaller(message ? 'gallery' : 'account', message, senderID);
     } else {
       tools.sendTextMessage(senderID, resp.queryResult.fulfillmentText);
     }
   } else {
     try {
-      if (resp.queryResult.action === 'repeat' && resp.alternativeQueryResults[0].knowledgeAnswers
-       && resp.alternativeQueryResults[0].knowledgeAnswers.answers[0].matchConfidence > 0.41) {
-        const message = resp.alternativeQueryResults[0].knowledgeAnswers.answers[0].answer;
+      if (resp.queryResult.knowledgeAnswers
+        && resp.queryResult.knowledgeAnswers.answers[0].matchConfidence > 0.41) {
+        const message = resp.queryResult.knowledgeAnswers.answers[0].answer;
         tools.sendTextMessage(senderID, message);
       } else {
         tools.sendTextMessage(senderID, resp.queryResult.fulfillmentText);

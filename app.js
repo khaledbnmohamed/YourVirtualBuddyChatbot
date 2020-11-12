@@ -84,6 +84,7 @@ function receivedMessage(event) {
   }
 
   getUser(senderID, () => {
+    tools.sendReadReceipt(senderID);
     if (quickReply) {
       const quickReplyPayload = quickReply.payload;
       console.log('Quick reply for message %s with payload %s',

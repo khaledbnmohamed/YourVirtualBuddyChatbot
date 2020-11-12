@@ -15,7 +15,6 @@ export function checkToSendMore(senderID) {
 
 /* Check for message content */
 export function checkMessageContent(messageText, senderID) {
-  tools.sendReadReceipt(senderID);
   switch (
     messageText
       .replace(/[^\w\s]/gi, '')
@@ -31,18 +30,6 @@ export function checkMessageContent(messageText, senderID) {
           'You can also send me a meme as an attachment to save it',
         );
       }, 1000);
-      break;
-
-    case 'image':
-      tools.requiresSERVER_URL(tools.sendImageMessage, [senderID]);
-      break;
-
-    case 'gif':
-      tools.requiresSERVER_URL(tools.sendGifMessage, [senderID]);
-      break;
-
-    case 'video':
-      tools.requiresSERVER_URL(tools.sendVideoMessage, [senderID]);
       break;
 
     case 'sort by points':
@@ -81,20 +68,8 @@ export function checkMessageContent(messageText, senderID) {
       tools.sendQuickReply(senderID);
       break;
 
-    case 'read receipt':
-      tools.sendReadReceipt(senderID);
-      break;
-
-    case 'account linking':
-      tools.requiresSERVER_URL(sendAccountLinking, [senderID]);
-      break;
-
     case 'no':
       doNothing(senderID);
-      break;
-
-    case 'test':
-      chooseCaller('account', null, senderID);
       break;
 
     case 'send meme':
