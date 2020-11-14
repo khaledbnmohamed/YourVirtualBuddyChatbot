@@ -7,13 +7,9 @@ const tools = require('../helpers/send_functions.js');
 const { sendToDialogflow } = require('../dialogflow_handler/api_consumer');
 const { doNothing } = require('../quick_replies');
 
-export function checkToSendMore(senderID) {
-  setTimeout(() => {
-    tools.SendMore(senderID);
-  }, 10001); // must be called like that   why ? https://stackoverflow.com/a/5520159/5627553
-}
 
 /* Check for message content */
+// eslint-disable-next-line import/prefer-default-export
 export function checkMessageContent(messageText, senderID) {
   switch (
     messageText
