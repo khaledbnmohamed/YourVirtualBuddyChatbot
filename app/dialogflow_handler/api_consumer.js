@@ -1,4 +1,4 @@
-import { chooseCaller } from '../resend_handler';
+import { DialogFlowParameteresHandler } from './response_handler';
 
 const https = require('https');
 const tokenFile = require('../helpers/JWTtoken');
@@ -13,8 +13,7 @@ export function ProcessDialogflowResponse(resp, senderID) {
   if (JSON.stringify(resp.queryResult.parameters) !== '{}') {
     if (resp.queryResult.parameters.sendmeme !== undefined) {
       const message = resp.queryResult.parameters.sendmeme;
-
-      chooseCaller(message ? 'gallery' : 'account', message, senderID);
+      DialogFlowParameteresHandler(senderID, message);
     } else {
       tools.sendTextMessage(senderID, resp.queryResult.fulfillmentText);
     }
