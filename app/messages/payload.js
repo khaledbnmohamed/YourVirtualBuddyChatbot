@@ -42,7 +42,7 @@ export function handlePayload(payload, senderID) {
       break;
 
     case 'sort by points':
-      if (addSortPrefToUser(senderID, true)) {
+      if (addSortPrefToUser(senderID, false)) {
         tools.sendTextMessage(
           senderID,
           'Next memes will be upvote/points based',
@@ -56,7 +56,7 @@ export function handlePayload(payload, senderID) {
       break;
 
     case 'sort by time':
-      if (addSortPrefToUser(senderID, false)) {
+      if (addSortPrefToUser(senderID, true)) {
         tools.sendTextMessage(
           senderID,
           'Next memes will be the most recent',

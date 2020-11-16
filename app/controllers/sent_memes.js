@@ -30,6 +30,7 @@ export function FirstNewMemeToBeSentToUser(SenderID, type, callback) {
   return models.Meme.findAll({
     attributes: ['id', 'imgur_id', 'type'],
     where: { '$SentMemes.meme_id$': null, type },
+    order: [['score', 'DESC']],
     include: [{
       required: false,
       where: { '$SentMemes.fb_id$': SenderID },

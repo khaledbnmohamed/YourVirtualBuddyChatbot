@@ -1,4 +1,4 @@
-import { addSearchWord } from '../controllers/users';
+import { addSearchWord, getUser } from '../controllers/users';
 
 const https = require('https');
 const { formingElements } = require('./response_handler');
@@ -7,43 +7,46 @@ const { CLIENT_ID } = process.env;
 const { IMGUR_ACCESS_TOKEN } = process.env;
 
 export function ImgurImagesConsumer(type, SearchQuery, senderID) {
-  // eslint-disable-next-line no-param-reassign
-  let options = {
-    method: 'GET',
-    hostname: 'api.imgur.com',
-    path: `/3/gallery/search/top/{{window}}/{{page}}?q=${encodeURIComponent(SearchQuery)}`,
-    headers: {
-      Authorization: `Client-ID ${CLIENT_ID}`,
-    },
-  };
-  if (type === 'account') {
-    options = {
+  getUser(senderID, (user) => {
+    const searchBy = user.sort_by_latest ? 'viral' : 'top';
+    // eslint-disable-next-line no-param-reassign
+    let options = {
       method: 'GET',
       hostname: 'api.imgur.com',
-      path: '/3/account/khaledbnmohamed/images',
+      path: `/3/gallery/search/${searchBy}/{{window}}/{{page}}?q=${encodeURIComponent(SearchQuery)}`,
       headers: {
-        Authorization: `Bearer ${IMGUR_ACCESS_TOKEN}`,
+        Authorization: `Client-ID ${CLIENT_ID}`,
       },
     };
-  } else {
-    addSearchWord(senderID, SearchQuery);
-  }
+    if (type === 'account') {
+      options = {
+        method: 'GET',
+        hostname: 'api.imgur.com',
+        path: '/3/account/khaledbnmohamed/images',
+        headers: {
+          Authorization: `Bearer ${IMGUR_ACCESS_TOKEN}`,
+        },
+      };
+    } else {
+      addSearchWord(senderID, SearchQuery);
+    }
 
-  const req = https.request(options, (res) => {
-    const chunks = [];
-    res.on('data', (chunk) => {
-      chunks.push(chunk);
+    const req = https.request(options, (res) => {
+      const chunks = [];
+      res.on('data', (chunk) => {
+        chunks.push(chunk);
+      });
+      res.on('end', () => {
+        const body = Buffer.concat(chunks);
+        formingElements(body, type, senderID, SearchQuery);
+      });
+      res.on('error', (error) => {
+        console.error(error);
+        return false;
+      });
     });
-    res.on('end', (chunk) => {
-      const body = Buffer.concat(chunks);
-      formingElements(body, type, senderID, SearchQuery);
-    });
-    res.on('error', (error) => {
-      console.error(error);
-      return false;
-    });
+    req.end();
   });
-  req.end();
 }
 
 export function uploadToAccount(senderID, image) {
