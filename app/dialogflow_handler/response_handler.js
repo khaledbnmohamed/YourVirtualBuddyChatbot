@@ -1,26 +1,21 @@
 
+import { helpText } from '../messages/payload';
+import { chooseCaller } from '../resend_handler';
+
 const tools = require('../helpers/send_functions.js');
-const specialMemesFromMyAccount = require('../quick_replies.js');
-
-module.exports = function () {
-  this.DialogFlowParameteresHandler = function (senderID, data) {
-    // To Handle the search call from the dialogFlow function
-    // TODO : Find a template calling theme for cleaner code
-    if (data !== 'memes' || data !== 'send meme') {
-      if (data === 'surprise me') {
-        // To access saved memes on my imgur account
-        specialMemesFromMyAccount(senderID, data);
-        return;
-      } if (data === 'help') {
-        tools.sendTextMessage(senderID, help_text);
-        return;
-      }
-      // To allow generic search for any category using the intents from DialogFlow
-      saveToFile(2, data, true);
-      chooseCaller('gallery', data, senderID);
-
+// eslint-disable-next-line import/prefer-default-export
+export function DialogFlowParameteresHandler(senderID, parameter) {
+  // To Handle the search call from the dialogFlow function
+  // TODO : Find a template calling theme for cleaner code
+  if (parameter !== 'memes' || parameter !== 'send meme') {
+    if (parameter === 'surprise me') {
+      // To access saved memes on my imgur account
+      chooseCaller('account', parameter, senderID);
       return;
+    } if (parameter === 'help') {
+      tools.sendTextMessage(senderID, helpText);
     }
-    returnedFromDialogFlow = false;
-  };
-};
+  } else {
+    chooseCaller(parameter ? 'gallery' : 'account', parameter, senderID);
+  }
+}
