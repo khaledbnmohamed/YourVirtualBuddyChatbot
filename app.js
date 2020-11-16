@@ -108,6 +108,7 @@ function receivedMessage(event) {
         tools.sendTextMessage(senderID, "You can access this meme and other selected memes by typing 'my memes'");
       }, 2000); // added timeout to make sure it comes later
     }
+    tools.sendTypingOff(senderID);
   });
 }
 
