@@ -6,6 +6,7 @@ module.exports = (sequelize, DataTypes) => {
     rec_images: DataTypes.INTEGER,
     search_word: DataTypes.TEXT,
     sort_by_latest: DataTypes.BOOLEAN,
+    want_more: DataTypes.BOOLEAN,
     choosen_type: DataTypes.TEXT,
   }, {});
   User.associate = function (models) {

@@ -68,6 +68,10 @@ export function checkMessageContent(messageText, senderID) {
       doNothing(senderID);
       break;
 
+    case 'yes':
+      tools.sendQuickReply(senderID);
+      break;
+
     case 'send meme':
       chooseCaller('account', 'memes', senderID);
       break;
