@@ -1,12 +1,9 @@
 // Holding ALL send functions in the bots for easier use
+import { changeWantMore, getUser } from '../controllers/users';
 
-const
-  express = require('express');
+const express = require('express');
 const request = require('request');
-const fs = require('fs');
-// const { checkToSendMore } = require('../messages/receiver');
 
-const ImageLink = 'https://i.imgur.com/KZC2CW9.jpg';
 const app = express();
 app.set('port', process.env.PORT || 5001);
 
@@ -23,33 +20,11 @@ module.exports = {
    * get the message id in a response
    *
    */
-
-  requiresSERVER_URL(next, [recipientId, ...args]) {
-    if (SERVER_URL === 'to_be_set_manually') {
-      const messageData = {
-        recipient: {
-          id: recipientId,
-        },
-        message: {
-          text: `
-We have static resources like images and videos available to test, but you need to update the code you downloaded earlier to tell us your current server url.
-1. Stop your node server by typing ctrl-c
-2. Paste the result you got from running "lt —port 5001" into your config/default.json file as the "SERVER_URL".
-3. Re-run "node app.js"
-Once you've finished these steps, try typing “video” or “image”.
-        `,
-        },
-      };
-
-      callSendAPI(messageData);
-    } else {
-      next.apply(this, [recipientId, ...args]);
-    }
-  },
   checkToSendMore(senderID) {
-    setTimeout(() => {
-      this.SendMore(senderID);
-    }, 10001); // must be called like that   why ? https://stackoverflow.com/a/5520159/5627553
+    getUser(senderID, (user) => {
+      if (user.want_more) this.SendMore(senderID);
+    });
+    changeWantMore(senderID, false);
   },
   sendHiMessage(recipientId) {
     const messageData = {
@@ -62,11 +37,11 @@ Hi,
 
 I'm here to help you on your bad days. Try out "memes", "send meme" to see magic (SPOILER:it'll be a meme). More functionalities are to come
 
-I really hope one day, You'll find the right person to forward these memes to <3 
+I really hope one day, You'll find the right person to forward these memes to <3
       `,
       },
     };
-
+    changeWantMore(recipientId, false);
     callSendAPI(messageData);
   },
 
@@ -92,8 +67,8 @@ I really hope one day, You'll find the right person to forward these memes to <3
     };
 
     callSendAPI(messageData);
+    changeWantMore(recipientId, true);
     this.sendTypingOff(recipientId);
-    this.checkToSendMore(recipientId);
   },
 
   /*
@@ -179,6 +154,7 @@ I really hope one day, You'll find the right person to forward these memes to <3
       },
     };
 
+    changeWantMore(recipientId, false);
     callSendAPI(messageData);
     this.sendTypingOff(recipientId);
   },

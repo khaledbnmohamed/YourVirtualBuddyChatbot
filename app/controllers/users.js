@@ -76,6 +76,17 @@ export function updateRecievedCounter(senderID, callback) {
     }
   });
 }
+export function changeWantMore(senderID, wantMoreImages) {
+  return models.User.findOne({ where: { fb_id: senderID } }).then((record) => {
+    if (record) {
+      record.update({
+        want_more: wantMoreImages,
+      });
+      return true;
+    }
+    return false;
+  });
+}
 export function changeChoosenType(senderID, choosen_type, callback) {
   return models.User.findOne({ where: { fb_id: senderID } }).then((record) => {
     if (record) {
