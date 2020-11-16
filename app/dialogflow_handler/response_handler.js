@@ -7,14 +7,11 @@ const tools = require('../helpers/send_functions.js');
 export function DialogFlowParameteresHandler(senderID, parameter) {
   // To Handle the search call from the dialogFlow function
   // TODO : Find a template calling theme for cleaner code
-  if (parameter !== 'memes' || parameter !== 'send meme') {
-    if (parameter === 'surprise me') {
-      // To access saved memes on my imgur account
-      chooseCaller('account', parameter, senderID);
-      return;
-    } if (parameter === 'help') {
-      tools.sendTextMessage(senderID, helpText);
-    }
+  if (parameter === 'surprise me') {
+    // To access saved memes on my imgur account
+    chooseCaller('account', parameter, senderID);
+  } else if (parameter === 'help') {
+    tools.sendTextMessage(senderID, helpText);
   } else {
     chooseCaller(parameter ? 'gallery' : 'account', parameter, senderID);
   }
