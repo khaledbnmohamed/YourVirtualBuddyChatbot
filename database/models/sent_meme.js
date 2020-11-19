@@ -3,8 +3,8 @@ module.exports = (sequelize, DataTypes) => {
   const SentMeme = sequelize.define('SentMeme', {
     fb_id: DataTypes.STRING,
     meme_id: DataTypes.INTEGER,
-    meme_imgur_id: DataTypes.STRING,
-    meme_type: DataTypes.STRING,
+    source_url: DataTypes.STRING,
+    type: DataTypes.STRING,
   }, {});
   SentMeme.associate = function (models) {
     SentMeme.belongsTo(models.User, {

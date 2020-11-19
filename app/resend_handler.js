@@ -1,4 +1,6 @@
 import { ImgurImagesConsumer } from './imgur_handler/api_consumer';
+import { RedditImageHandler } from './reddit_handler/api_consumer';
+
 import { sendMemeToUser } from './controllers/sent_memes';
 import { changeChoosenType } from './controllers/users';
 
@@ -10,14 +12,16 @@ export function chooseCaller(type, lastSearchWord = 'memes', senderID) {
     models.SyncDate.findAll({
       limit: 1,
       order: [['createdAt', 'DESC']],
-    }).then((lastUpdate) => {
+    }).then(async (lastUpdate) => {
       if (lastUpdate[0]
       && lastUpdate[0].sync_date.setHours(0, 0, 0, 0) === new Date().setHours(0, 0, 0, 0)
       && lastUpdate[0].type === type
       && lastUpdate[0].search_word === lastSearchWord) {
         sendMemeToUser(senderID);
       } else {
-        ImgurImagesConsumer(type, lastSearchWord, senderID);
+        await ImgurImagesConsumer(type, lastSearchWord, senderID);
+        await RedditImageHandler(senderID);
+        sendMemeToUser(senderID); // send to user after bulk add first time
       }
     });
   });

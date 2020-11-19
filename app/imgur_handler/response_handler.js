@@ -1,10 +1,9 @@
 
 import { sendMemeToUser } from '../controllers/sent_memes';
 
-const uniqueRandoms = [];
 const { bulkInsertToGallery } = require('../controllers/memes.js');
 
-export function predicateBy(prop) {
+function predicateBy(prop) {
   return function value(a, b) {
     if (a[prop] > b[prop]) {
       return 1;
@@ -15,31 +14,36 @@ export function predicateBy(prop) {
   };
 }
 
-export function sortByPoints(parsed) {
+function sortByPoints(parsed) {
   let Sorted = parsed.data.sort(predicateBy('points'));
   Sorted = Sorted.reverse();
   return (Sorted);
 }
 
-export function makeUniqueRandom(numRandoms) {
-  // refill the array if needed
-  if (!uniqueRandoms.length) {
-    for (let i = 0; i < numRandoms; i += 1) {
-      uniqueRandoms.push(i);
-    }
+function responseAdaptor(response) {
+  const dailyNumber = 20;
+  const imagesArray = [];
+  // Need to handle out of array errors
+  if (response.length < 1) {
+    return true;
   }
-  const index = Math.floor(Math.random() * uniqueRandoms.length);
-  const val = uniqueRandoms[index];
-  // now remove that value from the array
-  uniqueRandoms.splice(index, 1);
-  return val;
+  for (let i = 0; i <= dailyNumber; i += 1) {
+    imagesArray.push(
+      {
+        source_url: response[i].is_album === true ? response[i].images[0].link : response[i].link,
+        source: 'imgur',
+        score: response[i].is_album === true ? response[i].images[0].score : response[i].score,
+      },
+    );
+  }
+  return imagesArray;
 }
 
-export function formingElements(result, type, senderID, SearchQuery) {
+
+// eslint-disable-next-line import/prefer-default-export
+export async function formingElements(result, type, senderID, SearchQuery) {
   const parsed = JSON.parse(result);
   const Sorted = sortByPoints(parsed);
-
-  bulkInsertToGallery(Sorted, type, senderID, SearchQuery, () => {
-    sendMemeToUser(senderID); // send to user after bulk add first time
-  });
+  const ImagesArray = responseAdaptor(Sorted);
+  bulkInsertToGallery(ImagesArray, type, senderID, SearchQuery);
 }

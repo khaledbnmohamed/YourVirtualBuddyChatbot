@@ -4,7 +4,8 @@ export default (sequelize, DataTypes) => {
   // Type 1 for gallery memes
 
   const Meme = sequelize.define('Meme', {
-    imgur_id: DataTypes.STRING,
+    source_url: DataTypes.STRING,
+    source: DataTypes.STRING,
     score: DataTypes.INTEGER,
     type: DataTypes.STRING,
   }, {});

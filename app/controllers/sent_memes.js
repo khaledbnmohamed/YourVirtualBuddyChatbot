@@ -1,3 +1,4 @@
+import Sequelize from 'sequelize';
 import { updateRecievedCounter } from './users';
 
 const express = require('express');
@@ -18,7 +19,7 @@ app.use(cors());
 export function insertToSentMemes(SenderID, imageId, type, memeId, callback) {
   try {
     models.SentMeme.create({
-      fb_id: SenderID, meme_imgur_id: imageId, meme_type: type, meme_id: memeId,
+      fb_id: SenderID, source_url: imageId, type, meme_id: memeId,
     })
       .then(() => updateRecievedCounter(SenderID));
     return true;
@@ -28,9 +29,10 @@ export function insertToSentMemes(SenderID, imageId, type, memeId, callback) {
 }
 export function FirstNewMemeToBeSentToUser(SenderID, type, callback) {
   return models.Meme.findAll({
-    attributes: ['id', 'imgur_id', 'type'],
+    attributes: ['id', 'source_url', 'type'],
     where: { '$SentMemes.meme_id$': null, type },
-    order: [['score', 'DESC']],
+    // order: [['score', 'DESC']],
+    order: [[Sequelize.fn('RANDOM')]],
     include: [{
       required: false,
       where: { '$SentMemes.fb_id$': SenderID },
@@ -48,8 +50,8 @@ export function sendMemeToUser(SenderID, callback) {
   }).then((user) => {
     if (user) {
       FirstNewMemeToBeSentToUser(SenderID, user.choosen_type).then((memeTobeSent) => {
-        insertToSentMemes(SenderID, memeTobeSent.imgur_id, memeTobeSent.type, memeTobeSent.id);
-        tools.sendImageMessage(SenderID, memeTobeSent.imgur_id);
+        insertToSentMemes(SenderID, memeTobeSent.source_url, memeTobeSent.type, memeTobeSent.id);
+        tools.sendImageMessage(SenderID, memeTobeSent.source_url);
         tools.sendTypingOff(SenderID);
       });
     }

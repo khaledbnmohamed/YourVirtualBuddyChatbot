@@ -6,7 +6,7 @@ const { formingElements } = require('./response_handler');
 const { CLIENT_ID } = process.env;
 const { IMGUR_ACCESS_TOKEN } = process.env;
 
-export function ImgurImagesConsumer(type, SearchQuery, senderID) {
+export async function ImgurImagesConsumer(type, SearchQuery, senderID) {
   getUser(senderID, (user) => {
     const searchBy = user.sort_by_latest ? 'viral' : 'top';
     // eslint-disable-next-line no-param-reassign
@@ -36,7 +36,7 @@ export function ImgurImagesConsumer(type, SearchQuery, senderID) {
       res.on('data', (chunk) => {
         chunks.push(chunk);
       });
-      res.on('end', () => {
+      res.on('end', async () => {
         const body = Buffer.concat(chunks);
         formingElements(body, type, senderID, SearchQuery);
       });
