@@ -345,7 +345,7 @@ function callSendAPI(messageData) {
     json: messageData,
 
   }, (error, response, body) => {
-    if (!error && response.statusCode == 200) {
+    if (!error && response.statusCode === 200) {
       const recipientId = body.recipient_id;
       const messageId = body.message_id;
 

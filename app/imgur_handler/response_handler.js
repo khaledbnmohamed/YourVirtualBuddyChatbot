@@ -1,6 +1,3 @@
-
-import { sendMemeToUser } from '../controllers/sent_memes';
-
 const { bulkInsertToGallery } = require('../controllers/memes.js');
 
 function predicateBy(prop) {

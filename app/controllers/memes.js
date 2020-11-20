@@ -27,7 +27,9 @@ export async function bulkInsertToGallery(
           score: item.score || 0,
           type,
         },
-      }).then(() => console.log('Added New record'));
+      }).spread((user, created) => {
+        if (created) console.log('Added New record');
+      });
     } catch (error) {
       throw error.message;
     }
