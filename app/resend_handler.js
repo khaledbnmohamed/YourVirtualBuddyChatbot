@@ -24,7 +24,7 @@ export function chooseCaller(type, lastSearchWord = 'memes', senderID) {
         await ImgurImagesConsumer(type, lastSearchWord, senderID);
         if (type === 'gallery') { await RedditImageHandler(senderID); }
       }
-      sendMemeToUser(senderID); // send to user after bulk add first time
+      sendMemeToUser(senderID);
     });
   });
 }
