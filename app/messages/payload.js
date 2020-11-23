@@ -2,13 +2,11 @@ import { addSortPrefToUser } from '../controllers/users';
 import { doNothing, sendLike } from '../quick_replies';
 import { chooseCaller } from '../resend_handler';
 import { getFirstName } from '../helpers/facebook_apis';
+import { helpText } from '../../config/constant_messages';
 
 const tools = require('../helpers/send_functions.js');
 
-export const helpText = ['You can send me various messages:', '=================', ' ',
-  '* *Send meme* -> sends you a fresh meme', ' ', "* *Sort by time* -> gets you latest memes without considering community's upvotes", ' ', '* *Sort by points* -> sends you most upvoted memes in choosen category', ' ',
-  '* *Memes* -> Quick categories selection', ' ', '* *Surprise me* -> sends you a meme uploaded by our community', ' ', '* You can send an image to be uploaded to the community section where you can access it anytime',
-].join('\n');
+
 /*
    * If users came here through testdrive, they need to configure the server URL
    * in default.json before they can access local resources likes images/videos.

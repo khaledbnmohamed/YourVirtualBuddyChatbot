@@ -9,6 +9,7 @@ import {
 import { getFirstName } from './app/helpers/facebook_apis';
 import { checkMessageContent } from './app/messages/receiver';
 import { handlePayload } from './app/messages/payload';
+import { uploadSuccess, uploadSuccessHint } from './config/constant_messages';
 
 if (process.env.NODE_ENV !== 'production' && process.env.NODE_ENV !== 'staging') {
   require('dotenv').config();
@@ -87,8 +88,7 @@ function receivedMessage(event) {
     tools.sendReadReceipt(senderID);
     if (quickReply) {
       const quickReplyPayload = quickReply.payload;
-      console.log('Quick reply for message %s with payload %s',
-        messageId, quickReplyPayload);
+      console.log('Quick reply for message %s with payload %s', messageId, quickReplyPayload);
       tools.sendTypingOn(senderID); // typing on till fetching
       handlePayload(quickReplyPayload, senderID);
       return;
@@ -103,9 +103,9 @@ function receivedMessage(event) {
           uploadToAccount(senderID, imageURL);
         }
       }
-      tools.sendTextMessage(senderID, 'Uploaded your meme/s for later happiness');
+      tools.sendTextMessage(senderID, uploadSuccess);
       setTimeout(() => {
-        tools.sendTextMessage(senderID, "You can access this meme and other selected memes by typing 'my memes'");
+        tools.sendTextMessage(senderID, uploadSuccessHint);
       }, 2000); // added timeout to make sure it comes later
     }
     tools.sendTypingOff(senderID);
@@ -177,36 +177,24 @@ app.get('/authorize', (req, res) => {
   getFirstName(accountLinkingToken, (err, data) => {
     if (err) return console.error(err);
     const user_first_name = data;
-    console.log('First NAMMMME', user_first_name);
     const message_first_time = [`Hi ${user_first_name},`, "Try me by sending 'Send meme' or 'memes' "].join('\n');
     // present user with some greeting or call to action
     // tools.sendTextMessage(senderID, message_first_time);
   });
 });
 
-// ImgurImagesConsumer('kaka', 'gallery', 'memes');
-// sendMemeToUser('Khalod1');
-// helpers.sendImageToNewUser('fuckme', '33333324ds32423sdfafadas');
-// console.log(getUser('khal22ooood'));
-// PromisedToDB('Khalod1')
-//   .then((data) => {
-//     console.log('=============================================');
-//     console.log('returned fresh data', data);
-//   })
-//   .catch((err) => console.error(`[Error]: ${err}`));
+process.on('uncaughtException', (err) => {
+  console.error('There was an uncaught error', err);
+  if (!err.isOperational) {
+    process.exit(1);
+  }
+  if (err.messageToUser) { tools.sendTextMessage(err.userID, err.messageToUser); }
+});
 
-
-// PromisedsendToDialogflow("kilme")
-// .then(data => {
-//   checkMessageContent(data, senderID);
-//   console.log(100*"==");
-//   console.log("data is " + data);
-
-// }
-// )
-// .catch(err => console.error(`[Error]: ${err}`));
-
-
+process.on('unhandledRejection', (err, promise) => {
+  console.error('Unhandled rejection', { err, promise });
+  if (err.messageToUser) { tools.sendTextMessage(err.userID, err.messageToUser); }
+});
 // Start server
 // Webhooks must be available via SSL with a certificate signed by a valid
 // certificate authority.

@@ -1,5 +1,5 @@
 
-import { helpText } from '../messages/payload';
+import { helpText } from '../../config/constant_messages';
 import { chooseCaller } from '../resend_handler';
 
 const tools = require('../helpers/send_functions.js');

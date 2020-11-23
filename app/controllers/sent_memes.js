@@ -1,5 +1,7 @@
 import Sequelize from 'sequelize';
 import { updateRecievedCounter } from './users';
+import { AppError } from '../errors/error_handler';
+import { exceededDailyMemes } from '../../config/constant_messages';
 
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -41,6 +43,7 @@ export function FirstNewMemeToBeSentToUser(SenderID, type, callback) {
     }],
   // eslint-disable-next-line arrow-body-style
   }).then((meme) => {
+    if (!meme[0]) { throw new AppError('InvalidInput', 'exceeded limit of day ', true, exceededDailyMemes, SenderID); }
     return meme[0];
   });
 }
