@@ -11,7 +11,7 @@ export function chooseCaller(type, lastSearchWord = 'memes', senderID) {
   // eslint-disable-next-line no-param-reassign
   lastSearchWord = lastSearchWord.toLowerCase();
   changeChoosenType(senderID, type, () => {
-    models.SyncDate.findOrCreate({
+    models.SyncDate.findOne({
       where:
       {
         sync_date: new Date().setHours(0, 0, 0, 0),
@@ -19,8 +19,8 @@ export function chooseCaller(type, lastSearchWord = 'memes', senderID) {
         search_word: lastSearchWord,
       },
       defaults: { user: senderID },
-    }).spread(async (object, created) => {
-      if (created) {
+    }).then(async (object) => {
+      if (!object) {
         await ImgurImagesConsumer(type, lastSearchWord, senderID);
         if (type === 'gallery') { await RedditImageHandler(senderID); }
       }
